@@ -1,0 +1,36 @@
+name: school18
+channels:
+    - anaconda
+    - astropy
+    - conda-forge
+dependencies:
+    - python=3.6
+    - astropy
+    - pyyaml
+    - cython
+    - h5py
+    - ipython
+    - jupyter
+    - jupyterlab
+    - matplotlib
+    - numba
+    - numpy
+    - pandas
+    - scikit-learn
+    - scipy
+    - pytables
+    - pillow
+    - seaborn
+    - emcee
+    - pip
+    - line_profiler
+    - memory_profiler
+    - snakeviz
+    - folium
+    - pycodestyle
+    - pip:
+        - wpca
+        - autograd
+        - tensorflow
+        - edward
+        - psrecord
