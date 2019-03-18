@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The module configuration : setup.py</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-4-713.html">The wrapper module source : astericshpc.cpp</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-6-807.html">The python install cmake script</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="769" class="section">5.6.5 : The module configuration : setup.py</h3>
+
+		
+The <b>setup.py</b> is the file which really makes the <b>python module</b>.
+
+
+First, we have to import tools to make the installation of our module :
+
+<table id="776" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="pyAction">from</span> setuptools <span class="pyAction">import</span> setup
+<span class="pyAction">from</span> setuptools <span class="pyAction">import</span> Extension
+<span class="pyAction">from</span> setuptools.dist <span class="pyAction">import</span> Distribution
+<span class="pyAction">from</span> sys <span class="pyAction">import</span> prefix
+<span class="pyAction">import</span> subprocess
+<span class="pyAction">import</span> numpy <span class="pyAction">as</span> np</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Check is <b>Cython</b> package is installed. The <b>Cython</b> package makes the <b>python</b> extensions for wrappers.
+
+<table id="784" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsKeyword">try</span>:
+	<span class="pyAction">from</span> Cython.Distutils <span class="pyAction">import</span> build_ext
+<span class="dsKeyword">except</span> ImportError:
+	use_cython = <span class="pyValue">False</span>
+	<span class="pyFunction">print</span>(<span class="dsString">'Cython not found'</span>)
+	<span class="dsKeyword">raise</span> Exception(<span class="dsString">'Please install Cython on your system'</span>)
+<span class="dsKeyword">else</span>:
+	use_cython = <span class="pyValue">True</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Some informations to be sure that we will not lose them is the file size increases :
+
+<table id="786" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+NAME = <span class="dsString">'astericshpc'</span>
+VERSION = <span class="dsString">'0.1'</span>
+AUTHOR = <span class="dsString">'Pierre Aubert'</span>
+AUTHOR_EMAIL = <span class="dsString">'aubertp7@gmail.com'</span>
+URL = <span class="dsString">''</span>
+DESCRIPTION = <span class="dsString">'Basic functions for ASTERICS HPC lecture'</span>
+LICENSE = <span class="dsString">'CeCILL-C'</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Catch the installation prefix is the user specifies one :
+
+<table id="788" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsKeyword">def</span> get_prefix():
+	<span class="dsString">&quot;&quot;</span><span class="dsString">&quot;
+	Get prefix from either config file or command line
+	:return: str
+	prefix install path
+	&quot;</span><span class="dsString">&quot;&quot;</span>
+	dist = Distribution()
+	dist.parse_config_files()
+	dist.parse_command_line()
+	<span class="dsKeyword">try</span>:
+		user_prefix = dist.get_option_dict(<span class="dsString">'install'</span>)[<span class="dsString">'prefix'</span>][<span class="dsNumber">1</span>]
+	<span class="dsKeyword">except</span> KeyError:
+		user_prefix = prefix
+	<span class="dsKeyword">return</span> user_prefix</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Some C++ flags correction, because the <b>python</b> expects C sources and not C++ ones : 
+
+<table id="792" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="pyAction">import</span> distutils.sysconfig
+cfg_vars = distutils.sysconfig.get_config_vars()
+<span class="dsKeyword">for</span> key, value <span class="dsKeyword">in</span> cfg_vars.items():
+	<span class="dsKeyword">if</span> <span class="pyFunction">type</span>(value) == <span class="pyFunction">str</span>:
+		value = value.replace(<span class="dsString">&quot; -Wstrict-prototypes &quot;</span>, <span class="dsString">&quot; &quot;</span>)
+		value = value.replace(<span class="dsString">&quot; -DNDEBUG &quot;</span>, <span class="dsString">&quot; &quot;</span>)
+		value = value.replace(<span class="dsString">&quot; -g &quot;</span>, <span class="dsString">&quot; &quot;</span>)
+		cfg_vars[key] = value
+
+extra_compile_args = [<span class="dsString">'-Wno-invalid-offsetof'</span>]</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then, we have to deal with the compiler compatibility (GCC, CLANG, LINUX and OSX) : 
+
+<table id="794" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsKeyword">def</span> use_clang():
+	<span class="dsKeyword">if</span> <span class="dsString">'gcc'</span> <span class="dsKeyword">in</span> subprocess.getoutput(<span class="dsString">&quot;echo $CC&quot;</span>):
+		<span class="dsKeyword">return</span> <span class="pyValue">False</span>
+	elif <span class="dsString">'clang'</span> <span class="dsKeyword">in</span> subprocess.getoutput(<span class="dsString">&quot;echo $CC&quot;</span>):
+		<span class="dsKeyword">return</span> <span class="pyValue">True</span>
+	<span class="dsKeyword">else</span>:
+		<span class="dsKeyword">if</span> <span class="dsString">'not found'</span> <span class="dsKeyword">in</span> subprocess.getoutput(<span class="dsString">&quot;gcc --version&quot;</span>) or <span class="dsString">'clang'</span>  <span class="dsKeyword">in</span> subprocess.getoutput(<span class="dsString">&quot;gcc --version&quot;</span>):
+			<span class="dsKeyword">return</span> <span class="pyValue">True</span>
+		<span class="dsKeyword">else</span>: 			
+			<span class="dsKeyword">return</span> <span class="pyValue">False</span>
+
+<span class="dsKeyword">if</span> use_clang():
+	clangVersion = subprocess.getoutput(<span class="dsString">&quot;clang --version&quot;</span>).split()
+	i = <span class="dsNumber">0</span>
+	<span class="dsKeyword">while</span> clangVersion[i] != <span class="dsString">&quot;version&quot;</span>:
+		i += <span class="dsNumber">1</span>
+	clangMainVersion = <span class="pyFunction">int</span>(clangVersion[i + <span class="dsNumber">1</span>].split(<span class="dsString">&quot;.&quot;</span>)[<span class="dsNumber">0</span>])
+	<span class="pyFunction">print</span>(<span class="dsString">&quot;Find version of Clang &quot;</span>, clangMainVersion)
+	<span class="dsKeyword">if</span> clangMainVersion &gt; <span class="dsNumber">9</span>:
+		extra_compile_args.append(<span class="dsString">'-Wno-unused-command-line-argument'</span>) <span class="dsCommentMono">#no need for clang 10.0
+</span>		extra_compile_args.append(<span class="dsString">&quot;-Wno-injected-class-name&quot;</span>)
+		extra_compile_args.append(<span class="dsString">&quot;-Wno-macro-redefined&quot;</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Now, we create the extension with our file sources and some cmake macro to handle the files positions :
+
+<table id="796" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+packageName = <span class="dsString">'astericshpc'</span>
+ext_modules = [
+	Extension(packageName, [<span class="dsString">'@CMAKE_CURRENT_SOURCE_DIR@/astericshpc.cpp'</span>,
+		<span class="dsString">'@CMAKE_CURRENT_SOURCE_DIR@/allocTableWrapper.cpp'</span>,
+		<span class="dsString">'@CMAKE_CURRENT_SOURCE_DIR@/allocMatrixWrapper.cpp'</span>,
+		<span class="dsString">'@CMAKE_CURRENT_SOURCE_DIR@/timerWrapper.cpp'</span>
+	],
+	libraries=[<span class="dsString">&quot;asterics_hpc&quot;</span>],
+	library_dirs=[<span class="dsString">'@ASTERICS_CPP_LIBRARY_BUILD@'</span>],
+	runtime_library_dirs=[<span class="dsString">'@ASTERICS_CPP_LIBRARY_DIR@'</span>],
+	extra_link_args=[<span class="dsString">'-Wl,-rpath,@ASTERICS_CPP_LIBRARY_BUILD@'</span>],
+	extra_compile_args=extra_compile_args,
+
+	include_dirs=[<span class="dsString">'.'</span>,
+		<span class="dsString">'@ASTERICS_HPC_INCLUDE@'</span>,
+		np.get_include()]
+	)
+]</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Finally, we create the module and cacth exeptions if it failed :
+
+<table id="798" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsKeyword">try</span>:
+	setup(name = NAME,
+		version=VERSION,
+		ext_modules=ext_modules,
+		description=DESCRIPTION,
+		install_requires=[<span class="dsString">'numpy'</span>, <span class="dsString">'cython'</span>],
+		author=AUTHOR,
+		author_email=AUTHOR_EMAIL,
+		license=LICENSE,
+		url=URL,
+		classifiers=[
+		<span class="dsString">'Intended Audience :: Science/Research'</span>,
+		<span class="dsString">'License :: OSI Approved ::Cecil-C'</span>,
+		<span class="dsString">'Operating System :: OS Independent'</span>,
+		<span class="dsString">'Programming Language :: Python :: 3'</span>,
+		<span class="dsString">'Topic :: Scientific/Engineering :: Astronomy'</span>,
+		<span class="dsString">'Development Status :: 3 - Alpha'</span>],
+	)
+
+<span class="dsKeyword">except</span> Exception <span class="pyAction">as</span> e:
+	<span class="pyFunction">print</span>(<span class="pyFunction">str</span>(e))
+	sys.exit(-<span class="dsNumber">1</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>setup.py</b> file :
+
+<table id="803" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsString">''</span><span class="dsString">'
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+'</span><span class="dsString">''</span>
+
+<span class="pyAction">from</span> setuptools <span class="pyAction">import</span> setup
+<span class="pyAction">from</span> setuptools <span class="pyAction">import</span> Extension
+<span class="pyAction">from</span> setuptools.dist <span class="pyAction">import</span> Distribution
+<span class="pyAction">from</span> sys <span class="pyAction">import</span> prefix
+<span class="pyAction">import</span> subprocess
+<span class="pyAction">import</span> numpy <span class="pyAction">as</span> np
+
+<span class="dsKeyword">try</span>:
+	<span class="pyAction">from</span> Cython.Distutils <span class="pyAction">import</span> build_ext
+<span class="dsKeyword">except</span> ImportError:
+	use_cython = <span class="pyValue">False</span>
+	<span class="pyFunction">print</span>(<span class="dsString">'Cython not found'</span>)
+	<span class="dsKeyword">raise</span> Exception(<span class="dsString">'Please install Cython on your system'</span>)
+<span class="dsKeyword">else</span>:
+	use_cython = <span class="pyValue">True</span>
+
+NAME = <span class="dsString">'astericshpc'</span>
+VERSION = <span class="dsString">'0.1'</span>
+AUTHOR = <span class="dsString">'Pierre Aubert'</span>
+AUTHOR_EMAIL = <span class="dsString">'aubertp7@gmail.com'</span>
+URL = <span class="dsString">''</span>
+DESCRIPTION = <span class="dsString">'Basic functions for ASTERICS HPC lecture'</span>
+LICENSE = <span class="dsString">'CeCILL-C'</span>
+
+<span class="dsKeyword">def</span> get_prefix():
+	<span class="dsString">&quot;&quot;</span><span class="dsString">&quot;
+	Get prefix from either config file or command line
+	:return: str
+	prefix install path
+	&quot;</span><span class="dsString">&quot;&quot;</span>
+	dist = Distribution()
+	dist.parse_config_files()
+	dist.parse_command_line()
+	<span class="dsKeyword">try</span>:
+		user_prefix = dist.get_option_dict(<span class="dsString">'install'</span>)[<span class="dsString">'prefix'</span>][<span class="dsNumber">1</span>]
+	<span class="dsKeyword">except</span> KeyError:
+		user_prefix = prefix
+	<span class="dsKeyword">return</span> user_prefix
+
+<span class="pyAction">import</span> distutils.sysconfig
+cfg_vars = distutils.sysconfig.get_config_vars()
+<span class="dsKeyword">for</span> key, value <span class="dsKeyword">in</span> cfg_vars.items():
+	<span class="dsKeyword">if</span> <span class="pyFunction">type</span>(value) == <span class="pyFunction">str</span>:
+		value = value.replace(<span class="dsString">&quot; -Wstrict-prototypes &quot;</span>, <span class="dsString">&quot; &quot;</span>)
+		value = value.replace(<span class="dsString">&quot; -DNDEBUG &quot;</span>, <span class="dsString">&quot; &quot;</span>)
+		value = value.replace(<span class="dsString">&quot; -g &quot;</span>, <span class="dsString">&quot; &quot;</span>)
+		cfg_vars[key] = value
+
+extra_compile_args = [<span class="dsString">'-Wno-invalid-offsetof'</span>]
+
+<span class="dsKeyword">def</span> use_clang():
+	<span class="dsKeyword">if</span> <span class="dsString">'gcc'</span> <span class="dsKeyword">in</span> subprocess.getoutput(<span class="dsString">&quot;echo $CC&quot;</span>):
+		<span class="dsKeyword">return</span> <span class="pyValue">False</span>
+	elif <span class="dsString">'clang'</span> <span class="dsKeyword">in</span> subprocess.getoutput(<span class="dsString">&quot;echo $CC&quot;</span>):
+		<span class="dsKeyword">return</span> <span class="pyValue">True</span>
+	<span class="dsKeyword">else</span>:
+		<span class="dsKeyword">if</span> <span class="dsString">'not found'</span> <span class="dsKeyword">in</span> subprocess.getoutput(<span class="dsString">&quot;gcc --version&quot;</span>) or <span class="dsString">'clang'</span>  <span class="dsKeyword">in</span> subprocess.getoutput(<span class="dsString">&quot;gcc --version&quot;</span>):
+			<span class="dsKeyword">return</span> <span class="pyValue">True</span>
+		<span class="dsKeyword">else</span>: 			
+			<span class="dsKeyword">return</span> <span class="pyValue">False</span>
+
+<span class="dsKeyword">if</span> use_clang():
+	clangVersion = subprocess.getoutput(<span class="dsString">&quot;clang --version&quot;</span>).split()
+	i = <span class="dsNumber">0</span>
+	<span class="dsKeyword">while</span> clangVersion[i] != <span class="dsString">&quot;version&quot;</span>:
+		i += <span class="dsNumber">1</span>
+	clangMainVersion = <span class="pyFunction">int</span>(clangVersion[i + <span class="dsNumber">1</span>].split(<span class="dsString">&quot;.&quot;</span>)[<span class="dsNumber">0</span>])
+	<span class="pyFunction">print</span>(<span class="dsString">&quot;Find version of Clang &quot;</span>, clangMainVersion)
+	<span class="dsKeyword">if</span> clangMainVersion &gt; <span class="dsNumber">9</span>:
+		extra_compile_args.append(<span class="dsString">'-Wno-unused-command-line-argument'</span>) <span class="dsCommentMono">#no need for clang 10.0
+</span>		extra_compile_args.append(<span class="dsString">&quot;-Wno-injected-class-name&quot;</span>)
+		extra_compile_args.append(<span class="dsString">&quot;-Wno-macro-redefined&quot;</span>)
+
+packageName = <span class="dsString">'astericshpc'</span>
+ext_modules = [
+	Extension(packageName, [<span class="dsString">'@CMAKE_CURRENT_SOURCE_DIR@/astericshpc.cpp'</span>,
+		<span class="dsString">'@CMAKE_CURRENT_SOURCE_DIR@/allocTableWrapper.cpp'</span>,
+		<span class="dsString">'@CMAKE_CURRENT_SOURCE_DIR@/allocMatrixWrapper.cpp'</span>,
+		<span class="dsString">'@CMAKE_CURRENT_SOURCE_DIR@/timerWrapper.cpp'</span>
+	],
+	libraries=[<span class="dsString">&quot;asterics_hpc&quot;</span>],
+	library_dirs=[<span class="dsString">'@ASTERICS_CPP_LIBRARY_BUILD@'</span>],
+	runtime_library_dirs=[<span class="dsString">'@ASTERICS_CPP_LIBRARY_DIR@'</span>],
+	extra_link_args=[<span class="dsString">'-Wl,-rpath,@ASTERICS_CPP_LIBRARY_BUILD@'</span>],
+	extra_compile_args=extra_compile_args,
+
+	include_dirs=[<span class="dsString">'.'</span>,
+		<span class="dsString">'@ASTERICS_HPC_INCLUDE@'</span>,
+		np.get_include()]
+	)
+]
+
+<span class="dsKeyword">try</span>:
+	setup(name = NAME,
+		version=VERSION,
+		ext_modules=ext_modules,
+		description=DESCRIPTION,
+		install_requires=[<span class="dsString">'numpy'</span>, <span class="dsString">'cython'</span>],
+		author=AUTHOR,
+		author_email=AUTHOR_EMAIL,
+		license=LICENSE,
+		url=URL,
+		classifiers=[
+		<span class="dsString">'Intended Audience :: Science/Research'</span>,
+		<span class="dsString">'License :: OSI Approved ::Cecil-C'</span>,
+		<span class="dsString">'Operating System :: OS Independent'</span>,
+		<span class="dsString">'Programming Language :: Python :: 3'</span>,
+		<span class="dsString">'Topic :: Scientific/Engineering :: Astronomy'</span>,
+		<span class="dsString">'Development Status :: 3 - Alpha'</span>],
+	)
+
+<span class="dsKeyword">except</span> Exception <span class="pyAction">as</span> e:
+	<span class="pyFunction">print</span>(<span class="pyFunction">str</span>(e))
+	sys.exit(-<span class="dsNumber">1</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+You can download it <a id="805" href="ressource/build/Correction/astericshpc/setup.py">here</a>.
+		
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-4-713.html">The wrapper module source : astericshpc.cpp</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-6-807.html">The python install cmake script</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

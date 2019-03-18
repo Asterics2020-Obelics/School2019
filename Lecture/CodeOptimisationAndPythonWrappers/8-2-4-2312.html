@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The performances</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2-3-2300.html">The compilation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2-2286.html">The classical approach</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-2-5-2363.html">Solving the performance problem</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="2312" class="section">8.2.4 : The performances</h3>
+
+
+<div id="2314" class="figureStyle">
+	<div id="2316" class="centerStyle">
+		<img id="2318" src="images/reductionBaseElapsedTime.png" alt="nothing" />
+		<img id="2320" src="images/reductionBaseElapsedTimeCyEl.png" alt="nothing" />
+		<p id="2322">Left panel : total averaged time for the reduction function. Right panel : averaged time to compute one single element.</p>
+	</div>
+</div>
+
+Ok, let's be realistic : there is a problem with the performances.
+
+		<ul>
+
+			<li> Performances <b>-O0</b> : slow but reasonable
+	</li>
+		<li> Other performances (<b>-O1</b>, <b>-O2</b>, <b>-O3</b>, <b>-Ofast</b>) are too fast (non sence)
+</li>
+		</ul>
+
+
+<b>GCC</b> is smart of guileful depending on the points of view.
+
+		<ul>
+
+			<li> GCC noticed you <b>do not</b> use the result of the <b>reduction</b> function.
+	</li>
+		<li> The call to <b>reduction</b> is considered as dead code (or never called code).
+</li>
+		</ul>
+
+
+<pre id="2358" class="adviseStyle">
+To avoid that, you have to compile the <b>reduction</b> function in an other file.
+</pre>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2-3-2300.html">The compilation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2-2286.html">The classical approach</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-2-5-2363.html">Solving the performance problem</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

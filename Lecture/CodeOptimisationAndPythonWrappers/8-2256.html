@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Optimisation of a reduction</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-5-7-2-2239.html">Summary</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-1-2274.html">What is a reduction ?</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h1 id="2256" class="part">Part 8 : Optimisation of a reduction</h1>
+		<ul class="sommaire">
+			<li><a href="8-1-2274.html">8.1) What is a reduction ?</a></li>
+			<li><a href="8-2-2286.html">8.2) The classical approach</a></li>
+			<li><a href="8-3-2425.html">8.3) The vectorization of reduction</a></li>
+			<li><a href="8-4-2488.html">8.4) The vectorization of reduction with intrinsic functions</a></li>
+			<li><a href="8-5-2569.html">8.5) How to optimize more</a></li>
+			<li><a href="8-6-2738.html">8.6) How to create a reduction python module</a></li>
+		</ul>
+
+
+<p id="2258" class="paragraphStyle">
+	You can find the associated presentation
+	<a id="2260" href="ressource/build/Presentation/4-OptimisationReduction/presentation_optimisation_reduction.pdf">here</a>.
+</p>
+
+Let's create a directory <b>4-Reduction</b> in the directory <b>ExampleOptimisation</b> for this example :
+
+<pre id="2267" class="terminalStyle">
+$ mkdir 4-Reduction
+</pre>
+
+
+Do not forget to complete the <b>ExampleOptimisation/CMakeLists.txt</b> file : 
+
+<table id="2272" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HPC_ASTERICS)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">set</span>(PYTHON_EXECUTABLE <span class="dsString">&quot;python3&quot;</span> <span class="cmakeKWord">CACHE</span> <span class="cmakeKWord">BOOL</span> <span class="dsString">&quot;Python program&quot;</span>)
+
+<span class="cmakeFunction">add_subdirectory</span>(Performances)
+
+<span class="cmakeFunction">include</span>(runExample.cmake)
+<span class="cmakeFunction">include</span>(pythonCheck.cmake)
+
+<span class="cmakeFunction">set</span>(VECTOR_ALIGNEMENT 32)
+<span class="cmakeFunction">add_definitions</span>(-DVECTOR_ALIGNEMENT=<span class="dsNumber">${VECTOR_ALIGNEMENT}</span>)
+
+<span class="cmakeFunction">add_subdirectory</span>(0-CMakeHelloWorld)
+<span class="cmakeFunction">add_subdirectory</span>(AstericsHPC)
+<span class="cmakeFunction">include_directories</span>(<span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/AstericsHPC)
+
+<span class="cmakeFunction">add_subdirectory</span>(1-HadamardProduct)
+
+<span class="cmakeFunction">add_subdirectory</span>(3-Saxpy)
+<span class="cmakeFunction">add_subdirectory</span>(4-Reduction)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-5-7-2-2239.html">Summary</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-1-2274.html">What is a reduction ?</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>What is the Hadamard product ?</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-2-871.html">Main to evaluate the Hadamard product</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="862" class="chapter">Chapter 6.1 : What is the Hadamard product ?</h2>
+
+
+The Hadamard product is a multiplication of two vector, element-wise, in a third vector :
+
+<br /><img src="images/imgMath864.png" alt="nothing" />
+
+<p id="866" class="paragraphStyle">
+In C++ code :
+</p>
+
+<table id="869" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">void</span> hadamard_product(<span class="dsType">float</span>* tabResult, <span class="dsType">const</span> <span class="dsType">float</span> * tabX, <span class="dsType">const</span> <span class="dsType">float</span>* tabY, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement){
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		tabResult[i] = tabX[i]*tabY[i];
+	}
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-2-871.html">Main to evaluate the Hadamard product</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

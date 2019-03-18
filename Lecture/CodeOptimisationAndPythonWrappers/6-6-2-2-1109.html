@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The full main_vectorize.cpp file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-2-1-1018.html">Things to verify before vectorizing</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-2-3-1117.html">The CMakeLists.txt file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="1109" class="subsection">6.6.2.2 : The full main_vectorize.cpp file</h4>
+
+
+Here is the full <b>main_vectorize.cpp</b> file :
+
+<table id="1113" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#include &lt;iostream&gt;
+</span><span class="cppmacro">#include &quot;asterics_hpc.h&quot;
+</span>
+<span class="dsKeyword">using</span> <span class="dsKeyword">namespace</span> <span class="cppstdF">std</span>;
+
+<span class="dsDocMono">///Do the Hadamard product
+</span><span class="dsDocMulti">/**	@param[out] ptabResult : table of results of tabX*tabY
+ * 	@param ptabX : input table
+ * 	@param ptabY : input table
+ * 	@param nbElement : number of elements in the tables
+*/</span>
+<span class="dsType">void</span> hadamard_product(<span class="dsType">float</span>* <span class="cppqtMacro">__restrict__</span> ptabResult, <span class="dsType">const</span> <span class="dsType">float</span>* <span class="cppqtMacro">__restrict__</span> ptabX, <span class="dsType">const</span> <span class="dsType">float</span>* <span class="cppqtMacro">__restrict__</span> ptabY, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement){
+	<span class="dsType">const</span> <span class="dsType">float</span>* tabX = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="bultinFunction">__builtin_assume_aligned</span>(ptabX, VECTOR_ALIGNEMENT);
+	<span class="dsType">const</span> <span class="dsType">float</span>* tabY = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="bultinFunction">__builtin_assume_aligned</span>(ptabY, VECTOR_ALIGNEMENT);
+	<span class="dsType">float</span>* tabResult = (<span class="dsType">float</span>*)<span class="bultinFunction">__builtin_assume_aligned</span>(ptabResult, VECTOR_ALIGNEMENT);
+	
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		tabResult[i] = tabX[i]*tabY[i];
+	}
+}
+
+<span class="dsDocMono">///Get the number of cycles per elements of the Hadamard product
+</span><span class="dsDocMulti">/**	@param nbElement : number of elements of the tables
+ * 	@param nbRepetition : number of repetition to evaluate the function hadamard_product
+*/</span>
+<span class="dsType">void</span> evaluateHadamardProduct(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbRepetition){
+	<span class="dsType">float</span> * tabResult = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	<span class="dsType">float</span> * tabX = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	<span class="dsType">float</span> * tabY = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		tabX[i] = (<span class="dsType">float</span>)(i*<span class="dsNumber">32lu</span>%<span class="dsNumber">17lu</span>);
+		tabY[i] = (<span class="dsType">float</span>)(i*<span class="dsNumber">57lu</span>%<span class="dsNumber">31lu</span>);
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> beginTime(rdtsc());
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbRepetition; ++i){
+		hadamard_product(tabResult, tabX, tabY, nbElement);
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> elapsedTime((<span class="dsType">double</span>)(rdtsc() - beginTime)/((<span class="dsType">double</span>)nbRepetition));
+	
+	<span class="dsType">double</span> cyclePerElement(((<span class="dsType">double</span>)elapsedTime)/((<span class="dsType">double</span>)nbElement));
+	<span class="cppstdF">cout</span> &lt;&lt; <span class="dsString">&quot;evaluateHadamardProduct : nbElement = &quot;</span>&lt;&lt;nbElement&lt;&lt;<span class="dsString">&quot;, cyclePerElement = &quot;</span> &lt;&lt; cyclePerElement &lt;&lt; <span class="dsString">&quot; cy/el, elapsedTime = &quot;</span> &lt;&lt; elapsedTime &lt;&lt; <span class="dsString">&quot; cy&quot;</span> &lt;&lt; <span class="cppstdF">endl</span>;
+	<span class="cppstdF">cerr</span> &lt;&lt; nbElement &lt;&lt; <span class="dsString">&quot;\t&quot;</span> &lt;&lt; cyclePerElement &lt;&lt; <span class="dsString">&quot;\t&quot;</span> &lt;&lt; elapsedTime &lt;&lt; <span class="cppstdF">endl</span>;
+	asterics_free(tabResult);
+	asterics_free(tabX);
+	asterics_free(tabY);
+}
+
+<span class="dsType">int</span> <span class="cppstandardF">main</span>(<span class="dsType">int</span> argc, <span class="dsType">char</span>** argv){
+	<span class="cppstdF">cout</span> &lt;&lt; <span class="dsString">&quot;Hadamard product vectorized&quot;</span> &lt;&lt; <span class="cppstdF">endl</span>;
+	evaluateHadamardProduct(<span class="dsNumber">1000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">1500lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">2000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">2500lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">2666lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">3000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">4000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">5000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">10000lu</span>, <span class="dsNumber">1000000lu</span>);
+	<span class="dsKeyword">return</span> <span class="dsNumber">0</span>;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="1115" href="ressource/build/Correction/hadamard/main_vectorize.cpp">here</a>.
+
+						</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-2-1-1018.html">Things to verify before vectorizing</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-2-3-1117.html">The CMakeLists.txt file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

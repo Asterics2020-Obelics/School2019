@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>How to optimize more</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-4-6-2553.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2256.html">Optimisation of a reduction</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-5-1-2584.html">Interleaving 2 times</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="2569" class="chapter">Chapter 8.5 : How to optimize more</h2>
+		<ul class="sommaire">
+			<li><a href="8-5-1-2584.html">8.5.1) Interleaving 2 times</a></li>
+			<li><a href="8-5-2-2630.html">8.5.2) Interleaving 4 times</a></li>
+			<li><a href="8-5-3-2676.html">8.5.3) Interleaving 8 times</a></li>
+			<li><a href="8-5-4-2722.html">8.5.4) Summary</a></li>
+		</ul>
+
+
+The main issue in a reduction is called back dependency.
+
+<p id="2571" class="paragraphStyle">
+In other words, you have to wait until the end of the computing of the current element to compute the next one.
+</p>
+
+<div id="2574" class="figureStyle">
+	<div id="2576" class="centerStyle">
+		<img id="2578" src="images/interLeaving.png" alt="nothing" />
+		<p id="2580">Illustration of the computing elapsed time between the computation and the moment the result can be used.
+			And, how to take account this particularity to optimise the computation time of the reduction.</p>
+	</div>
+</div>
+
+To optimise the reduction computation we are going to use several accumulators to do the reduction.
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-4-6-2553.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2256.html">Optimisation of a reduction</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-5-1-2584.html">Interleaving 2 times</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

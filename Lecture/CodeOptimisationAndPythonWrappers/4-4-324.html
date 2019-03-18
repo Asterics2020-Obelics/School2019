@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Summary</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-3-306.html">The plotPerf function</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-5-336.html">Functions to check Python environnement and build python module</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="324" class="chapter">Chapter 4.4 : Summary</h2>
+
+		The full <b>runExample.cmake</b> file :
+		
+<table id="328" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">add_custom_target</span>(run_all )
+<span class="cmakeFunction">add_custom_target</span>(plot_all ALL)
+
+<span class="cmakeFunction">add_dependencies</span>(plot_all run_all)
+
+<span class="cmakeFunction">set</span>(OUTPUT_PERF_DIR <span class="dsString">&quot;${CMAKE_BINARY_DIR}/Examples/Performances&quot;</span>)
+
+<span class="dsCommentMono"># Run the given target
+</span><span class="dsCommentMono"># 	targetName : name of the target to be runned
+</span><span class="cmakeFunction">function</span>(runExample targetName)
+	<span class="cmakeFunction">add_custom_command</span>(OUTPUT <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt
+		COMMAND <span class="dsNumber">${CMAKE_CURRENT_BINARY_DIR}</span>/<span class="dsNumber">${targetName}</span> 2&gt; <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt
+		WORKING_DIRECTORY <span class="dsString">&quot;${CMAKE_CURRENT_BINARY_DIR}&quot;</span>
+		COMMENT <span class="dsString">&quot;Run ${targetName} program&quot;</span>
+		DEPENDS <span class="dsNumber">${targetName}</span>
+	)
+	<span class="cmakeFunction">add_custom_target</span>(<span class="dsString">&quot;run_${targetName}&quot;</span>  DEPENDS <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt)
+	<span class="cmakeFunction">add_dependencies</span>(<span class="dsString">&quot;run_${targetName}&quot;</span> <span class="dsNumber">${targetName}</span>)
+	<span class="cmakeFunction">add_dependencies</span>(run_all <span class="dsString">&quot;run_${targetName}&quot;</span>)
+<span class="cmakeFunction">endfunction</span>(runExample)
+
+<span class="dsCommentMono"># Run the given python script
+</span><span class="dsCommentMono"># 	scriptName : name of the script to be ran
+</span><span class="dsCommentMono"># 	installModuleDependency : dependency of the script
+</span><span class="cmakeFunction">function</span>(runPythonExample scriptName installModuleDependency)
+	<span class="cmakeFunction">get_filename_component</span>(targetName <span class="dsNumber">${scriptName}</span> NAME_WE)
+	
+	<span class="cmakeFunction">add_custom_command</span>(OUTPUT <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt
+		COMMAND python3 <span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/<span class="dsNumber">${scriptName}</span> 2&gt; <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt
+		WORKING_DIRECTORY <span class="dsString">&quot;${CMAKE_CURRENT_BINARY_DIR}&quot;</span>
+		COMMENT <span class="dsString">&quot;Run python3 ${scriptName} program with target ${targetName}&quot;</span>
+		DEPENDS <span class="dsNumber">${scriptName}</span>
+	)
+	<span class="cmakeFunction">add_custom_target</span>(<span class="dsString">&quot;run_${targetName}&quot;</span>  DEPENDS <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt)
+	<span class="cmakeFunction">add_dependencies</span>(<span class="dsString">&quot;run_${targetName}&quot;</span> <span class="dsNumber">${installModuleDependency}</span>)
+	<span class="cmakeFunction">add_dependencies</span>(run_all <span class="dsString">&quot;run_${targetName}&quot;</span>)
+<span class="cmakeFunction">endfunction</span>(runPythonExample)
+
+<span class="dsCommentMono"># Plot the performances of the different output
+</span><span class="dsCommentMono"># baseOutputPng : base name of the png output file
+</span><span class="dsCommentMono"># ARGN : list of target to be compared
+</span><span class="cmakeFunction">function</span>(plotPerf baseOutputPng)
+	<span class="cmakeFunction">set</span>(GNUPLOT_FILE <span class="dsString">&quot;${OUTPUT_PERF_DIR}/${baseOutputPng}.gnuplot&quot;</span>)
+	<span class="cmakeFunction">file</span>(WRITE <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set terminal png notransparent crop enhanced size 800,600 font \&quot;</span>arial,14\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set grid xtics ytics mytics\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set key bottom right\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set logscale y\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set xlabel \&quot;</span>nb elements\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set ylabel \&quot;</span>elapsed time per element [cy/el]\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set output \&quot;</span><span class="dsNumber">${baseOutputPng}</span>ElapsedTimeCyEl.png\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;plot &quot;</span>)
+	
+	<span class="cmakeFunction">set</span>(listDepend)
+	<span class="cmakeFunction">foreach</span>(inputTarget <span class="dsNumber">${ARGN}</span>)
+		<span class="cmakeFunction">string</span>(REPLACE <span class="dsString">&quot;_&quot;</span> <span class="dsString">&quot; &quot;</span> legendStr <span class="dsNumber">${inputTarget}</span>)
+		<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;\&quot;</span><span class="dsNumber">${inputTarget}</span>.txt\<span class="dsString">&quot; using 1:2 title \&quot;</span><span class="dsNumber">${legendStr}</span>\<span class="dsString">&quot; with lines  lw 2,&quot;</span>)
+		<span class="cmakeFunction">list</span>(APPEND listDepend <span class="dsString">&quot;${OUTPUT_PERF_DIR}/${inputTarget}.txt&quot;</span>)
+	<span class="cmakeFunction">endforeach</span>(inputTarget)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;\n&quot;</span>)
+	
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set xlabel \&quot;</span>nb elements\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set ylabel \&quot;</span>elapsed time [cy]\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set output \&quot;</span><span class="dsNumber">${baseOutputPng}</span>ElapsedTime.png\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;plot &quot;</span>)
+	
+	<span class="cmakeFunction">foreach</span>(inputTarget <span class="dsNumber">${ARGN}</span>)
+		<span class="cmakeFunction">string</span>(REPLACE <span class="dsString">&quot;_&quot;</span> <span class="dsString">&quot; &quot;</span> legendStr <span class="dsNumber">${inputTarget}</span>)
+		<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;\&quot;</span><span class="dsNumber">${inputTarget}</span>.txt\<span class="dsString">&quot; using 1:3 title \&quot;</span><span class="dsNumber">${legendStr}</span>\<span class="dsString">&quot; with lines  lw 2,&quot;</span>)
+	<span class="cmakeFunction">endforeach</span>(inputTarget)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;\n&quot;</span>)
+	
+	<span class="cmakeFunction">add_custom_command</span>(OUTPUT <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${baseOutputPng}</span>ElapsedTimeCyEl.png <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${baseOutputPng}</span>ElapsedTime.png
+		COMMAND gnuplot  <span class="dsNumber">${GNUPLOT_FILE}</span>
+		WORKING_DIRECTORY <span class="dsString">&quot;${OUTPUT_PERF_DIR}&quot;</span>
+		COMMENT <span class="dsString">&quot;Call gnuplot ${baseOutputPng}&quot;</span>
+		DEPENDS <span class="dsNumber">${listDepend}</span>
+	)
+	<span class="cmakeFunction">add_custom_target</span>(<span class="dsString">&quot;plot_${baseOutputPng}&quot;</span>  DEPENDS <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${baseOutputPng}</span>ElapsedTimeCyEl.png <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${baseOutputPng}</span>ElapsedTime.png)
+	
+	<span class="cmakeFunction">foreach</span>(inputTarget <span class="dsNumber">${ARGN}</span>)
+		<span class="cmakeFunction">add_dependencies</span>(<span class="dsString">&quot;plot_${baseOutputPng}&quot;</span> <span class="dsString">&quot;run_${inputTarget}&quot;</span>)
+	<span class="cmakeFunction">endforeach</span>(inputTarget)
+	
+	
+	<span class="cmakeFunction">add_dependencies</span>(plot_all <span class="dsString">&quot;plot_${baseOutputPng}&quot;</span>)
+<span class="cmakeFunction">endfunction</span>(plotPerf)
+
+<span class="dsCommentMono"># Plot the performances of the different output with probability on X axis and no more nb elements
+</span><span class="dsCommentMono"># baseOutputPng : base name of the png output file
+</span><span class="dsCommentMono"># ARGN : list of target to be compared
+</span><span class="cmakeFunction">function</span>(plotPerfProba baseOutputPng)
+	<span class="cmakeFunction">set</span>(GNUPLOT_FILE <span class="dsString">&quot;${OUTPUT_PERF_DIR}/${baseOutputPng}.gnuplot&quot;</span>)
+	<span class="cmakeFunction">file</span>(WRITE <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set terminal png notransparent crop enhanced size 800,600 font \&quot;</span>arial,14\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set grid xtics ytics mytics\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set key bottom right\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set logscale y\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set xlabel \&quot;</span>proba\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set ylabel \&quot;</span>elapsed time per element [cy/el]\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set output \&quot;</span><span class="dsNumber">${baseOutputPng}</span>ElapsedTimeCyEl.png\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;plot &quot;</span>)
+	
+	<span class="cmakeFunction">set</span>(listDepend)
+	<span class="cmakeFunction">foreach</span>(inputTarget <span class="dsNumber">${ARGN}</span>)
+		<span class="cmakeFunction">string</span>(REPLACE <span class="dsString">&quot;_&quot;</span> <span class="dsString">&quot; &quot;</span> legendStr <span class="dsNumber">${inputTarget}</span>)
+		<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;\&quot;</span><span class="dsNumber">${inputTarget}</span>.txt\<span class="dsString">&quot; using 1:2 title \&quot;</span><span class="dsNumber">${legendStr}</span>\<span class="dsString">&quot; with lines  lw 2,&quot;</span>)
+		<span class="cmakeFunction">list</span>(APPEND listDepend <span class="dsString">&quot;${OUTPUT_PERF_DIR}/${inputTarget}.txt&quot;</span>)
+	<span class="cmakeFunction">endforeach</span>(inputTarget)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;\n&quot;</span>)
+	
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set xlabel \&quot;</span>proba\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set ylabel \&quot;</span>elapsed time [cy]\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;set output \&quot;</span><span class="dsNumber">${baseOutputPng}</span>ElapsedTime.png\<span class="dsString">&quot;\n&quot;</span>)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;plot &quot;</span>)
+	
+	<span class="cmakeFunction">foreach</span>(inputTarget <span class="dsNumber">${ARGN}</span>)
+		<span class="cmakeFunction">string</span>(REPLACE <span class="dsString">&quot;_&quot;</span> <span class="dsString">&quot; &quot;</span> legendStr <span class="dsNumber">${inputTarget}</span>)
+		<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;\&quot;</span><span class="dsNumber">${inputTarget}</span>.txt\<span class="dsString">&quot; using 1:3 title \&quot;</span><span class="dsNumber">${legendStr}</span>\<span class="dsString">&quot; with lines  lw 2,&quot;</span>)
+	<span class="cmakeFunction">endforeach</span>(inputTarget)
+	<span class="cmakeFunction">file</span>(APPEND <span class="dsNumber">${GNUPLOT_FILE}</span> <span class="dsString">&quot;\n&quot;</span>)
+	
+	<span class="cmakeFunction">add_custom_command</span>(OUTPUT <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${baseOutputPng}</span>ElapsedTimeCyEl.png <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${baseOutputPng}</span>ElapsedTime.png
+		COMMAND gnuplot  <span class="dsNumber">${GNUPLOT_FILE}</span>
+		WORKING_DIRECTORY <span class="dsString">&quot;${OUTPUT_PERF_DIR}&quot;</span>
+		COMMENT <span class="dsString">&quot;Call gnuplot ${baseOutputPng}&quot;</span>
+		DEPENDS <span class="dsNumber">${listDepend}</span>
+	)
+	<span class="cmakeFunction">add_custom_target</span>(<span class="dsString">&quot;plot_${baseOutputPng}&quot;</span>  DEPENDS <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${baseOutputPng}</span>ElapsedTimeCyEl.png <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${baseOutputPng}</span>ElapsedTime.png)
+	<span class="cmakeFunction">foreach</span>(inputTarget <span class="dsNumber">${ARGN}</span>)
+		<span class="cmakeFunction">add_dependencies</span>(<span class="dsString">&quot;plot_${baseOutputPng}&quot;</span> <span class="dsString">&quot;run_${inputTarget}&quot;</span>)
+	<span class="cmakeFunction">endforeach</span>(inputTarget)
+	<span class="cmakeFunction">add_dependencies</span>(plot_all <span class="dsString">&quot;plot_${baseOutputPng}&quot;</span>)
+<span class="cmakeFunction">endfunction</span>(plotPerfProba)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Now, we have to update the <b>CMakeLists.txt</b> in the <b>ExampleOptimisation</b> directory :
+
+<table id="334" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HPC_ASTERICS)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">add_subdirectory</span>(Performances)
+<span class="cmakeFunction">include</span>(runExample.cmake)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-3-306.html">The plotPerf function</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-5-336.html">Functions to check Python environnement and build python module</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-5-2-4-2650.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-5-2-2630.html">Interleaving 4 times</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-5-2-6-2662.html">The performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="2656" class="subsection">8.5.2.5 : The compilation</h4>
+
+
+Let's compile :
+<table id="2658" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make
+-- Configuring done
+-- Generating done
+-- Build files have been written to: ExampleOptimisation/build
+[  2%] Built target hadamard_product_O2
+[  4%] Built target hadamard_product_O1
+[  6%] Built target hadamard_product_vectorize
+[ 11%] Built target hadamard_product_O0
+[ 15%] Built target hadamard_product_O3
+[ 18%] Built target hadamard_product_Ofast
+[ 20%] Built target hadamard_product_intrinsics
+[ 22%] Built target asterics_hpc
+[ 25%] Built target saxpy_O2
+[ 27%] Built target saxpy_O0
+[ 31%] Built target saxpy_O3
+[ 34%] Built target saxpy_O1
+[ 36%] Built target saxpy_Ofast
+[ 40%] Built target saxpy_vectorize
+[ 43%] Built target saxpy_intrinsics
+[ 47%] Built target reduction_real_intrinsics_O3
+[ 52%] Built target reduction_real_intrinsics_interleave2_O3
+[ 56%] Built target reduction_real_vectorize_Ofast
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target reduction_real_intrinsics_interleave4_O3
+</span>[ 56%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_intrinsics_interleave4_O3.dir/reduction_intrinsics_interleave4.cpp.o
+</span>[ 59%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_intrinsics_interleave4_O3.dir/main_intrinsics_interleave4.cpp.o
+</span>[ 61%] <span class="makeTerminalLinking">Linking CXX executable reduction_real_intrinsics_interleave4_O3
+</span>[ 61%] Built target reduction_real_intrinsics_interleave4_O3
+[ 65%] Built target reduction_real_vectorize_O3
+[ 70%] Built target reduction_real_O0
+[ 72%] Built target reduction_O1
+[ 77%] Built target reduction_O0
+[ 81%] Built target reduction_real_Ofast
+[ 84%] Built target reduction_O3
+[ 88%] Built target reduction_real_O3
+[ 93%] Built target reduction_real_O1
+[ 97%] Built target reduction_real_O2
+[100%] Built target reduction_O2</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Let's get the performances :
+<table id="2660" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make plot_all
+[  1%] Built target asterics_hpc
+[  3%] Built target reduction_real_O3
+[  6%] Built target reduction_real_vectorize_Ofast
+[  8%] Built target reduction_real_vectorize_O3
+[ 10%] Built target reduction_real_Ofast
+[ 14%] Built target plot_reductionVectorize
+[ 15%] Built target hadamard_product_intrinsics
+[ 17%] Built target hadamard_product_vectorize
+[ 19%] Built target hadamard_product_O3
+[ 23%] Built target plot_hadamardIntrinsics
+[ 24%] Built target hadamard_product_Ofast
+[ 25%] Built target hadamard_product_O2
+[ 26%] Built target hadamard_product_O1
+[ 29%] Built target hadamard_product_O0
+[ 34%] Built target plot_hadamardBase
+[ 36%] Built target plot_hadamardVectorize
+[ 37%] Built target saxpy_intrinsics
+[ 40%] Built target saxpy_O3
+[ 42%] Built target saxpy_vectorize
+[ 45%] Built target plot_saxpyIntrinsics
+[ 47%] Built target plot_saxpyVectorize
+[ 48%] Built target saxpy_Ofast
+[ 50%] Built target saxpy_O2
+[ 51%] Built target saxpy_O0
+[ 52%] Built target saxpy_O1
+[ 57%] Built target plot_saxpyBase
+[ 59%] Built target reduction_real_intrinsics_O3
+[ 64%] Built target plot_reductionIntrinsics
+[ 67%] Built target reduction_real_intrinsics_interleave2_O3
+[ 69%] Built target reduction_real_intrinsics_interleave4_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_reductionIntrinsicsInterleave4
+</span>[ 70%] Run reduction_real_intrinsics_interleave4_O3 program
+Reduction intrinsics interleave 4
+evaluateReduction : nbElement = 1024, cyclePerElement = 0.108398 cy/el, elapsedTime = 111 cy
+evaluateReduction : nbElement = 2048, cyclePerElement = 0.100586 cy/el, elapsedTime = 206 cy
+evaluateReduction : nbElement = 3072, cyclePerElement = 0.100586 cy/el, elapsedTime = 309 cy
+evaluateReduction : nbElement = 5024, cyclePerElement = 0.0971338 cy/el, elapsedTime = 488 cy
+evaluateReduction : nbElement = 10048, cyclePerElement = 0.108579 cy/el, elapsedTime = 1091 cy
+[ 71%] Call gnuplot reductionIntrinsicsInterleave4
+[ 74%] Built target plot_reductionIntrinsicsInterleave4
+[ 78%] Built target plot_reductionIntrinsicsInterleave2
+[ 80%] Built target reduction_real_O2
+[ 82%] Built target reduction_real_O0
+[ 85%] Built target reduction_real_O1
+[ 90%] Built target plot_reductionReal
+[ 91%] Built target reduction_O2
+[ 92%] Built target reduction_O1
+[ 95%] Built target reduction_O0
+[ 96%] Built target reduction_O3
+[100%] Built target plot_reductionBase
+[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+					</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-5-2-4-2650.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-5-2-2630.html">Interleaving 4 times</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-5-2-6-2662.html">The performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

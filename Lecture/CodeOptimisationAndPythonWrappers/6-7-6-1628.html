@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The CMakeLists.txt file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-7-5-4-1587.html">What hapened if I use python list instead of numpy array for naive implementation ?</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-7-1287.html">How to create a hadamard python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-7-7-1659.html">Performances results</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="1628" class="section">6.7.6 : The CMakeLists.txt file</h3>
+
+
+<p id="1630" class="paragraphStyle">
+Now, let's write the <b>CMakeLists.txt</b> file :
+</p>
+
+First we manage the project name and the minimal <b>cmake</b> version for the file :
+<table id="1638" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HadamardWrapper)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Then, we get the files used to build the module :
+<table id="1640" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">file</span>(<span class="cmakeKWord">GLOB</span> moduleSrc <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.cpp&quot;</span> <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.py&quot;</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+We call the <b>cmake</b> function to create a module :
+<table id="1644" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+createPythonModule(install_hadamard_module setup.py <span class="dsNumber">${moduleSrc}</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Now, we call the <b>cmake</b> function to run the python performances tests
+<table id="1648" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+runPythonExample(hadamardIntrinsicsPitchPython.py install_hadamard_module)
+runPythonExample(hadamardBasePython.py install_asterics_hpc_module)
+runPythonExample(hadamardNumpyPython.py install_asterics_hpc_module)
+runPythonExample(hadamardListPython.py install_asterics_hpc_module)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Finally, we make some plots to compare the Python performances with the C++ ones :
+<table id="1650" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+plotPerf(<span class="dsString">&quot;hadamardBasePy&quot;</span> hadamard_product_O3 hadamard_product_vectorize hadamardBasePython hadamardNumpyPython)
+
+plotPerf(<span class="dsString">&quot;hadamardSummaryPython&quot;</span> hadamard_product_O3 hadamard_product_vectorize hadamard_product_intrinsics hadamardIntrinsicsPitchPython)
+
+plotPerf(<span class="dsString">&quot;hadamardListPy&quot;</span> hadamard_product_O3 hadamardBasePython hadamardNumpyPython hadamardListPython)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>CMakeLists.txt</b> file :
+
+<table id="1655" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HadamardWrapper)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">file</span>(<span class="cmakeKWord">GLOB</span> moduleSrc <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.cpp&quot;</span> <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.py&quot;</span>)
+
+createPythonModule(install_hadamard_module setup.py <span class="dsNumber">${moduleSrc}</span>)
+
+runPythonExample(hadamardIntrinsicsPitchPython.py install_hadamard_module)
+runPythonExample(hadamardBasePython.py install_asterics_hpc_module)
+runPythonExample(hadamardNumpyPython.py install_asterics_hpc_module)
+runPythonExample(hadamardListPython.py install_asterics_hpc_module)
+
+plotPerf(<span class="dsString">&quot;hadamardBasePy&quot;</span> hadamard_product_O3 hadamard_product_vectorize hadamardBasePython hadamardNumpyPython)
+
+plotPerf(<span class="dsString">&quot;hadamardSummaryPython&quot;</span> hadamard_product_O3 hadamard_product_vectorize hadamard_product_intrinsics hadamardIntrinsicsPitchPython)
+
+plotPerf(<span class="dsString">&quot;hadamardListPy&quot;</span> hadamard_product_O3 hadamardBasePython hadamardNumpyPython hadamardListPython)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="1657" href="ressource/build/Correction/hadamard/python/CMakeLists.txt">here</a>.
+		
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-7-5-4-1587.html">What hapened if I use python list instead of numpy array for naive implementation ?</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-7-1287.html">How to create a hadamard python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-7-7-1659.html">Performances results</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

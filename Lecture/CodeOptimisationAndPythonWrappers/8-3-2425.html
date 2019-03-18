@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The vectorization of reduction</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2-5-6-2410.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2256.html">Optimisation of a reduction</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-3-1-2442.html">The reduction_vectorize.h</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="2425" class="chapter">Chapter 8.3 : The vectorization of reduction</h2>
+		<ul class="sommaire">
+			<li><a href="8-3-1-2442.html">8.3.1) The reduction_vectorize.h</a></li>
+			<li><a href="8-3-2-2448.html">8.3.2) The reduction_vectorize.cpp</a></li>
+			<li><a href="8-3-3-2454.html">8.3.3) The main_vectorize.cpp</a></li>
+			<li><a href="8-3-4-2460.html">8.3.4) The CMakeLists.txt</a></li>
+		</ul>
+
+
+We, again, have to inform the compiler :
+		<ul>
+
+			<li> The tables (or pointers) are aligned with <b>__builtin_assume_aligned</b>
+	</li>
+		<li> The tables (or pointers) do not overhead eachother with <b> __restrict__</b>
+	</li>
+		<li> Enable the vectorization with <b>-O3 -ftree-vectorize -march=native -mtune=native -mavx2</b>
+</li>
+		</ul>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2-5-6-2410.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2256.html">Optimisation of a reduction</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-3-1-2442.html">The reduction_vectorize.h</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The C++ module file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-7-2-1312.html">The wrapper function</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-7-1287.html">How to create a hadamard python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-7-4-1416.html">The setup.py file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="1360" class="section">6.7.3 : The C++ module file</h3>
+
+		
+<p id="1362" class="paragraphStyle">
+Now, let's write the <b>hadamardpython.cpp</b> file :
+</p>
+
+
+First, we have to activate the <b>numpy</b> we disabled in the previous files.
+Otherwise, you will get a segmentation fault out of knowhere.
+
+<table id="1370" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then, we include all the previous wrapper and the python stuff, of course.
+
+<table id="1372" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;iostream&gt;
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;hadamardWrapper.h&quot;
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+It is always good to have a documentation of your function. The folowing will appear when you call a function with '?' or shift-tab in <b>jupyter-notebook</b> :
+
+<table id="1376" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> hadamardWrapper_docstring = <span class="dsString">&quot;Compute a Hadamard product with aligned table of float32\n\
+Parameters :\n\
+	tabRes : table of the results (float32 aligned)\n\
+	tabX : table of value (float32 aligned)\n\
+	tabY : table of value (float32 aligned)\n\
+Return :\n\
+	Result of the Hadamard as numpy array (tabRes)&quot;</span>;</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+We define the callable method of our wrapper :
+
+<table id="1378" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">static</span> <span class="pythonApiFunction">PyMethodDef</span> _hadamardpython_methods[] = {
+	{<span class="dsString">&quot;hadamard&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)hadamardWrapper, <span class="pythonApiMacro">METH_VARARGS</span>, hadamardWrapper_docstring.<span class="cppstandardF">c_str</span>()},
+
+	{<span class="pythonApiMacro">NULL</span>, <span class="pythonApiMacro">NULL</span>}
+};</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<pre id="1380" class="adviseStyle">
+	Notice that you can expose the functions you want, not all the functions you developed.
+</pre>
+
+
+Now, we have to define the <b>python</b> module itself :
+
+<table id="1385" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">static</span> <span class="pythonApiFunction">PyModuleDef</span> _hadamardpython_module = {
+	<span class="pythonApiMacro">PyModuleDef_HEAD_INIT</span>,
+	<span class="dsString">&quot;hadamardpython&quot;</span>,
+	<span class="dsString">&quot;&quot;</span>,
+	-<span class="dsNumber">1</span>,
+	_hadamardpython_methods,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>
+};</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Now we define the function which will be called on the <b>import</b> of our module.
+
+<pre id="1389" class="warningStyle">
+	Notice you must call this function <b>PyInit_</b>NameOfYouModule where <b>NameOfYouModule</b> is the name of <b>THIS</b> file.
+</pre>
+
+
+We create the module, which is a <b>PyObject</b>.
+
+<pre id="1400" class="warningStyle">
+	Do not forget to call <b>import_array</b> otherwise you will get a warning on the best cases and a segmentation fault on your module <b>import</b>.
+</pre>
+
+
+<table id="1407" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMono">///Create the python module hadamardpython
+</span><span class="dsDocMulti">/**	@return python module hadamardpython
+*/</span>
+<span class="pythonApiMacro">PyMODINIT_FUNC</span> PyInit_hadamardpython(<span class="dsType">void</span>){
+	<span class="cppqtMacro">PyObject</span> *m;
+	<span class="pythonApiFunction">import_array</span>();
+	
+	m = <span class="pythonApiFunction">PyModule_Create</span>(&amp;_hadamardpython_module);
+	<span class="dsKeyword">if</span>(m == <span class="pythonApiMacro">NULL</span>){
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> m;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>hadamardpython.cpp</b> file :
+
+<table id="1412" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#include &lt;iostream&gt;
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;hadamardWrapper.h&quot;
+</span>
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> hadamardWrapper_docstring = <span class="dsString">&quot;Compute a Hadamard product with aligned table of float32\n\
+Parameters :\n\
+	tabRes : table of the results (float32 aligned)\n\
+	tabX : table of value (float32 aligned)\n\
+	tabY : table of value (float32 aligned)\n\
+Return :\n\
+	Result of the Hadamard as numpy array (tabRes)&quot;</span>;
+
+<span class="dsType">static</span> <span class="pythonApiFunction">PyMethodDef</span> _hadamardpython_methods[] = {
+	{<span class="dsString">&quot;hadamard&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)hadamardWrapper, <span class="pythonApiMacro">METH_VARARGS</span>, hadamardWrapper_docstring.<span class="cppstandardF">c_str</span>()},
+
+	{<span class="pythonApiMacro">NULL</span>, <span class="pythonApiMacro">NULL</span>}
+};
+
+<span class="dsType">static</span> <span class="pythonApiFunction">PyModuleDef</span> _hadamardpython_module = {
+	<span class="pythonApiMacro">PyModuleDef_HEAD_INIT</span>,
+	<span class="dsString">&quot;hadamardpython&quot;</span>,
+	<span class="dsString">&quot;&quot;</span>,
+	-<span class="dsNumber">1</span>,
+	_hadamardpython_methods,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>
+};
+
+<span class="dsDocMono">///Create the python module hadamardpython
+</span><span class="dsDocMulti">/**	@return python module hadamardpython
+*/</span>
+<span class="pythonApiMacro">PyMODINIT_FUNC</span> PyInit_hadamardpython(<span class="dsType">void</span>){
+	<span class="cppqtMacro">PyObject</span> *m;
+	<span class="pythonApiFunction">import_array</span>();
+	
+	m = <span class="pythonApiFunction">PyModule_Create</span>(&amp;_hadamardpython_module);
+	<span class="dsKeyword">if</span>(m == <span class="pythonApiMacro">NULL</span>){
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> m;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="1414" href="ressource/build/Correction/hadamard/python/hadamardpython.cpp">here</a>.
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-7-2-1312.html">The wrapper function</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-7-1287.html">How to create a hadamard python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-7-4-1416.html">The setup.py file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

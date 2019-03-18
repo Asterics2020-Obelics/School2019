@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The CMakeLists.txt</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-3-462.html">The main header (asterics_hpc.h)</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-382.html">Creation of a HPC/Timer library</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-5-474.html">The compilation</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="468" class="chapter">Chapter 5.4 : The CMakeLists.txt</h2>
+
+The <b>CMakeLists.txt</b> is :
+<table id="472" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(AstericsHPC)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">add_library</span>(asterics_hpc <span class="cmakeKWord">SHARED</span> asterics_alloc.cpp timer.cpp)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-3-462.html">The main header (asterics_hpc.h)</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-382.html">Creation of a HPC/Timer library</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-5-474.html">The compilation</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

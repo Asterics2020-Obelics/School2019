@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-4-4-3740.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-4-3720.html">Vectorization</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-4-6-3752.html">The performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="3746" class="section">10.4.5 : The compilation</h3>
+
+Let's compile :
+<table id="3748" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make
+-- Configuring done
+-- Generating done
+-- Build files have been written to: ExampleOptimisation/build
+[  2%] Built target hadamard_product_O2
+[  4%] Built target hadamard_product_O1
+[  6%] Built target hadamard_product_vectorize
+[  6%] Built target hadamard_product_O0
+[  8%] Built target hadamard_product_O3
+[  8%] Built target hadamard_product_Ofast
+[ 10%] Built target hadamard_product_intrinsics
+[ 12%] Built target asterics_hpc
+[ 12%] Built target saxpy_O2
+[ 14%] Built target saxpy_O0
+[ 17%] Built target saxpy_O3
+[ 19%] Built target saxpy_O1
+[ 21%] Built target saxpy_Ofast
+[ 21%] Built target saxpy_vectorize
+[ 23%] Built target saxpy_intrinsics
+[ 25%] Built target reduction_real_O2
+[ 29%] Built target reduction_real_intrinsics_interleave8_O3
+[ 31%] Built target reduction_real_O1
+[ 34%] Built target reduction_real_Ofast
+[ 36%] Built target reduction_O0
+[ 38%] Built target reduction_O1
+[ 40%] Built target reduction_O2
+[ 40%] Built target reduction_O3
+[ 42%] Built target reduction_real_intrinsics_interleave4_O3
+[ 44%] Built target reduction_real_vectorize_Ofast
+[ 46%] Built target reduction_real_intrinsics_interleave2_O3
+[ 48%] Built target reduction_real_intrinsics_O3
+[ 51%] Built target reduction_real_O3
+[ 55%] Built target reduction_real_O0
+[ 57%] Built target reduction_real_vectorize_O3
+[ 59%] Built target barycentre_intrinsics
+[ 61%] Built target barycentre_base_O2
+[ 63%] Built target barycentre_base_O1
+[ 65%] Built target barycentre_base_O0
+[ 70%] Built target barycentre_vectorizeSplit_O3
+[ 72%] Built target barycentre_base_Ofast
+[ 74%] Built target barycentre_base_O3
+[ 76%] Built target barycentre_vectorize_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target sgemm_vectorize_Ofast
+</span>[ 78%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_vectorize_Ofast.dir/sgemm_vectorize.cpp.o
+</span>[ 78%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_vectorize_Ofast.dir/main_sgemm_vectorize.cpp.o
+</span>[ 80%] <span class="makeTerminalLinking">Linking CXX executable sgemm_vectorize_Ofast
+</span>[ 80%] Built target sgemm_vectorize_Ofast
+[ 85%] Built target sgemm_base_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target sgemm_vectorize_O3
+</span>[ 87%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_vectorize_O3.dir/sgemm_vectorize.cpp.o
+</span>[ 87%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_vectorize_O3.dir/main_sgemm_vectorize.cpp.o
+</span>[ 87%] <span class="makeTerminalLinking">Linking CXX executable sgemm_vectorize_O3
+</span>[ 87%] Built target sgemm_vectorize_O3
+[ 89%] Built target sgemm_base_Ofast
+[ 91%] Built target sgemm_base_O3
+[ 93%] Built target sgemm_base_O0
+[ 95%] Built target sgemm_swap_Ofast
+[ 97%] Built target sgemm_swap_O3
+[100%] Built target sgemm_base_O2</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Let's get the performances :
+<table id="3750" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make plot_all
+[  1%] Built target asterics_hpc
+[  2%] Built target sgemm_swap_O3
+[  3%] Built target sgemm_base_Ofast
+[  4%] Built target sgemm_base_O3
+[  6%] Built target sgemm_swap_Ofast
+[  8%] Built target plot_sgemmSwap
+[  9%] Built target hadamard_product_intrinsics
+[ 10%] Built target hadamard_product_vectorize
+[ 12%] Built target hadamard_product_O3
+[ 13%] Built target plot_hadamardIntrinsics
+[ 13%] Built target hadamard_product_Ofast
+[ 14%] Built target hadamard_product_O2
+[ 15%] Built target hadamard_product_O1
+[ 15%] Built target hadamard_product_O0
+[ 18%] Built target plot_hadamardBase
+[ 19%] Built target plot_hadamardVectorize
+[ 20%] Built target saxpy_intrinsics
+[ 21%] Built target saxpy_O3
+[ 21%] Built target saxpy_vectorize
+[ 22%] Built target plot_saxpyIntrinsics
+[ 24%] Built target plot_saxpyVectorize
+[ 25%] Built target saxpy_Ofast
+[ 25%] Built target saxpy_O2
+[ 26%] Built target saxpy_O0
+[ 27%] Built target saxpy_O1
+[ 31%] Built target plot_saxpyBase
+[ 32%] Built target reduction_real_intrinsics_O3
+[ 34%] Built target reduction_real_intrinsics_interleave8_O3
+[ 36%] Built target reduction_real_Ofast
+[ 37%] Built target reduction_real_intrinsics_interleave4_O3
+[ 38%] Built target reduction_real_vectorize_Ofast
+[ 39%] Built target reduction_real_intrinsics_interleave2_O3
+[ 42%] Built target plot_reductionIntrinsicsInterleave8
+[ 43%] Built target reduction_real_vectorize_O3
+[ 44%] Built target reduction_real_O3
+[ 45%] Built target plot_reductionVectorize
+[ 45%] Built target reduction_O3
+[ 46%] Built target reduction_O0
+[ 48%] Built target reduction_O1
+[ 49%] Built target reduction_O2
+[ 51%] Built target plot_reductionBase
+[ 54%] Built target reduction_real_O0
+[ 55%] Built target reduction_real_O2
+[ 56%] Built target reduction_real_O1
+[ 60%] Built target plot_reductionReal
+[ 61%] Built target plot_reductionIntrinsicsInterleave2
+[ 65%] Built target plot_reductionIntrinsicsInterleave4
+[ 68%] Built target plot_reductionIntrinsics
+[ 69%] Built target barycentre_vectorize_O3
+[ 71%] Built target barycentre_intrinsics
+[ 73%] Built target barycentre_vectorizeSplit_O3
+[ 74%] Built target barycentre_base_O3
+[ 77%] Built target plot_barycentreIntrinsics
+[ 78%] Built target barycentre_base_O2
+[ 79%] Built target barycentre_base_O1
+[ 80%] Built target barycentre_base_O0
+[ 81%] Built target barycentre_base_Ofast
+[ 84%] Built target plot_barycentreBase
+[ 86%] Built target plot_barycentreVectorize
+[ 87%] Built target sgemm_base_O2
+[ 90%] Built target sgemm_base_O1
+[ 91%] Built target sgemm_base_O0
+[ 95%] Built target plot_sgemmBase
+[ 97%] Built target sgemm_vectorize_Ofast
+[ 98%] Built target sgemm_vectorize_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_sgemmVectorize
+</span>[ 98%] Run sgemm_vectorize_Ofast program
+SGEMM Vectorize
+evaluateSgemm : nbElement = 10, cyclePerElement = 15.69 cy/el, elapsedTime = 1569 cy
+evaluateSgemm : nbElement = 20, cyclePerElement = 14.745 cy/el, elapsedTime = 5898 cy
+evaluateSgemm : nbElement = 30, cyclePerElement = 19.4833 cy/el, elapsedTime = 17535 cy
+evaluateSgemm : nbElement = 50, cyclePerElement = 24.2376 cy/el, elapsedTime = 60594 cy
+evaluateSgemm : nbElement = 80, cyclePerElement = 22.5441 cy/el, elapsedTime = 144282 cy
+evaluateSgemm : nbElement = 100, cyclePerElement = 33.9227 cy/el, elapsedTime = 339227 cy
+[ 98%] Run sgemm_vectorize_O3 program
+SGEMM Vectorize
+evaluateSgemm : nbElement = 10, cyclePerElement = 15.36 cy/el, elapsedTime = 1536 cy
+evaluateSgemm : nbElement = 20, cyclePerElement = 14.5525 cy/el, elapsedTime = 5821 cy
+evaluateSgemm : nbElement = 30, cyclePerElement = 18.9722 cy/el, elapsedTime = 17075 cy
+evaluateSgemm : nbElement = 50, cyclePerElement = 23.6192 cy/el, elapsedTime = 59048 cy
+evaluateSgemm : nbElement = 80, cyclePerElement = 22.8923 cy/el, elapsedTime = 146511 cy
+evaluateSgemm : nbElement = 100, cyclePerElement = 34.0368 cy/el, elapsedTime = 340368 cy
+[ 98%] Call gnuplot sgemmVectorize
+[100%] Built target plot_sgemmVectorize
+[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-4-4-3740.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-4-3720.html">Vectorization</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-4-6-3752.html">The performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The C++ module file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="9-5-1-3303.html">The wrapper function</a></td>
+			<td style="text-align: center;">Parent<br /><a href="9-5-3283.html">How to create a barycentre python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="9-5-3-3405.html">The setup.py file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="3349" class="section">9.5.2 : The C++ module file</h3>
+
+		
+<p id="3351" class="paragraphStyle">
+Now, let's write the <b>barycentrepython.cpp</b> file :
+</p>
+
+
+First, we have to activate the <b>numpy</b> we disabled in the previous files.
+Otherwise, you will get a segmentation fault out of knowhere.
+
+<table id="3359" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then, we include all the previous wrapper and the python stuff, of course.
+
+<table id="3361" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;iostream&gt;
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;barycentreWrapper.h&quot;
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+It is always good to have a documentation of your function. The folowing will appear when you call a function with '?' or shift-tab in <b>jupyter-notebook</b> :
+
+<table id="3365" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> barycentreWrapper_docstring = <span class="dsString">&quot;Compute a 2d barycentre with aligned table of float32\n\
+Parameters :\n\
+	tabX : table of value (float32 aligned)\n\
+	tabY : table of value (float32 aligned)\n\
+	tabA : table of value (float32 aligned)\n\
+Return :\n\
+	barycentre (x, y)&quot;</span>;</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+We define the callable method of our wrapper :
+
+<table id="3367" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">static</span> <span class="pythonApiFunction">PyMethodDef</span> _barycentre_methods[] = {
+	{<span class="dsString">&quot;barycentre&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)barycentreWrapper, <span class="pythonApiMacro">METH_VARARGS</span>, barycentreWrapper_docstring.<span class="cppstandardF">c_str</span>()},
+
+	{<span class="pythonApiMacro">NULL</span>, <span class="pythonApiMacro">NULL</span>}
+};</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<pre id="3369" class="adviseStyle">
+	Notice that you can expose the functions you want, not all the functions you developed.
+</pre>
+
+
+Now, we have to define the <b>python</b> module itself :
+
+<table id="3374" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">static</span> <span class="pythonApiFunction">PyModuleDef</span> _barycentre_module = {
+	<span class="pythonApiMacro">PyModuleDef_HEAD_INIT</span>,
+	<span class="dsString">&quot;barycentrepython&quot;</span>,
+	<span class="dsString">&quot;&quot;</span>,
+	-<span class="dsNumber">1</span>,
+	_barycentre_methods,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>
+};</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Now we define the function which will be called on the <b>import</b> of our module.
+
+<pre id="3378" class="warningStyle">
+	Notice you must call this function <b>PyInit_</b>NameOfYouModule where <b>NameOfYouModule</b> is the name of <b>THIS</b> file.
+</pre>
+
+
+We create the module, which is a <b>PyObject</b>.
+
+<pre id="3389" class="warningStyle">
+	Do not forget to call <b>import_array</b> otherwise you will get a warning on the best cases and a segmentation fault on your module <b>import</b>.
+</pre>
+
+
+<table id="3396" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMono">///Create the python module barycentre
+</span><span class="dsDocMulti">/**	@return python module barycentre
+*/</span>
+<span class="pythonApiMacro">PyMODINIT_FUNC</span> PyInit_barycentrepython(<span class="dsType">void</span>){
+	<span class="cppqtMacro">PyObject</span> *m;
+	<span class="pythonApiFunction">import_array</span>();
+	
+	m = <span class="pythonApiFunction">PyModule_Create</span>(&amp;_barycentre_module);
+	<span class="dsKeyword">if</span>(m == <span class="pythonApiMacro">NULL</span>){
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> m;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>barycentrepython.cpp</b> file :
+
+<table id="3401" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#include &lt;iostream&gt;
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;barycentreWrapper.h&quot;
+</span>
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> barycentreWrapper_docstring = <span class="dsString">&quot;Compute a 2d barycentre with aligned table of float32\n\
+Parameters :\n\
+	tabX : table of value (float32 aligned)\n\
+	tabY : table of value (float32 aligned)\n\
+	tabA : table of value (float32 aligned)\n\
+Return :\n\
+	barycentre (x, y)&quot;</span>;
+
+<span class="dsType">static</span> <span class="pythonApiFunction">PyMethodDef</span> _barycentre_methods[] = {
+	{<span class="dsString">&quot;barycentre&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)barycentreWrapper, <span class="pythonApiMacro">METH_VARARGS</span>, barycentreWrapper_docstring.<span class="cppstandardF">c_str</span>()},
+
+	{<span class="pythonApiMacro">NULL</span>, <span class="pythonApiMacro">NULL</span>}
+};
+
+<span class="dsType">static</span> <span class="pythonApiFunction">PyModuleDef</span> _barycentre_module = {
+	<span class="pythonApiMacro">PyModuleDef_HEAD_INIT</span>,
+	<span class="dsString">&quot;barycentrepython&quot;</span>,
+	<span class="dsString">&quot;&quot;</span>,
+	-<span class="dsNumber">1</span>,
+	_barycentre_methods,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>
+};
+
+<span class="dsDocMono">///Create the python module barycentre
+</span><span class="dsDocMulti">/**	@return python module barycentre
+*/</span>
+<span class="pythonApiMacro">PyMODINIT_FUNC</span> PyInit_barycentrepython(<span class="dsType">void</span>){
+	<span class="cppqtMacro">PyObject</span> *m;
+	<span class="pythonApiFunction">import_array</span>();
+	
+	m = <span class="pythonApiFunction">PyModule_Create</span>(&amp;_barycentre_module);
+	<span class="dsKeyword">if</span>(m == <span class="pythonApiMacro">NULL</span>){
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> m;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="3403" href="ressource/build/Correction/barycentre/wrapper/barycentrepython.cpp">here</a>.
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="9-5-1-3303.html">The wrapper function</a></td>
+			<td style="text-align: center;">Parent<br /><a href="9-5-3283.html">How to create a barycentre python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="9-5-3-3405.html">The setup.py file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

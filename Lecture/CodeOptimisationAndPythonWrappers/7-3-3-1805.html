@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-3-2-1799.html">The CMakeLists.txt</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-3-1776.html">The vectorization of Saxpy</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-3-4-1809.html">The performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="1805" class="section">7.3.3 : The compilation</h3>
+
+		
+Let's compile :
+<table id="1807" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make plot_all
+-- Configuring done
+-- Generating done
+-- Build files have been written to: ExampleOptimisation/build
+[  5%] Built target asterics_hpc
+[  9%] Built target saxpy_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target saxpy_vectorize
+</span>[ 11%] <span class="makeTerminalBuildingObject">Building CXX object 3-Saxpy/CMakeFiles/saxpy_vectorize.dir/main_vectorize.cpp.o
+</span>[ 13%] <span class="makeTerminalLinking">Linking CXX executable saxpy_vectorize
+</span>[ 13%] Built target saxpy_vectorize
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_saxpyVectorize
+</span>[ 15%] Run saxpy_vectorize program
+Saxpy vectorized
+evaluateSaxpy : nbElement = 1000, cyclePerElement = 0.984 cy/el, elapsedTime = 984 cy
+evaluateSaxpy : nbElement = 2000, cyclePerElement = 0.9475 cy/el, elapsedTime = 1895 cy
+evaluateSaxpy : nbElement = 3000, cyclePerElement = 1.39867 cy/el, elapsedTime = 4196 cy
+evaluateSaxpy : nbElement = 5000, cyclePerElement = 1.62 cy/el, elapsedTime = 8100 cy
+evaluateSaxpy : nbElement = 10000, cyclePerElement = 1.5049 cy/el, elapsedTime = 15049 cy
+[ 17%] Call gnuplot saxpyVectorize
+[ 19%] Built target plot_saxpyVectorize
+[ 23%] Built target hadamard_product_intrinsics
+[ 27%] Built target hadamard_product_vectorize
+[ 31%] Built target hadamard_product_O3
+[ 39%] Built target plot_hadamardIntrinsics
+[ 43%] Built target hadamard_product_Ofast
+[ 47%] Built target hadamard_product_O2
+[ 50%] Built target hadamard_product_O1
+[ 54%] Built target hadamard_product_O0
+[ 66%] Built target plot_hadamardBase
+[ 72%] Built target plot_hadamardVectorize
+[ 76%] Built target saxpy_O2
+[ 80%] Built target saxpy_Ofast
+[ 84%] Built target saxpy_O0
+[ 88%] Built target saxpy_O1
+[100%] Built target plot_saxpyBase
+[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-3-2-1799.html">The CMakeLists.txt</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-3-1776.html">The vectorization of Saxpy</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-3-4-1809.html">The performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

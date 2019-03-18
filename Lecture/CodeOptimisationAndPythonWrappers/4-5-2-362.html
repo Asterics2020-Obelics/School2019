@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Make python module</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-5-1-347.html">Check the environnement</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-5-336.html">Functions to check Python environnement and build python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-5-3-368.html">Summary</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="362" class="section">4.5.2 : Make python module</h3>
+
+
+Then, we create the function which will build a <b>python</b> module :
+
+<table id="366" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">function</span>(createPythonModule targetName setupFile moduleSrc)
+	<span class="cmakeFunction">configure_file</span>(<span class="dsNumber">${setupFile}</span> <span class="dsNumber">${CMAKE_CURRENT_BINARY_DIR}</span>/setup.py @ONLY)
+	<span class="cmakeFunction">configure_file</span>(<span class="dsNumber">${SCRIPT_CALL_PYTHON_SETUP}</span> <span class="dsNumber">${CMAKE_CURRENT_BINARY_DIR}</span>/scriptCallPythonSetup.sh @ONLY)
+	<span class="cmakeFunction">add_custom_command</span>(
+		OUTPUT <span class="dsNumber">${CMAKE_CURRENT_BINARY_DIR}</span>/dist
+		COMMAND <span class="dsNumber">${CMAKE_CURRENT_BINARY_DIR}</span>/scriptCallPythonSetup.sh
+		COMMENT <span class="dsString">&quot;Install ${targetName} python module&quot;</span>
+		DEPENDS <span class="dsNumber">${moduleSrc}</span>
+		WORKING_DIRECTORY <span class="dsNumber">${CMAKE_CURRENT_BINARY_DIR}</span>
+	)
+	<span class="cmakeFunction">add_custom_target</span>(<span class="dsString">&quot;${targetName}&quot;</span> ALL DEPENDS <span class="dsNumber">${CMAKE_CURRENT_BINARY_DIR}</span>/dist)
+<span class="cmakeFunction">endfunction</span>(createPythonModule)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-5-1-347.html">Check the environnement</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-5-336.html">Functions to check Python environnement and build python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-5-3-368.html">Summary</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

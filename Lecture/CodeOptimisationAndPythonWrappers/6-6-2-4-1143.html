@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-2-3-1117.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-2-5-1154.html">The performances with vectorization by the compiler</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="1143" class="subsection">6.6.2.4 : Compilation</h4>
+
+			
+We call <b>CMake</b> :
+
+<pre id="1147" class="terminalStyle">
+$ cmake ..
+-- Configuring done
+-- Generating done
+-- Build files have been written to: ExampleOptimisation/build
+</pre>
+
+
+And then <b>Make</b> :
+<table id="1152" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make plot_all
+[  9%] Built target hadamard_product_O2
+[ 19%] Built target hadamard_product_Ofast
+[ 28%] Built target hadamard_product_O3
+[ 38%] Built target hadamard_product_O0
+[ 47%] Built target hadamard_product_O1
+[ 76%] Built target plot_hadamardBase
+[ 85%] Built target hadamard_product_vectorize
+[ 90%] Run hadamard_product_vectorize program
+Hadamard product vectorized
+evaluateHadamardProduct : nbElement = 1000, cyclePerElement = 0.214 cy/el, elapsedTime = 214 cy
+evaluateHadamardProduct : nbElement = 1500, cyclePerElement = 0.214 cy/el, elapsedTime = 321 cy
+evaluateHadamardProduct : nbElement = 2000, cyclePerElement = 0.1985 cy/el, elapsedTime = 397 cy
+evaluateHadamardProduct : nbElement = 2500, cyclePerElement = 0.1992 cy/el, elapsedTime = 498 cy
+evaluateHadamardProduct : nbElement = 2666, cyclePerElement = 0.198425 cy/el, elapsedTime = 529 cy
+evaluateHadamardProduct : nbElement = 3000, cyclePerElement = 0.287667 cy/el, elapsedTime = 863 cy
+evaluateHadamardProduct : nbElement = 4000, cyclePerElement = 0.34575 cy/el, elapsedTime = 1383 cy
+evaluateHadamardProduct : nbElement = 5000, cyclePerElement = 0.3502 cy/el, elapsedTime = 1751 cy
+evaluateHadamardProduct : nbElement = 10000, cyclePerElement = 0.337 cy/el, elapsedTime = 3370 cy
+[ 95%] Call gnuplot hadamardVectorize
+[100%] Built target plot_hadamardVectorize
+[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+					</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-2-3-1117.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-2-5-1154.html">The performances with vectorization by the compiler</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

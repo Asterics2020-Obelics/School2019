@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The header (timer.h)</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-1-412.html">The rdtsc files</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-1-412.html">The rdtsc files</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-1-2-431.html">The source (timer.cpp)</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="425" class="section">5.1.1 : The header (timer.h)</h3>
+
+The <b>timer.h</b> is :
+<table id="429" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#ifndef __TIMER_H__
+</span><span class="cppmacro">#define __TIMER_H__
+</span>
+<span class="cppmacro">#ifdef __i386
+</span><span class="dsKeyword">extern</span> <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> rdtsc(<span class="dsType">void</span>);
+<span class="cppmacro">#elif defined __amd64
+</span><span class="dsKeyword">extern</span> <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> rdtsc(<span class="dsType">void</span>);
+<span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#endif
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-1-412.html">The rdtsc files</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-1-412.html">The rdtsc files</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-1-2-431.html">The source (timer.cpp)</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

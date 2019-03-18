@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The intrinsics version of barycentre</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="9-3-9-3194.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="9-3043.html">Application/exercice : Optimisation barycentre computation</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="9-4-1-3243.html">The barycentre_intrinsics.h file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="3210" class="chapter">Chapter 9.4 : The intrinsics version of barycentre</h2>
+		<ul class="sommaire">
+			<li><a href="9-4-1-3243.html">9.4.1) The barycentre_intrinsics.h file</a></li>
+			<li><a href="9-4-2-3249.html">9.4.2) The barycentre_intrinsics.cpp file</a></li>
+			<li><a href="9-4-3-3255.html">9.4.3) The CMakeLists.txt file</a></li>
+			<li><a href="9-4-4-3261.html">9.4.4) The compilation</a></li>
+			<li><a href="9-4-5-3267.html">9.4.5) The performances</a></li>
+		</ul>
+
+
+During this section, we will use :
+		<ul>
+
+			<li> Inclusion of file <b>immintrin.h</b>
+	</li>
+		<li> Intrinsic function : <b>_mm256_load_ps</b>
+	</li>
+		<li> Intrinsic function : <b>_mm256_store_ps</b>
+	</li>
+		<li> Intrinsic function : <b>_mm256_mul_ps</b>
+	</li>
+		<li> Intrinsic function : <b>_mm256_add_ps</b>
+	</li>
+		<li> Intrinsic function : <b>_mm256_broadcast_ss</b> (to duplicate a float 8 times in a vectorial register)
+	</li>
+		<li> Enable specific optimisations with <b>-O3 -march=native -mtune=native -mavx2</b>
+</li>
+		</ul>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="9-3-9-3194.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="9-3043.html">Application/exercice : Optimisation barycentre computation</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="9-4-1-3243.html">The barycentre_intrinsics.h file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

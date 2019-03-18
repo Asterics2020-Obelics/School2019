@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The CMakeLists.txt file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-2-871.html">Main to evaluate the Hadamard product</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-4-955.html">Get the performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="894" class="chapter">Chapter 6.3 : The CMakeLists.txt file</h2>
+
+	
+<p id="896" class="paragraphStyle">
+Let's write the <b>CMakeLists.txt</b> file.
+</p>
+
+Ordinary, we call the <b>add_executable</b> function from <b>CMake</b> and we can compile our program easily.
+But, for this tutorial, we want to compare the different compilation options of the compiler (here <b>GCC/G++</b>).
+
+<p id="907" class="paragraphStyle">
+So, we will compile the same code (<b>main.cpp</b>) several times to compare the different execution performances :
+</p>
+
+We will test different compilation optimisation option which are ordered from the lower to the higher level of optimisation :
+
+		<ul>
+
+			<li> <b>hadamard_product_O0</b> to test the <b>-O0</b> option.
+	</li>
+		<li> <b>hadamard_product_O1</b> to test the <b>-O1</b> option.
+	</li>
+		<li> <b>hadamard_product_O2</b> to test the <b>-O2</b> option.
+	</li>
+		<li> <b>hadamard_product_O3</b> to test the <b>-O3</b> option.
+	</li>
+		<li> <b>hadamard_product_Ofast</b> to test the <b>-Ofast</b> option.
+</li>
+		</ul>
+
+
+And we will call our <b>runExample</b> function to run all the programs (or targets).
+
+We will create all these targets in the <b>CMakeLists.txt</b> :
+
+<table id="949" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HadamardProduct)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O0 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O0 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O0&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_O0 asterics_hpc)
+runExample(hadamard_product_O0)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O1 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O1 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O1&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_O1 asterics_hpc)
+runExample(hadamard_product_O1)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O2 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O2 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O2&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_O2 asterics_hpc)
+runExample(hadamard_product_O2)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O3 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O3 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O3&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_O3 asterics_hpc)
+runExample(hadamard_product_O3)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_Ofast main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_Ofast <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-Ofast&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_Ofast asterics_hpc)
+runExample(hadamard_product_Ofast)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Finally, we have to call our <b>plotPerf</b> to compare their performances :
+
+<table id="953" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HadamardProduct)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O0 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O0 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O0&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_O0 asterics_hpc)
+runExample(hadamard_product_O0)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O1 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O1 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O1&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_O1 asterics_hpc)
+runExample(hadamard_product_O1)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O2 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O2 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O2&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_O2 asterics_hpc)
+runExample(hadamard_product_O2)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O3 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O3 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O3&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_O3 asterics_hpc)
+runExample(hadamard_product_O3)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_Ofast main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_Ofast <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-Ofast&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(hadamard_product_Ofast asterics_hpc)
+runExample(hadamard_product_Ofast)
+
+plotPerf(<span class="dsString">&quot;hadamardBase&quot;</span> hadamard_product_O0 hadamard_product_O1 hadamard_product_O2 hadamard_product_O3 hadamard_product_Ofast)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+	
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-2-871.html">Main to evaluate the Hadamard product</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-4-955.html">Get the performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

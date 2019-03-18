@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The CMakeLists.txt file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-2-2-1109.html">The full main_vectorize.cpp file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-2-4-1143.html">Compilation</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="1117" class="subsection">6.6.2.3 : The CMakeLists.txt file</h4>
+
+
+The new compilation options will be :
+
+<pre id="1119" class="terminalStyle">
+-O3 -ftree-vectorize -march=native -mtune=native -mavx2
+</pre>
+
+
+		<ul>
+
+			<li> <b>-ftree-vectorize</b> : Activate the vectorization
+	</li>
+		<li> <b>-march=native</b> : Target only the host CPU architecture for binary
+	</li>
+		<li> <b>-mtune=native</b> : Target only the host CPU architecture for optimization
+	</li>
+		<li> <b>-mavx2</b> : Vectorize with AVX2 extention
+</li>
+		</ul>
+
+
+We need to add a target to test the vectorized function and do both the performances tests and the plots :
+
+<table id="1141" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HadamardProduct)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O0 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O0 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O0&quot;</span>)
+runExample(hadamard_product_O0)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O1 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O1 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O1&quot;</span>)
+runExample(hadamard_product_O1)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O2 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O2 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O2&quot;</span>)
+runExample(hadamard_product_O2)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_O3 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_O3 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O3&quot;</span>)
+runExample(hadamard_product_O3)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_Ofast main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_Ofast <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-Ofast&quot;</span>)
+runExample(hadamard_product_Ofast)
+
+plotPerf(<span class="dsString">&quot;hadamardBase&quot;</span> hadamard_product_O0 hadamard_product_O1 hadamard_product_O2 hadamard_product_O3 hadamard_product_Ofast)
+
+<span class="cmakeFunction">add_executable</span>(hadamard_product_vectorize main_vectorize.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> hadamard_product_vectorize <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O3 -ftree-vectorize -march=native -mtune=native -mavx2&quot;</span>)
+runExample(hadamard_product_vectorize)
+
+plotPerf(<span class="dsString">&quot;hadamardVectorize&quot;</span> hadamard_product_O3 hadamard_product_vectorize)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+					</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-2-2-1109.html">The full main_vectorize.cpp file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-2-4-1143.html">Compilation</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

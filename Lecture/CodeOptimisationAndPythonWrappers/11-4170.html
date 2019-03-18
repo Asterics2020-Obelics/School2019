@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>What about branching ? (bonus)</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-7-6-2-4154.html">Summary</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="11-1-4191.html">Classical implementation</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h1 id="4170" class="part">Part 11 : What about branching ? (bonus)</h1>
+		<ul class="sommaire">
+			<li><a href="11-1-4191.html">11.1) Classical implementation</a></li>
+			<li><a href="11-2-4226.html">11.2) Implementation without if</a></li>
+			<li><a href="11-3-4262.html">11.3) Vectorization Implementation</a></li>
+			<li><a href="11-4-4298.html">11.4) Intrinsics Implementation</a></li>
+		</ul>
+
+
+<p id="4172" class="paragraphStyle">
+	You can find the associated presentation
+	<a id="4174" href="ressource/build/Presentation/8-BranchingPredicator/presentation_branching_predicator.pdf">here</a>.
+</p>
+
+<p id="4177" class="paragraphStyle">
+Previous parts deal with kernels without conditions.
+This part show what are the consequencies of using conditions (or more generally branching) in kernels and what are the solutions to optimize them.
+</p>
+
+Let's create a directory <b>7-BranchingPredicator</b> in the directory <b>ExampleOptimisation</b> for this example :
+
+<pre id="4184" class="terminalStyle">
+$ mkdir 7-BranchingPredicator
+</pre>
+
+
+Do not forget to complete the <b>ExampleOptimisation/CMakeLists.txt</b> file : 
+
+<table id="4189" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HPC_ASTERICS)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">set</span>(PYTHON_EXECUTABLE <span class="dsString">&quot;python3&quot;</span> <span class="cmakeKWord">CACHE</span> <span class="cmakeKWord">BOOL</span> <span class="dsString">&quot;Python program&quot;</span>)
+
+<span class="cmakeFunction">add_subdirectory</span>(Performances)
+
+<span class="cmakeFunction">include</span>(runExample.cmake)
+<span class="cmakeFunction">include</span>(pythonCheck.cmake)
+
+<span class="cmakeFunction">set</span>(VECTOR_ALIGNEMENT 32)
+<span class="cmakeFunction">add_definitions</span>(-DVECTOR_ALIGNEMENT=<span class="dsNumber">${VECTOR_ALIGNEMENT}</span>)
+
+<span class="cmakeFunction">add_subdirectory</span>(0-CMakeHelloWorld)
+<span class="cmakeFunction">add_subdirectory</span>(AstericsHPC)
+<span class="cmakeFunction">include_directories</span>(<span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/AstericsHPC)
+
+<span class="cmakeFunction">add_subdirectory</span>(1-HadamardProduct)
+
+<span class="cmakeFunction">add_subdirectory</span>(3-Saxpy)
+<span class="cmakeFunction">add_subdirectory</span>(4-Reduction)
+<span class="cmakeFunction">add_subdirectory</span>(5-Barycentre)
+<span class="cmakeFunction">add_subdirectory</span>(6-Sgemm)
+<span class="cmakeFunction">add_subdirectory</span>(7-BranchingPredicator)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-7-6-2-4154.html">Summary</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="11-1-4191.html">Classical implementation</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The python install cmake script</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-5-769.html">The module configuration : setup.py</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-7-817.html">The CMakeLists.txt</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="807" class="section">5.6.6 : The python install cmake script</h3>
+
+
+This is a simple <b>cmake</b> script to call automatically the <b>python setup.py install</b> command :
+
+<table id="813" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsCommentMono">#!/bin/sh
+</span>
+
+@PYTHON_EXECUTABLE@ setup.py <span class="cmakeFunction">install</span> @PYTHON_INSTALL_PREFIX@ &amp;&amp; touch <span class="cmakeFunction">install</span>.txt</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="815" href="ressource/build/Correction/astericshpc/scriptCallPythonSetup.sh.cmake">here</a>.
+		
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-5-769.html">The module configuration : setup.py</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-7-817.html">The CMakeLists.txt</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

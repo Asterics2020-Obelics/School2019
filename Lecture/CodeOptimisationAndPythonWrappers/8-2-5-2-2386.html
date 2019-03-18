@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The reduction.cpp file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2-5-1-2380.html">The reduction.h file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2-5-2363.html">Solving the performance problem</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-2-5-3-2392.html">The main_reduction.cpp file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="2386" class="subsection">8.2.5.2 : The reduction.cpp file</h4>
+
+
+There is the <b>reduction.cpp</b> file :
+<table id="2390" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &quot;reduction.h&quot;
+</span>
+<span class="dsDocMono">///Do the reduction
+</span><span class="dsDocMulti">/**	@param tabValue : input table
+ * 	@param nbElement : number of elements in the input table
+ * 	@return sum of all the elements of the input table
+*/</span>
+<span class="dsType">float</span> reduction(<span class="dsType">const</span> <span class="dsType">float</span> * tabValue, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement){
+	<span class="dsType">float</span> res(<span class="dsNumber">0</span><span class="dsNumber">.0f</span>);
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		res += tabValue[i];
+	}
+	<span class="dsKeyword">return</span> res;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+					</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2-5-1-2380.html">The reduction.h file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2-5-2363.html">Solving the performance problem</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-2-5-3-2392.html">The main_reduction.cpp file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

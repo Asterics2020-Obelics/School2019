@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The wrapper function</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="9-5-3283.html">How to create a barycentre python module</a></td>
+			<td style="text-align: center;">Parent<br /><a href="9-5-3283.html">How to create a barycentre python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="9-5-2-3349.html">The C++ module file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="3303" class="section">9.5.1 : The wrapper function</h3>
+
+		
+The header file <b>barycentreWrapper.h</b> is very simple :
+
+<table id="3307" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#ifndef __BARYCENTRE_WRAPPER_H__
+</span><span class="cppmacro">#define __BARYCENTRE_WRAPPER_H__
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span>
+<span class="cppqtMacro">PyObject</span> * barycentreWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args);
+
+<span class="cppmacro">#endif
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="3309" href="ressource/build/Correction/barycentre/wrapper/barycentreWrapper.h">here</a>.
+
+<p id="3311" class="paragraphStyle">
+Now, let's write the <b>barycentreWrapper.cpp</b> file :
+</p>
+
+
+Again in this example, since we are using <b>numpy</b> in the module, we have to define the <b>NO_IMPORT_ARRAY</b> to avoid multiple definitions of the same numpy function.
+And we also have to specify the version of the <b>numpy</b> API to avoid warnings :
+
+<table id="3323" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#define NO_IMPORT_ARRAY
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then we include appropriate files. Do not forget to include the <b>asterics_alloc.h</b> file to use our allocation function :
+
+<table id="3327" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;iostream&gt;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span><span class="cppmacro">#include &lt;bytearrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;barycentre_intrinsics.h&quot;
+</span><span class="cppmacro">#include &quot;barycentreWrapper.h&quot;
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+To parse static parameters, we have to use the function <b>PyArg_ParseTuple</b>, this function works the same as the <b>scanf</b> function
+from the C standard library.
+<p id="3333" class="paragraphStyle">
+Here, we parse the output table and the two input tables with <b>'O'</b> which corresponds to a <b>PyObject</b> type.
+</p>
+
+<table id="3340" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMono">///Do the barycentre computation
+</span><span class="dsDocMulti">/**	@param self : parent of the function if it exist
+ * 	@param args : arguments passed to the function
+ * 	@return result of the barycentre
+*/</span>
+<span class="cppqtMacro">PyObject</span> * barycentreWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args){
+	<span class="cppqtMacro">PyArrayObject</span> *objTabX = <span class="pythonApiMacro">NULL</span>, *objTabY = <span class="pythonApiMacro">NULL</span>, *objTabA = <span class="pythonApiMacro">NULL</span>;
+	
+	<span class="dsKeyword">if</span>(!<span class="pythonApiFunction">PyArg_ParseTuple</span>(args, <span class="dsString">&quot;OOO&quot;</span>, &amp;objTabX, &amp;objTabY, &amp;objTabA)){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;barycentreWrapper : wrong set of arguments. Expect tabX, tabY, tabA\n&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">if</span>(<span class="pythonApiFunction">PyArray_NDIM</span>(objTabX) != <span class="dsNumber">1</span> || <span class="pythonApiFunction">PyArray_NDIM</span>(objTabY) != <span class="dsNumber">1</span> || <span class="pythonApiFunction">PyArray_NDIM</span>(objTabA) != <span class="dsNumber">1</span>){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_TypeError</span>, <span class="dsString">&quot;barycentreWrapper : input table must be a one dimension array&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">if</span>(<span class="pythonApiFunction">PyArray_DIMS</span>(objTabX)[<span class="dsNumber">0</span>] != <span class="pythonApiFunction">PyArray_DIMS</span>(objTabY)[<span class="dsNumber">0</span>] || <span class="pythonApiFunction">PyArray_DIMS</span>(objTabX)[<span class="dsNumber">0</span>] != <span class="pythonApiFunction">PyArray_DIMS</span>(objTabA)[<span class="dsNumber">0</span>]){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_TypeError</span>, <span class="dsString">&quot;barycentreWrapper : input table must be of the same size&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> sizeElement(<span class="pythonApiFunction">PyArray_DIMS</span>(objTabX)[<span class="dsNumber">0</span>]);
+	
+	<span class="dsType">const</span> <span class="dsType">float</span> * tabX = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="pythonApiFunction">PyArray_DATA</span>(objTabX);
+	<span class="dsType">const</span> <span class="dsType">float</span> * tabY = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="pythonApiFunction">PyArray_DATA</span>(objTabY);
+	<span class="dsType">const</span> <span class="dsType">float</span> * tabA = (<span class="dsType">float</span>*)<span class="pythonApiFunction">PyArray_DATA</span>(objTabA);
+	<span class="dsType">float</span> gx(<span class="dsNumber">0</span><span class="dsNumber">.0f</span>), gy(<span class="dsNumber">0</span><span class="dsNumber">.0f</span>);
+	barycentre(gx, gy, tabX, tabY, tabA, sizeElement);
+	
+	<span class="dsKeyword">return</span> <span class="pythonApiFunction">Py_BuildValue</span>(<span class="dsString">&quot;ff&quot;</span>, gx, gy);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>barycentreWrapper.cpp</b> file :
+
+<table id="3345" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#define NO_IMPORT_ARRAY
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span>
+<span class="cppmacro">#include &lt;iostream&gt;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span><span class="cppmacro">#include &lt;bytearrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;barycentre_intrinsics.h&quot;
+</span><span class="cppmacro">#include &quot;barycentreWrapper.h&quot;
+</span>
+<span class="dsDocMono">///Do the barycentre computation
+</span><span class="dsDocMulti">/**	@param self : parent of the function if it exist
+ * 	@param args : arguments passed to the function
+ * 	@return result of the barycentre
+*/</span>
+<span class="cppqtMacro">PyObject</span> * barycentreWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args){
+	<span class="cppqtMacro">PyArrayObject</span> *objTabX = <span class="pythonApiMacro">NULL</span>, *objTabY = <span class="pythonApiMacro">NULL</span>, *objTabA = <span class="pythonApiMacro">NULL</span>;
+	
+	<span class="dsKeyword">if</span>(!<span class="pythonApiFunction">PyArg_ParseTuple</span>(args, <span class="dsString">&quot;OOO&quot;</span>, &amp;objTabX, &amp;objTabY, &amp;objTabA)){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;barycentreWrapper : wrong set of arguments. Expect tabX, tabY, tabA\n&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">if</span>(<span class="pythonApiFunction">PyArray_NDIM</span>(objTabX) != <span class="dsNumber">1</span> || <span class="pythonApiFunction">PyArray_NDIM</span>(objTabY) != <span class="dsNumber">1</span> || <span class="pythonApiFunction">PyArray_NDIM</span>(objTabA) != <span class="dsNumber">1</span>){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_TypeError</span>, <span class="dsString">&quot;barycentreWrapper : input table must be a one dimension array&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">if</span>(<span class="pythonApiFunction">PyArray_DIMS</span>(objTabX)[<span class="dsNumber">0</span>] != <span class="pythonApiFunction">PyArray_DIMS</span>(objTabY)[<span class="dsNumber">0</span>] || <span class="pythonApiFunction">PyArray_DIMS</span>(objTabX)[<span class="dsNumber">0</span>] != <span class="pythonApiFunction">PyArray_DIMS</span>(objTabA)[<span class="dsNumber">0</span>]){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_TypeError</span>, <span class="dsString">&quot;barycentreWrapper : input table must be of the same size&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> sizeElement(<span class="pythonApiFunction">PyArray_DIMS</span>(objTabX)[<span class="dsNumber">0</span>]);
+	
+	<span class="dsType">const</span> <span class="dsType">float</span> * tabX = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="pythonApiFunction">PyArray_DATA</span>(objTabX);
+	<span class="dsType">const</span> <span class="dsType">float</span> * tabY = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="pythonApiFunction">PyArray_DATA</span>(objTabY);
+	<span class="dsType">const</span> <span class="dsType">float</span> * tabA = (<span class="dsType">float</span>*)<span class="pythonApiFunction">PyArray_DATA</span>(objTabA);
+	<span class="dsType">float</span> gx(<span class="dsNumber">0</span><span class="dsNumber">.0f</span>), gy(<span class="dsNumber">0</span><span class="dsNumber">.0f</span>);
+	barycentre(gx, gy, tabX, tabY, tabA, sizeElement);
+	
+	<span class="dsKeyword">return</span> <span class="pythonApiFunction">Py_BuildValue</span>(<span class="dsString">&quot;ff&quot;</span>, gx, gy);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="3347" href="ressource/build/Correction/barycentre/wrapper/barycentreWrapper.cpp">here</a>.
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="9-5-3283.html">How to create a barycentre python module</a></td>
+			<td style="text-align: center;">Parent<br /><a href="9-5-3283.html">How to create a barycentre python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="9-5-2-3349.html">The C++ module file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

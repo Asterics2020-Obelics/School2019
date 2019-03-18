@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>What is a Saxpy ?</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-1705.html">Optimisation of saxpy</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-1705.html">Optimisation of saxpy</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-2-1739.html">The classical approach</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="1723" class="chapter">Chapter 7.1 : What is a Saxpy ?</h2>
+
+
+<b>Saxpy</b> is the accronym for :
+<p id="1727" class="paragraphStyle">
+	<b>Single precision A X plus Y</b>
+</p>
+
+Mathematicaly it is :
+
+<br /><img src="images/imgMath1732.png" alt="nothing" />
+
+<p id="1734" class="paragraphStyle">
+In C++ code :
+</p>
+
+<table id="1737" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">void</span> saxpy(<span class="dsType">float</span>* tabResult, <span class="dsType">float</span> scal, <span class="dsType">const</span> <span class="dsType">float</span> * tabX, <span class="dsType">const</span> <span class="dsType">float</span>* tabY, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement){
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		tabResult[i] = scal*tabX[i] + tabY[i];
+	}
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-1705.html">Optimisation of saxpy</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-1705.html">Optimisation of saxpy</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-2-1739.html">The classical approach</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

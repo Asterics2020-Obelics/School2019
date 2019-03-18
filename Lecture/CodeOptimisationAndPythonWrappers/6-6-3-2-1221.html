@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The hadamard_product function</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-3-1-1212.html">Begining of the main_intrinsics.cpp file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-3-1168.html">Manual vectorization (by Intrinsic functions)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-3-3-1234.html">The function to evaluate performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="1221" class="subsection">6.6.3.2 : The hadamard_product function</h4>
+
+			
+We do not need to specify the alignement or to use <b>__restrict__</b> because we force the compiler to do want we want :
+<table id="1225" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">void</span> hadamard_product(<span class="dsType">float</span>* tabResult, <span class="dsType">const</span> <span class="dsType">float</span>* tabX, <span class="dsType">const</span> <span class="dsType">float</span>* tabY, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement){
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> vecSize(VECTOR_ALIGNEMENT/<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>));
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbVec(nbElement/vecSize);
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbVec; ++i){
+		<span class="cppqtMacro">__m256</span> vecX = <span class="cppstandardF">_mm256_load_ps</span>(tabX + i*vecSize);
+		<span class="cppqtMacro">__m256</span> vecY = <span class="cppstandardF">_mm256_load_ps</span>(tabY + i*vecSize);
+		<span class="cppqtMacro">__m256</span> vecRes = <span class="cppstandardF">_mm256_mul_ps</span>(vecX, vecY);
+		<span class="cppstandardF">_mm256_store_ps</span>(tabResult + i*vecSize, vecRes);
+	}
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<pre id="1227" class="warningStyle">
+	Remember, if you do <b>NOT</b> provide aligned data to this kernel you will have a <b>segmentation fault</b> error.
+</pre>
+
+
+					</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-3-1-1212.html">Begining of the main_intrinsics.cpp file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-3-1168.html">Manual vectorization (by Intrinsic functions)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-3-3-1234.html">The function to evaluate performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>A naive implementation of the hadamard product</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-7-5-1453.html">Peformances tests</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-7-5-1453.html">Peformances tests</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-7-5-2-1504.html">Hadamard product with numpy functions</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="1457" class="subsection">6.7.5.1 : A naive implementation of the hadamard product</h4>
+
+			
+<p id="1459" class="paragraphStyle">
+Now, let's write the <b>hadamardBasePython.py</b> file :
+</p>
+
+
+We need to import several packages :
+
+		<ul>
+
+			<li> <b>sys</b> : to make an output compatible with C++ performances output
+	</li>
+		<li> <b>numpy</b> : to deal with arrays
+	</li>
+		<li> <b>astericshpc</b> : to allocate arrays and do the performance test
+</li>
+		</ul>
+
+
+<table id="1480" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="pyAction">import</span> sys
+<span class="pyAction">import</span> numpy <span class="pyAction">as</span> np
+<span class="pyAction">import</span> astericshpc</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+The function to evaluate performances is built the same way such as the C++ one :
+
+<table id="1482" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsKeyword">def</span> getTimeFunctionSize(nbRepetition, nbElement):
+	tabX = np.asarray(np.random.random(nbElement), dtype=np.<span class="pyFunction">float</span><span class="dsNumber">32</span>)
+	tabY = np.asarray(np.random.random(nbElement), dtype=np.<span class="pyFunction">float</span><span class="dsNumber">32</span>)
+	tabRes = np.zeros(nbElement, dtype=np.<span class="pyFunction">float</span><span class="dsNumber">32</span>)
+	
+	timeBegin = astericshpc.rdtsc()
+	<span class="dsKeyword">for</span> i <span class="dsKeyword">in</span> <span class="pyFunction">range</span>(<span class="dsNumber">0</span>, nbRepetition):
+		<span class="dsKeyword">for</span> j <span class="dsKeyword">in</span> <span class="pyFunction">range</span>(<span class="dsNumber">0</span>, nbElement):
+			tabRes[j] = tabX[j]*tabY[j]
+	
+	timeEnd = astericshpc.rdtsc()
+	elapsedTime = <span class="pyFunction">float</span>(timeEnd - timeBegin)/<span class="pyFunction">float</span>(nbRepetition)
+	elapsedTimePerElement = elapsedTime/<span class="pyFunction">float</span>(nbElement)
+	<span class="pyFunction">print</span>(<span class="dsString">&quot;nbElement =&quot;</span>,nbElement,<span class="dsString">&quot;, elapsedTimePerElement =&quot;</span>,elapsedTimePerElement,<span class="dsString">&quot;cy/el&quot;</span>,<span class="dsString">&quot;, elapsedTime =&quot;</span>,elapsedTime,<span class="dsString">&quot;cy&quot;</span>)
+	<span class="pyFunction">print</span>(<span class="pyFunction">str</span>(nbElement) + <span class="dsString">&quot;\t&quot;</span> + <span class="pyFunction">str</span>(elapsedTimePerElement) + <span class="dsString">&quot;\t&quot;</span> + <span class="pyFunction">str</span>(elapsedTime),<span class="pyFunction">file</span>=sys.stderr)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then, we have a function to make all the points with a list of sizes :
+
+<table id="1484" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsKeyword">def</span> makeElapsedTimeValue(listSize, nbRepetition):
+	<span class="dsKeyword">for</span> val <span class="dsKeyword">in</span> listSize:
+		getTimeFunctionSize(nbRepetition, val)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Finally, we call the performances tests only if this script is executed as a main file and not if it is included by an other file :
+
+<table id="1486" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsKeyword">if</span> <span class="pyFunction">__name__</span> == <span class="dsString">&quot;__main__&quot;</span>:
+	listSize = [<span class="dsNumber">1000</span>,
+			<span class="dsNumber">1600</span>,
+			<span class="dsNumber">2000</span>,
+			<span class="dsNumber">2400</span>,
+			<span class="dsNumber">2664</span>,
+			<span class="dsNumber">3000</span>,
+			<span class="dsNumber">4000</span>,
+			<span class="dsNumber">5000</span>,
+			<span class="dsNumber">10000</span>]
+	makeElapsedTimeValue(listSize, <span class="dsNumber">10000</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>hadamardBasePython.py</b> file :
+
+<table id="1491" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsString">''</span><span class="dsString">'
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+'</span><span class="dsString">''</span>
+
+<span class="pyAction">import</span> sys
+<span class="pyAction">import</span> numpy <span class="pyAction">as</span> np
+<span class="pyAction">import</span> astericshpc
+
+<span class="dsKeyword">def</span> getTimeFunctionSize(nbRepetition, nbElement):
+	tabX = np.asarray(np.random.random(nbElement), dtype=np.<span class="pyFunction">float</span><span class="dsNumber">32</span>)
+	tabY = np.asarray(np.random.random(nbElement), dtype=np.<span class="pyFunction">float</span><span class="dsNumber">32</span>)
+	tabRes = np.zeros(nbElement, dtype=np.<span class="pyFunction">float</span><span class="dsNumber">32</span>)
+	
+	timeBegin = astericshpc.rdtsc()
+	<span class="dsKeyword">for</span> i <span class="dsKeyword">in</span> <span class="pyFunction">range</span>(<span class="dsNumber">0</span>, nbRepetition):
+		<span class="dsKeyword">for</span> j <span class="dsKeyword">in</span> <span class="pyFunction">range</span>(<span class="dsNumber">0</span>, nbElement):
+			tabRes[j] = tabX[j]*tabY[j]
+	
+	timeEnd = astericshpc.rdtsc()
+	elapsedTime = <span class="pyFunction">float</span>(timeEnd - timeBegin)/<span class="pyFunction">float</span>(nbRepetition)
+	elapsedTimePerElement = elapsedTime/<span class="pyFunction">float</span>(nbElement)
+	<span class="pyFunction">print</span>(<span class="dsString">&quot;nbElement =&quot;</span>,nbElement,<span class="dsString">&quot;, elapsedTimePerElement =&quot;</span>,elapsedTimePerElement,<span class="dsString">&quot;cy/el&quot;</span>,<span class="dsString">&quot;, elapsedTime =&quot;</span>,elapsedTime,<span class="dsString">&quot;cy&quot;</span>)
+	<span class="pyFunction">print</span>(<span class="pyFunction">str</span>(nbElement) + <span class="dsString">&quot;\t&quot;</span> + <span class="pyFunction">str</span>(elapsedTimePerElement) + <span class="dsString">&quot;\t&quot;</span> + <span class="pyFunction">str</span>(elapsedTime),<span class="pyFunction">file</span>=sys.stderr)
+
+<span class="dsKeyword">def</span> makeElapsedTimeValue(listSize, nbRepetition):
+	<span class="dsKeyword">for</span> val <span class="dsKeyword">in</span> listSize:
+		getTimeFunctionSize(nbRepetition, val)
+
+<span class="dsKeyword">if</span> <span class="pyFunction">__name__</span> == <span class="dsString">&quot;__main__&quot;</span>:
+	listSize = [<span class="dsNumber">1000</span>,
+			<span class="dsNumber">1600</span>,
+			<span class="dsNumber">2000</span>,
+			<span class="dsNumber">2400</span>,
+			<span class="dsNumber">2664</span>,
+			<span class="dsNumber">3000</span>,
+			<span class="dsNumber">4000</span>,
+			<span class="dsNumber">5000</span>,
+			<span class="dsNumber">10000</span>]
+	makeElapsedTimeValue(listSize, <span class="dsNumber">10000</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="1493" href="ressource/build/Correction/hadamard/python/hadamardBasePython.py">here</a>.
+
+<p id="1495" class="paragraphStyle">
+This example will be obviously really slow. When you are using <b>numpy</b> arrays, be careful to use <b>operators</b>
+and <b>built-in functions</b> as much as you can.
+</p>
+
+					</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-7-5-1453.html">Peformances tests</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-7-5-1453.html">Peformances tests</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-7-5-2-1504.html">Hadamard product with numpy functions</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

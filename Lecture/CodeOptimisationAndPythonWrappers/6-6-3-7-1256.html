@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-3-6-1252.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-3-1168.html">Manual vectorization (by Intrinsic functions)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-3-8-1260.html">The performances with Intrinsics</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="1256" class="subsection">6.6.3.7 : Compilation</h4>
+
+			
+Let's compile :
+<table id="1258" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+make plot_all
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/pierre/projects/COURS/ExampleOptimisation/build
+[  7%] Built target hadamard_product_O3
+[ 14%] Built target hadamard_product_vectorize
+[ 25%] Built target plot_hadamardVectorize
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target hadamard_product_intrinsics
+</span>[ 29%] <span class="makeTerminalBuildingObject">Building CXX object 1-HadamardProduct/CMakeFiles/hadamard_product_intrinsics.dir/main_intrinsics.cpp.o
+</span>[ 33%] <span class="makeTerminalLinking">Linking CXX executable hadamard_product_intrinsics
+</span>[ 33%] Built target hadamard_product_intrinsics
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_hadamardIntrinsics
+</span>[ 37%] Run hadamard_product_intrinsics program
+Hadamard product intrinsics
+evaluateHadamardProduct : nbElement = 1000, cyclePerElement = 0.16 cy/el, elapsedTime = 160 cy
+evaluateHadamardProduct : nbElement = 1600, cyclePerElement = 0.153125 cy/el, elapsedTime = 245 cy
+evaluateHadamardProduct : nbElement = 2000, cyclePerElement = 0.1895 cy/el, elapsedTime = 379 cy
+evaluateHadamardProduct : nbElement = 2400, cyclePerElement = 0.14875 cy/el, elapsedTime = 357 cy
+evaluateHadamardProduct : nbElement = 2664, cyclePerElement = 0.147898 cy/el, elapsedTime = 394 cy
+evaluateHadamardProduct : nbElement = 3000, cyclePerElement = 0.292667 cy/el, elapsedTime = 878 cy
+evaluateHadamardProduct : nbElement = 4000, cyclePerElement = 0.34775 cy/el, elapsedTime = 1391 cy
+evaluateHadamardProduct : nbElement = 5000, cyclePerElement = 0.3502 cy/el, elapsedTime = 1751 cy
+evaluateHadamardProduct : nbElement = 10000, cyclePerElement = 0.3427 cy/el, elapsedTime = 3427 cy
+[ 40%] Call gnuplot hadamardIntrinsics
+[ 48%] Built target plot_hadamardIntrinsics
+[ 55%] Built target hadamard_product_Ofast
+[ 62%] Built target hadamard_product_O2
+[ 70%] Built target hadamard_product_O1
+[ 77%] Built target hadamard_product_O0
+[100%] Built target plot_hadamardBase
+[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+					</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-3-6-1252.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-3-1168.html">Manual vectorization (by Intrinsic functions)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-3-8-1260.html">The performances with Intrinsics</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

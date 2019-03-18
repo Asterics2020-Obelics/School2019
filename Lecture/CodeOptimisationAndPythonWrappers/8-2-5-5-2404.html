@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2-5-4-2398.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2-5-2363.html">Solving the performance problem</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-2-5-6-2410.html">The performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="2404" class="subsection">8.2.5.5 : The compilation</h4>
+
+	
+Let's compile :
+<table id="2406" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make
+[  2%] Built target hadamard_product_O2
+[  6%] Built target hadamard_product_O1
+[  8%] Built target hadamard_product_vectorize
+[ 12%] Built target hadamard_product_O0
+[ 17%] Built target hadamard_product_O3
+[ 21%] Built target hadamard_product_Ofast
+[ 25%] Built target hadamard_product_intrinsics
+[ 29%] Built target asterics_hpc
+[ 31%] Built target saxpy_O2
+[ 36%] Built target saxpy_O0
+[ 40%] Built target saxpy_O3
+[ 44%] Built target saxpy_O1
+[ 48%] Built target saxpy_Ofast
+[ 53%] Built target saxpy_vectorize
+[ 57%] Built target saxpy_intrinsics
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target reduction_real_O0
+</span>[ 59%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_O0.dir/reduction.cpp.o
+</span>[ 61%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_O0.dir/main_reduction.cpp.o
+</span>[ 63%] <span class="makeTerminalLinking">Linking CXX executable reduction_real_O0
+</span>[ 63%] Built target reduction_real_O0
+[ 65%] Built target reduction_O1
+[ 70%] Built target reduction_O0
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target reduction_real_Ofast
+</span>[ 72%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_Ofast.dir/reduction.cpp.o
+</span>[ 74%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_Ofast.dir/main_reduction.cpp.o
+</span>[ 76%] <span class="makeTerminalLinking">Linking CXX executable reduction_real_Ofast
+</span>[ 76%] Built target reduction_real_Ofast
+[ 80%] Built target reduction_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target reduction_real_O3
+</span>[ 82%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_O3.dir/reduction.cpp.o
+</span>[ 85%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_O3.dir/main_reduction.cpp.o
+</span>[ 85%] <span class="makeTerminalLinking">Linking CXX executable reduction_real_O3
+</span>[ 85%] Built target reduction_real_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target reduction_real_O1
+</span>[ 85%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_O1.dir/reduction.cpp.o
+</span>[ 87%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_O1.dir/main_reduction.cpp.o
+</span>[ 89%] <span class="makeTerminalLinking">Linking CXX executable reduction_real_O1
+</span>[ 89%] Built target reduction_real_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target reduction_real_O2
+</span>[ 91%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_O2.dir/reduction.cpp.o
+</span>[ 93%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_O2.dir/main_reduction.cpp.o
+</span>[ 95%] <span class="makeTerminalLinking">Linking CXX executable reduction_real_O2
+</span>[ 95%] Built target reduction_real_O2
+[100%] Built target reduction_O2</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Let's get the restults :
+<table id="2408" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make plot_all
+[  2%] Built target asterics_hpc
+[  5%] Built target reduction_O2
+[  6%] Built target reduction_O1
+[  8%] Built target reduction_O0
+[ 11%] Built target reduction_O3
+[ 16%] Built target plot_reductionBase
+[ 18%] Built target hadamard_product_intrinsics
+[ 20%] Built target hadamard_product_vectorize
+[ 22%] Built target hadamard_product_O3
+[ 26%] Built target plot_hadamardIntrinsics
+[ 28%] Built target hadamard_product_Ofast
+[ 30%] Built target hadamard_product_O2
+[ 32%] Built target hadamard_product_O1
+[ 35%] Built target hadamard_product_O0
+[ 42%] Built target plot_hadamardBase
+[ 46%] Built target plot_hadamardVectorize
+[ 48%] Built target saxpy_intrinsics
+[ 51%] Built target saxpy_O3
+[ 53%] Built target saxpy_vectorize
+[ 57%] Built target plot_saxpyIntrinsics
+[ 61%] Built target plot_saxpyVectorize
+[ 63%] Built target saxpy_Ofast
+[ 65%] Built target saxpy_O2
+[ 67%] Built target saxpy_O0
+[ 70%] Built target saxpy_O1
+[ 77%] Built target plot_saxpyBase
+[ 81%] Built target reduction_real_O2
+[ 85%] Built target reduction_real_O0
+[ 88%] Built target reduction_real_Ofast
+[ 91%] Built target reduction_real_O3
+[ 93%] Built target reduction_real_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_reductionReal
+</span>[ 93%] Run reduction_real_Ofast program
+Reduction
+evaluateReduction : nbElement = 1000, cyclePerElement = 3.149 cy/el, elapsedTime = 3149 cy
+evaluateReduction : nbElement = 2000, cyclePerElement = 3.3915 cy/el, elapsedTime = 6783 cy
+evaluateReduction : nbElement = 3000, cyclePerElement = 3.476 cy/el, elapsedTime = 10428 cy
+evaluateReduction : nbElement = 5000, cyclePerElement = 3.5432 cy/el, elapsedTime = 17716 cy
+evaluateReduction : nbElement = 10000, cyclePerElement = 3.596 cy/el, elapsedTime = 35960 cy
+[ 95%] Run reduction_real_O0 program
+Reduction
+evaluateReduction : nbElement = 1000, cyclePerElement = 32.743 cy/el, elapsedTime = 32743 cy
+evaluateReduction : nbElement = 2000, cyclePerElement = 32.777 cy/el, elapsedTime = 65554 cy
+evaluateReduction : nbElement = 3000, cyclePerElement = 32.7923 cy/el, elapsedTime = 98377 cy
+evaluateReduction : nbElement = 5000, cyclePerElement = 32.7892 cy/el, elapsedTime = 163946 cy
+evaluateReduction : nbElement = 10000, cyclePerElement = 32.8056 cy/el, elapsedTime = 328056 cy
+[ 96%] Run reduction_real_O1 program
+Reduction
+evaluateReduction : nbElement = 1000, cyclePerElement = 13.91 cy/el, elapsedTime = 13910 cy
+evaluateReduction : nbElement = 2000, cyclePerElement = 14.2415 cy/el, elapsedTime = 28483 cy
+evaluateReduction : nbElement = 3000, cyclePerElement = 14.3533 cy/el, elapsedTime = 43060 cy
+evaluateReduction : nbElement = 5000, cyclePerElement = 14.4422 cy/el, elapsedTime = 72211 cy
+evaluateReduction : nbElement = 10000, cyclePerElement = 14.5121 cy/el, elapsedTime = 145121 cy
+[ 97%] Run reduction_real_O2 program
+Reduction
+evaluateReduction : nbElement = 1000, cyclePerElement = 13.911 cy/el, elapsedTime = 13911 cy
+evaluateReduction : nbElement = 2000, cyclePerElement = 14.2435 cy/el, elapsedTime = 28487 cy
+evaluateReduction : nbElement = 3000, cyclePerElement = 14.3523 cy/el, elapsedTime = 43057 cy
+evaluateReduction : nbElement = 5000, cyclePerElement = 14.4424 cy/el, elapsedTime = 72212 cy
+evaluateReduction : nbElement = 10000, cyclePerElement = 14.5128 cy/el, elapsedTime = 145128 cy
+[ 98%] Run reduction_real_O3 program
+Reduction
+evaluateReduction : nbElement = 1000, cyclePerElement = 13.912 cy/el, elapsedTime = 13912 cy
+evaluateReduction : nbElement = 2000, cyclePerElement = 14.2455 cy/el, elapsedTime = 28491 cy
+evaluateReduction : nbElement = 3000, cyclePerElement = 14.3543 cy/el, elapsedTime = 43063 cy
+evaluateReduction : nbElement = 5000, cyclePerElement = 14.4424 cy/el, elapsedTime = 72212 cy
+evaluateReduction : nbElement = 10000, cyclePerElement = 14.5126 cy/el, elapsedTime = 145126 cy
+[100%] Call gnuplot reductionReal
+[100%] Built target plot_reductionReal
+[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Sounds better!
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2-5-4-2398.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2-5-2363.html">Solving the performance problem</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-2-5-6-2410.html">The performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The CMakeLists.txt</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-2-1-1743.html">The main.cpp</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-2-1739.html">The classical approach</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-2-3-1755.html">The compilation</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="1749" class="section">7.2.2 : The CMakeLists.txt</h3>
+
+	
+The <b>CMakeLists.txt</b> file :
+
+<table id="1753" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(Saxpy)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">add_executable</span>(saxpy_O0 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> saxpy_O0 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O0&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(saxpy_O0 asterics_hpc)
+runExample(saxpy_O0)
+
+<span class="cmakeFunction">add_executable</span>(saxpy_O1 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> saxpy_O1 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O1&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(saxpy_O1 asterics_hpc)
+runExample(saxpy_O1)
+
+<span class="cmakeFunction">add_executable</span>(saxpy_O2 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> saxpy_O2 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O2&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(saxpy_O2 asterics_hpc)
+runExample(saxpy_O2)
+
+<span class="cmakeFunction">add_executable</span>(saxpy_O3 main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> saxpy_O3 <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-O3&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(saxpy_O3 asterics_hpc)
+runExample(saxpy_O3)
+
+<span class="cmakeFunction">add_executable</span>(saxpy_Ofast main.cpp)
+<span class="cmakeFunction">set_property</span>(<span class="cmakeKWord">TARGET</span> saxpy_Ofast <span class="cmakeKWord">PROPERTY</span> <span class="cmakeKWord">COMPILE_FLAGS</span> <span class="dsString">&quot;-Ofast&quot;</span>)
+<span class="cmakeFunction">target_link_libraries</span>(saxpy_Ofast asterics_hpc)
+runExample(saxpy_Ofast)
+
+plotPerf(<span class="dsString">&quot;saxpyBase&quot;</span> saxpy_O0 saxpy_O1 saxpy_O2 saxpy_O3 saxpy_Ofast)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-2-1-1743.html">The main.cpp</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-2-1739.html">The classical approach</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-2-3-1755.html">The compilation</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

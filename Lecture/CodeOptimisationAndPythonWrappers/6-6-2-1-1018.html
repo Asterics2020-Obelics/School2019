@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Things to verify before vectorizing</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-2-2-1109.html">The full main_vectorize.cpp file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h4 id="1018" class="subsection">6.6.2.1 : Things to verify before vectorizing</h4>
+
+			
+					<h3 id="1020">Data Contiguousness</h3>
+
+<p id="1022" class="paragraphStyle">
+The CPU has to read several elements at the same time.
+</p>
+
+Data contiguousness :
+		<ul>
+
+			<li> All the data to be used have to be adjacent with the others.
+	</li>
+		<li> Always the case with pointers but be careful with your applications.
+</li>
+		</ul>
+
+
+<div id="1032" class="figureStyle">
+	<div id="1034" class="centerStyle">
+		<img id="1036" src="images/dataContiguousnessBlack.png" alt="nothing" />
+		<p id="1038">Illustration of data contiguousness.</p>
+	</div>
+</div>
+					<h3 id="1042">Data Alignement</h3>
+
+Data alignement :
+		<ul>
+
+			<li> All the data to be aligned on vectorial registers size.
+	</li>
+		<li> Change new or malloc to memalign or posix memalign
+</li>
+		</ul>
+
+
+<div id="1051" class="figureStyle">
+	<div id="1053" class="centerStyle">
+		<img id="1055" src="images/dataAlignementBlack.png" alt="nothing" />
+		<p id="1057">Illustration of data alignement.</p>
+	</div>
+</div>
+
+Let's do an other file (<b>main_vecrization.cpp</b>) to be able to compare its performances with the previous version.
+
+<p id="1063" class="paragraphStyle">
+First, we have to include the appropriate files :
+</p>
+
+<table id="1066" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;iostream&gt;
+</span><span class="cppmacro">#include &quot;asterics_hpc.h&quot;
+</span>
+<span class="dsKeyword">using</span> <span class="dsKeyword">namespace</span> <span class="cppstdF">std</span>;</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+					<h3 id="1068">The __restrict__ keyword</h3>
+
+
+Specify to the compiler there is no overhead between pointers. Otherwise, its will not vectorize your code.
+
+<div id="1070" class="figureStyle">
+	<div id="1072" class="centerStyle">
+		<img id="1074" src="images/restrictKeywordBlack.png" alt="nothing" />
+		<p id="1076">Illustration of __restrict__ meaning.</p>
+	</div>
+</div>
+
+The <b>hadamard_product</b> becomes :
+
+<table id="1082" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">void</span> hadamard_product(<span class="dsType">float</span>* <span class="cppqtMacro">__restrict__</span> ptabResult, <span class="dsType">const</span> <span class="dsType">float</span>* <span class="cppqtMacro">__restrict__</span> ptabX, <span class="dsType">const</span> <span class="dsType">float</span>* <span class="cppqtMacro">__restrict__</span> ptabY, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement){
+
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+					<h3 id="1084">The __builtin_assume_aligned function</h3>
+
+
+Specify to the compiler pointers are aligned
+<pre id="1086" class="warningStyle">
+	If this is not true, you will get a Segmentation Fault
+</pre>
+
+
+The <b>hadamard_product</b> becomes :
+
+<table id="1091" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">void</span> hadamard_product(<span class="dsType">float</span>* <span class="cppqtMacro">__restrict__</span> ptabResult, <span class="dsType">const</span> <span class="dsType">float</span>* <span class="cppqtMacro">__restrict__</span> ptabX, <span class="dsType">const</span> <span class="dsType">float</span>* <span class="cppqtMacro">__restrict__</span> ptabY, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement){
+	<span class="dsType">const</span> <span class="dsType">float</span>* tabX = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="bultinFunction">__builtin_assume_aligned</span>(ptabX, VECTOR_ALIGNEMENT);
+	<span class="dsType">const</span> <span class="dsType">float</span>* tabY = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="bultinFunction">__builtin_assume_aligned</span>(ptabY, VECTOR_ALIGNEMENT);
+	<span class="dsType">float</span>* tabResult = (<span class="dsType">float</span>*)<span class="bultinFunction">__builtin_assume_aligned</span>(ptabResult, VECTOR_ALIGNEMENT);
+	
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		tabResult[i] = tabX[i]*tabY[i];
+	}
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+We have to define the <b>VECTOR_ALIGNEMENT</b> macro. Let's modify the <b>ExampleOptimisation/CMakeLists.txt</b> file :
+
+<table id="1097" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HPC_ASTERICS)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">add_subdirectory</span>(Performances)
+<span class="cmakeFunction">include</span>(runExample.cmake)
+
+<span class="cmakeFunction">set</span>(VECTOR_ALIGNEMENT 32)
+<span class="cmakeFunction">add_definitions</span>(-DVECTOR_ALIGNEMENT=<span class="dsNumber">${VECTOR_ALIGNEMENT}</span>)
+
+<span class="cmakeFunction">add_subdirectory</span>(AstericsHPC)
+<span class="cmakeFunction">include_directories</span>(<span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/AstericsHPC)
+<span class="cmakeFunction">add_subdirectory</span>(1-HadamardProduct)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+					<h3 id="1099">The test function</h3>
+
+
+We have to modify the test function to have aligned pointers :
+
+<table id="1101" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">void</span> evaluateHadamardProduct(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbRepetition){
+	<span class="dsType">float</span> * tabResult = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	<span class="dsType">float</span> * tabX = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	<span class="dsType">float</span> * tabY = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		tabX[i] = (<span class="dsType">float</span>)(i*<span class="dsNumber">32lu</span>%<span class="dsNumber">17lu</span>);
+		tabY[i] = (<span class="dsType">float</span>)(i*<span class="dsNumber">57lu</span>%<span class="dsNumber">31lu</span>);
+	}
+	
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> beginTime(rdtsc());
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbRepetition; ++i){
+		hadamard_product(tabResult, tabX, tabY, nbElement);
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> elapsedTime((<span class="dsType">double</span>)(rdtsc() - beginTime)/((<span class="dsType">double</span>)nbRepetition));
+	
+	<span class="dsType">double</span> cyclePerElement(((<span class="dsType">double</span>)elapsedTime)/((<span class="dsType">double</span>)nbElement));
+	<span class="cppstdF">cout</span> &lt;&lt; <span class="dsString">&quot;evaluateHadamardProduct : nbElement = &quot;</span>&lt;&lt;nbElement&lt;&lt;<span class="dsString">&quot;, cyclePerElement = &quot;</span> &lt;&lt; cyclePerElement &lt;&lt; <span class="dsString">&quot; cy/el, elapsedTime = &quot;</span> &lt;&lt; elapsedTime &lt;&lt; <span class="dsString">&quot; cy&quot;</span> &lt;&lt; <span class="cppstdF">endl</span>;
+	<span class="cppstdF">cerr</span> &lt;&lt; nbElement &lt;&lt; <span class="dsString">&quot;\t&quot;</span> &lt;&lt; cyclePerElement &lt;&lt; <span class="dsString">&quot;\t&quot;</span> &lt;&lt; elapsedTime &lt;&lt; <span class="cppstdF">endl</span>;
+	asterics_free(tabResult);
+	asterics_free(tabX);
+	asterics_free(tabY);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+					<h3 id="1103">The main function</h3>
+
+
+The <b>main</b> function is quite the same as before :
+
+<table id="1107" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">int</span> <span class="cppstandardF">main</span>(<span class="dsType">int</span> argc, <span class="dsType">char</span>** argv){
+	<span class="cppstdF">cout</span> &lt;&lt; <span class="dsString">&quot;Hadamard product vectorized&quot;</span> &lt;&lt; <span class="cppstdF">endl</span>;
+	evaluateHadamardProduct(<span class="dsNumber">1000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">1500lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">2000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">2500lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">2666lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">3000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">4000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">5000lu</span>, <span class="dsNumber">1000000lu</span>);
+	evaluateHadamardProduct(<span class="dsNumber">10000lu</span>, <span class="dsNumber">1000000lu</span>);
+	<span class="dsKeyword">return</span> <span class="dsNumber">0</span>;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+						</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-6-2-1016.html">Automatic vectorization (by the compiler)</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-6-2-2-1109.html">The full main_vectorize.cpp file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

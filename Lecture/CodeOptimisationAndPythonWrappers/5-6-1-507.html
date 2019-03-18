@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Wrapper of the timer</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-2-572.html">Wrapper of the tables allocation</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="507" class="section">5.6.1 : Wrapper of the timer</h3>
+
+
+The timer will be wrapped in two files :
+		<ul>
+
+			<li> <b>timerWrapper.h</b>
+	</li>
+		<li> <b>timerWrapper.cpp</b>
+</li>
+		</ul>
+
+
+The <b>timerWrapper.h</b> file is quite simple.
+
+<p id="522" class="paragraphStyle">
+	We just have to include some <b>python</b> stuff and define our wrapped function.
+</p>
+<table id="527" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#ifndef __TIMER_WRAPPER_H__
+</span><span class="cppmacro">#define __TIMER_WRAPPER_H__
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span>
+<span class="cppqtMacro">PyObject</span> * timerWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args);
+
+<span class="cppmacro">#endif
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+The prototype of the function is standard for wrappers :
+		<ul>
+
+			<li> Two <b>PyObject</b> pointer as input
+	</li>
+		<li> One <b>PyObject</b> pointer as output
+</li>
+		</ul>
+
+
+
+Since we are using <b>numpy</b> in the module, we have to define the <b>NO_IMPORT_ARRAY</b> to avoid multiple definitions of the same numpy function.
+And we also have to specify the version of the <b>numpy</b> API to avoid warnings :
+
+<table id="547" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#define NO_IMPORT_ARRAY
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then, we do classial includes. First for our c++ timer :
+
+<table id="549" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &quot;timer.h&quot;
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then for our wrapped timer :
+
+<table id="551" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &quot;timerWrapper.h&quot;
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then we call our <b>rdtsc</b> function and create a <b>PyObject</b> for <b>long unsigned int</b> or <b>size_t</b> with the function <b>Py_BuildValue</b> :
+
+<table id="563" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMono">///Allocate an aligned matrix of float with a pitch
+</span><span class="dsDocMulti">/**	@param self : pointer to the parent object if it exist
+ * 	@param args : arguments passed to the program
+ * 	@return result of rdtsc function
+*/</span>
+<span class="cppqtMacro">PyObject</span> * timerWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args){
+	<span class="dsType">size_t</span> res(rdtsc());
+	<span class="dsKeyword">return</span> <span class="pythonApiFunction">Py_BuildValue</span>(<span class="dsString">&quot;k&quot;</span>, res);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>timerWrapper.cpp</b> file :
+
+<table id="568" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#define NO_IMPORT_ARRAY
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span>
+<span class="cppmacro">#include &quot;timer.h&quot;
+</span>
+<span class="cppmacro">#include &quot;timerWrapper.h&quot;
+</span>
+<span class="dsDocMono">///Allocate an aligned matrix of float with a pitch
+</span><span class="dsDocMulti">/**	@param self : pointer to the parent object if it exist
+ * 	@param args : arguments passed to the program
+ * 	@return result of rdtsc function
+*/</span>
+<span class="cppqtMacro">PyObject</span> * timerWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args){
+	<span class="dsType">size_t</span> res(rdtsc());
+	<span class="dsKeyword">return</span> <span class="pythonApiFunction">Py_BuildValue</span>(<span class="dsString">&quot;k&quot;</span>, res);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="570" href="ressource/build/Correction/astericshpc/timerWrapper.cpp">here</a>.
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-2-572.html">Wrapper of the tables allocation</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The vectorization of Saxpy</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-2-4-1761.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-1705.html">Optimisation of saxpy</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-3-1-1793.html">The main_vectorize.cpp</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="1776" class="chapter">Chapter 7.3 : The vectorization of Saxpy</h2>
+		<ul class="sommaire">
+			<li><a href="7-3-1-1793.html">7.3.1) The main_vectorize.cpp</a></li>
+			<li><a href="7-3-2-1799.html">7.3.2) The CMakeLists.txt</a></li>
+			<li><a href="7-3-3-1805.html">7.3.3) The compilation</a></li>
+			<li><a href="7-3-4-1809.html">7.3.4) The performances</a></li>
+		</ul>
+
+
+We, again, have to inform the compiler :
+		<ul>
+
+			<li> The tables (or pointers) are aligned with <b>__builtin_assume_aligned</b>
+	</li>
+		<li> The tables (or pointers) do not overhead eachother with <b> __restrict__</b>
+	</li>
+		<li> Enable the vectorization with <b>-O3 -ftree-vectorize -march=native -mtune=native -mavx2</b>
+</li>
+		</ul>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-2-4-1761.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-1705.html">Optimisation of saxpy</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-3-1-1793.html">The main_vectorize.cpp</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

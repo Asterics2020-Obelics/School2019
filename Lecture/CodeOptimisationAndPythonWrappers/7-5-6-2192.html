@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The CMakeLists.txt file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-5-5-3-2152.html">Saxpy with our intrinsics implementation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-5-1890.html">How to create a saxpy python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-5-7-2223.html">Performances results</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="2192" class="section">7.5.6 : The CMakeLists.txt file</h3>
+
+
+<p id="2194" class="paragraphStyle">
+Now, let's write the <b>CMakeLists.txt</b> file :
+</p>
+
+First we manage the project name and the minimal <b>cmake</b> version for the file :
+<table id="2202" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(SaxpyWrapper)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Then, we get the files used to build the module :
+<table id="2204" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">file</span>(<span class="cmakeKWord">GLOB</span> moduleSrc <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.cpp&quot;</span> <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.py&quot;</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+We call the <b>cmake</b> function to create a module :
+<table id="2208" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+createPythonModule(install_saxpy_module setup.py <span class="dsNumber">${moduleSrc}</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Now, we call the <b>cmake</b> function to run the python performances tests
+<table id="2212" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+runPythonExample(saxpyIntrinsicsPython.py install_saxpy_module)
+runPythonExample(saxpyBasePython.py install_asterics_hpc_module)
+runPythonExample(saxpyNumpyPython.py install_asterics_hpc_module)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Finally, we make some plots to compare the Python performances with the C++ ones :
+<table id="2214" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+plotPerf(<span class="dsString">&quot;saxpyBasePy&quot;</span> saxpyBasePython saxpyNumpyPython saxpy_O3 saxpy_vectorize)
+
+plotPerf(<span class="dsString">&quot;saxpySummaryPython&quot;</span> saxpy_O3 saxpyIntrinsicsPython saxpy_vectorize saxpy_intrinsics)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>CMakeLists.txt</b> file :
+
+<table id="2219" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(SaxpyWrapper)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">file</span>(<span class="cmakeKWord">GLOB</span> moduleSrc <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.cpp&quot;</span> <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.py&quot;</span>)
+
+createPythonModule(install_saxpy_module setup.py <span class="dsNumber">${moduleSrc}</span>)
+
+runPythonExample(saxpyIntrinsicsPython.py install_saxpy_module)
+runPythonExample(saxpyBasePython.py install_asterics_hpc_module)
+runPythonExample(saxpyNumpyPython.py install_asterics_hpc_module)
+
+plotPerf(<span class="dsString">&quot;saxpyBasePy&quot;</span> saxpyBasePython saxpyNumpyPython saxpy_O3 saxpy_vectorize)
+
+plotPerf(<span class="dsString">&quot;saxpySummaryPython&quot;</span> saxpy_O3 saxpyIntrinsicsPython saxpy_vectorize saxpy_intrinsics)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="2221" href="ressource/build/Correction/saxpy/wrapper/CMakeLists.txt">here</a>.
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-5-5-3-2152.html">Saxpy with our intrinsics implementation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-5-1890.html">How to create a saxpy python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-5-7-2223.html">Performances results</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

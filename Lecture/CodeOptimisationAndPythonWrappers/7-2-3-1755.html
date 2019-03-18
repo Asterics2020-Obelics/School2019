@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-2-2-1749.html">The CMakeLists.txt</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-2-1739.html">The classical approach</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-2-4-1761.html">The performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="1755" class="section">7.2.3 : The compilation</h3>
+
+	
+Let's compile :
+<table id="1757" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make
+-- Configuring done
+-- Generating done
+-- Build files have been written to: ExampleOptimisation/build
+[  7%] Built target hadamard_product_O2
+[ 14%] Built target hadamard_product_O1
+[ 22%] Built target hadamard_product_vectorize
+[ 29%] Built target hadamard_product_O0
+[ 37%] Built target hadamard_product_O3
+[ 44%] Built target hadamard_product_Ofast
+[ 51%] Built target hadamard_product_intrinsics
+[ 62%] Built target asterics_hpc
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target saxpy_Ofast
+</span>[ 66%] <span class="makeTerminalBuildingObject">Building CXX object 3-Saxpy/CMakeFiles/saxpy_Ofast.dir/main.cpp.o
+</span>[ 70%] <span class="makeTerminalLinking">Linking CXX executable saxpy_Ofast
+</span>[ 70%] Built target saxpy_Ofast
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target saxpy_O3
+</span>[ 74%] <span class="makeTerminalBuildingObject">Building CXX object 3-Saxpy/CMakeFiles/saxpy_O3.dir/main.cpp.o
+</span>[ 77%] <span class="makeTerminalLinking">Linking CXX executable saxpy_O3
+</span>[ 77%] Built target saxpy_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target saxpy_O0
+</span>[ 81%] <span class="makeTerminalBuildingObject">Building CXX object 3-Saxpy/CMakeFiles/saxpy_O0.dir/main.cpp.o
+</span>[ 85%] <span class="makeTerminalLinking">Linking CXX executable saxpy_O0
+</span>[ 85%] Built target saxpy_O0
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target saxpy_O1
+</span>[ 88%] <span class="makeTerminalBuildingObject">Building CXX object 3-Saxpy/CMakeFiles/saxpy_O1.dir/main.cpp.o
+</span>[ 92%] <span class="makeTerminalLinking">Linking CXX executable saxpy_O1
+</span>[ 92%] Built target saxpy_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target saxpy_O2
+</span>[ 96%] <span class="makeTerminalBuildingObject">Building CXX object 3-Saxpy/CMakeFiles/saxpy_O2.dir/main.cpp.o
+</span>[100%] <span class="makeTerminalLinking">Linking CXX executable saxpy_O2
+</span>[100%] Built target saxpy_O2</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Let's get the restults :
+<table id="1759" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make plot_all
+[  6%] Built target asterics_hpc
+[ 10%] Built target saxpy_O2
+[ 15%] Built target saxpy_Ofast
+[ 19%] Built target saxpy_O3
+[ 23%] Built target saxpy_O0
+[ 28%] Built target saxpy_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_saxpyBase
+</span>[ 30%] Run saxpy_Ofast program
+Saxpy
+evaluateSaxpy : nbElement = 1000, cyclePerElement = 0.405 cy/el, elapsedTime = 405 cy
+evaluateSaxpy : nbElement = 2000, cyclePerElement = 0.441 cy/el, elapsedTime = 882 cy
+evaluateSaxpy : nbElement = 3000, cyclePerElement = 0.456667 cy/el, elapsedTime = 1370 cy
+evaluateSaxpy : nbElement = 5000, cyclePerElement = 0.445 cy/el, elapsedTime = 2225 cy
+evaluateSaxpy : nbElement = 10000, cyclePerElement = 0.4675 cy/el, elapsedTime = 4675 cy
+[ 32%] Run saxpy_O0 program
+Saxpy
+evaluateSaxpy : nbElement = 1000, cyclePerElement = 5.367 cy/el, elapsedTime = 5367 cy
+evaluateSaxpy : nbElement = 2000, cyclePerElement = 5.35 cy/el, elapsedTime = 10700 cy
+evaluateSaxpy : nbElement = 3000, cyclePerElement = 5.32367 cy/el, elapsedTime = 15971 cy
+evaluateSaxpy : nbElement = 5000, cyclePerElement = 5.3292 cy/el, elapsedTime = 26646 cy
+evaluateSaxpy : nbElement = 10000, cyclePerElement = 5.3396 cy/el, elapsedTime = 53396 cy
+[ 34%] Run saxpy_O1 program
+Saxpy
+evaluateSaxpy : nbElement = 1000, cyclePerElement = 1.153 cy/el, elapsedTime = 1153 cy
+evaluateSaxpy : nbElement = 2000, cyclePerElement = 1.1395 cy/el, elapsedTime = 2279 cy
+evaluateSaxpy : nbElement = 3000, cyclePerElement = 1.13533 cy/el, elapsedTime = 3406 cy
+evaluateSaxpy : nbElement = 5000, cyclePerElement = 1.1704 cy/el, elapsedTime = 5852 cy
+evaluateSaxpy : nbElement = 10000, cyclePerElement = 1.1669 cy/el, elapsedTime = 11669 cy
+[ 36%] Run saxpy_O2 program
+Saxpy
+evaluateSaxpy : nbElement = 1000, cyclePerElement = 1.589 cy/el, elapsedTime = 1589 cy
+evaluateSaxpy : nbElement = 2000, cyclePerElement = 1.5125 cy/el, elapsedTime = 3025 cy
+evaluateSaxpy : nbElement = 3000, cyclePerElement = 1.536 cy/el, elapsedTime = 4608 cy
+evaluateSaxpy : nbElement = 5000, cyclePerElement = 1.5434 cy/el, elapsedTime = 7717 cy
+evaluateSaxpy : nbElement = 10000, cyclePerElement = 1.5417 cy/el, elapsedTime = 15417 cy
+[ 39%] Run saxpy_O3 program
+Saxpy
+evaluateSaxpy : nbElement = 1000, cyclePerElement = 0.399 cy/el, elapsedTime = 399 cy
+evaluateSaxpy : nbElement = 2000, cyclePerElement = 0.442 cy/el, elapsedTime = 884 cy
+evaluateSaxpy : nbElement = 3000, cyclePerElement = 0.453333 cy/el, elapsedTime = 1360 cy
+evaluateSaxpy : nbElement = 5000, cyclePerElement = 0.4476 cy/el, elapsedTime = 2238 cy
+evaluateSaxpy : nbElement = 10000, cyclePerElement = 0.4543 cy/el, elapsedTime = 4543 cy
+[ 41%] Call gnuplot saxpyBase
+[ 41%] Built target plot_saxpyBase
+[ 45%] Built target hadamard_product_intrinsics
+[ 50%] Built target hadamard_product_vectorize
+[ 54%] Built target hadamard_product_O3
+[ 63%] Built target plot_hadamardIntrinsics
+[ 67%] Built target hadamard_product_Ofast
+[ 71%] Built target hadamard_product_O2
+[ 76%] Built target hadamard_product_O1
+[ 80%] Built target hadamard_product_O0
+[ 93%] Built target plot_hadamardBase
+[100%] Built target plot_hadamardVectorize
+[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="7-2-2-1749.html">The CMakeLists.txt</a></td>
+			<td style="text-align: center;">Parent<br /><a href="7-2-1739.html">The classical approach</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="7-2-4-1761.html">The performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

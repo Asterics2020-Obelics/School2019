@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The runExample function</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-2-295.html">The runPythonExample function</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="276" class="chapter">Chapter 4.1 : The runExample function</h2>
+
+	
+The <b>runExample</b> function has to :
+
+		<ul>
+
+			<li> Create a target (<b>run</b> followed by the name of the program) to run the program (<b>run_all</b>).
+	</li>
+		<li> Add a dependency to the <b>run_all</b> to call all the custom commands.
+</li>
+		</ul>
+
+	
+<table id="293" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">function</span>(runExample targetName)
+	<span class="cmakeFunction">add_custom_command</span>(OUTPUT <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt
+		COMMAND <span class="dsNumber">${CMAKE_CURRENT_BINARY_DIR}</span>/<span class="dsNumber">${targetName}</span> 2&gt; <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt
+		WORKING_DIRECTORY <span class="dsString">&quot;${CMAKE_CURRENT_BINARY_DIR}&quot;</span>
+		COMMENT <span class="dsString">&quot;Run ${targetName} program&quot;</span>
+		DEPENDS <span class="dsNumber">${targetName}</span>
+	)
+	<span class="cmakeFunction">add_custom_target</span>(<span class="dsString">&quot;run_${targetName}&quot;</span> DEPENDS <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt)
+	<span class="cmakeFunction">add_dependencies</span>(run_all <span class="dsString">&quot;run_${targetName}&quot;</span>)
+<span class="cmakeFunction">endfunction</span>(runExample)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-2-295.html">The runPythonExample function</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-4-4-2541.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-4-2488.html">The vectorization of reduction with intrinsic functions</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-4-6-2553.html">The performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="2547" class="section">8.4.5 : The compilation</h3>
+
+
+Let's compile :
+<table id="2549" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make
+-- Configuring done
+-- Generating done
+-- Build files have been written to: ExampleOptimisation/build
+[  2%] Built target hadamard_product_O2
+[  6%] Built target hadamard_product_O1
+[ 10%] Built target hadamard_product_vectorize
+[ 13%] Built target hadamard_product_O0
+[ 17%] Built target hadamard_product_O3
+[ 19%] Built target hadamard_product_Ofast
+[ 21%] Built target hadamard_product_intrinsics
+[ 26%] Built target asterics_hpc
+[ 30%] Built target saxpy_O2
+[ 34%] Built target saxpy_O0
+[ 36%] Built target saxpy_O3
+[ 39%] Built target saxpy_O1
+[ 43%] Built target saxpy_Ofast
+[ 47%] Built target saxpy_vectorize
+[ 50%] Built target saxpy_intrinsics
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target reduction_real_intrinsics_O3
+</span>[ 50%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_intrinsics_O3.dir/reduction_intrinsics.cpp.o
+</span>[ 52%] <span class="makeTerminalBuildingObject">Building CXX object 4-Reduction/CMakeFiles/reduction_real_intrinsics_O3.dir/main_intrinsics.cpp.o
+</span>[ 54%] <span class="makeTerminalLinking">Linking CXX executable reduction_real_intrinsics_O3
+</span>[ 54%] Built target reduction_real_intrinsics_O3
+[ 58%] Built target reduction_real_vectorize_Ofast
+[ 63%] Built target reduction_real_vectorize_O3
+[ 67%] Built target reduction_real_O0
+[ 71%] Built target reduction_O1
+[ 73%] Built target reduction_O0
+[ 78%] Built target reduction_real_Ofast
+[ 82%] Built target reduction_O3
+[ 89%] Built target reduction_real_O3
+[ 93%] Built target reduction_real_O1
+[ 97%] Built target reduction_real_O2
+[100%] Built target reduction_O2</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Let's get the results :
+<table id="2551" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make plot_all
+[  2%] Built target asterics_hpc
+[  6%] Built target reduction_real_O3
+[  8%] Built target reduction_real_vectorize_Ofast
+[ 11%] Built target reduction_real_vectorize_O3
+[ 13%] Built target reduction_real_Ofast
+[ 17%] Built target plot_reductionVectorize
+[ 18%] Built target hadamard_product_intrinsics
+[ 20%] Built target hadamard_product_vectorize
+[ 23%] Built target hadamard_product_O3
+[ 27%] Built target plot_hadamardIntrinsics
+[ 28%] Built target hadamard_product_Ofast
+[ 29%] Built target hadamard_product_O2
+[ 32%] Built target hadamard_product_O1
+[ 33%] Built target hadamard_product_O0
+[ 38%] Built target plot_hadamardBase
+[ 40%] Built target plot_hadamardVectorize
+[ 41%] Built target saxpy_intrinsics
+[ 43%] Built target saxpy_O3
+[ 45%] Built target saxpy_vectorize
+[ 49%] Built target plot_saxpyIntrinsics
+[ 51%] Built target plot_saxpyVectorize
+[ 54%] Built target saxpy_Ofast
+[ 56%] Built target saxpy_O2
+[ 59%] Built target saxpy_O0
+[ 60%] Built target saxpy_O1
+[ 66%] Built target plot_saxpyBase
+[ 69%] Built target reduction_real_intrinsics_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_reductionIntrinsics
+</span>[ 69%] Run reduction_real_intrinsics_O3 program
+Reduction intrinsics
+evaluateReduction : nbElement = 1000, cyclePerElement = 1.327 cy/el, elapsedTime = 1327 cy
+evaluateReduction : nbElement = 2000, cyclePerElement = 1.5815 cy/el, elapsedTime = 3163 cy
+evaluateReduction : nbElement = 3000, cyclePerElement = 1.654 cy/el, elapsedTime = 4962 cy
+evaluateReduction : nbElement = 5000, cyclePerElement = 1.7174 cy/el, elapsedTime = 8587 cy
+evaluateReduction : nbElement = 10000, cyclePerElement = 1.7731 cy/el, elapsedTime = 17731 cy
+[ 70%] Call gnuplot reductionIntrinsics
+[ 74%] Built target plot_reductionIntrinsics
+[ 76%] Built target reduction_real_O2
+[ 79%] Built target reduction_real_O0
+[ 81%] Built target reduction_real_O1
+[ 87%] Built target plot_reductionReal
+[ 88%] Built target reduction_O2
+[ 91%] Built target reduction_O1
+[ 92%] Built target reduction_O0
+[ 95%] Built target reduction_O3
+[100%] Built target plot_reductionBase
+[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-4-4-2541.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-4-2488.html">The vectorization of reduction with intrinsic functions</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-4-6-2553.html">The performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

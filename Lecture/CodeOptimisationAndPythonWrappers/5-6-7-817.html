@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The CMakeLists.txt</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-6-807.html">The python install cmake script</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="817" class="section">5.6.7 : The CMakeLists.txt</h3>
+
+		
+First we manage the project name and the minimal <b>cmake</b> version for the file
+<table id="822" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(AstericsHPC)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Then, we get the files used to build the module :
+<table id="824" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">file</span>(<span class="cmakeKWord">GLOB</span> moduleSrc <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.cpp&quot;</span> <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.py&quot;</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+We call the <b>cmake</b> function to create a module :
+<table id="828" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+createPythonModule(install_asterics_hpc_module setup.py <span class="dsNumber">${moduleSrc}</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Finally, we add a dependency to ensure the module will not be installed before the <b>asterics_hpc</b> library is done :
+<table id="832" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">add_dependencies</span>(install_asterics_hpc_module asterics_hpc)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>allocMatrixWrapper.cpp</b> file :
+
+<table id="837" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(AstericsHPC)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">file</span>(<span class="cmakeKWord">GLOB</span> moduleSrc <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.cpp&quot;</span> <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.py&quot;</span>)
+
+createPythonModule(install_asterics_hpc_module setup.py <span class="dsNumber">${moduleSrc}</span>)
+
+<span class="cmakeFunction">add_dependencies</span>(install_asterics_hpc_module asterics_hpc)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="839" href="ressource/build/Correction/astericshpc/CMakeLists.txt">here</a>.
+
+
+
+
+
+		</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-6-807.html">The python install cmake script</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

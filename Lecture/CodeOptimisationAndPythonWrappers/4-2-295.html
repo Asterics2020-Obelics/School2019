@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The runPythonExample function</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-1-276.html">The runExample function</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-3-306.html">The plotPerf function</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="295" class="chapter">Chapter 4.2 : The runPythonExample function</h2>
+
+	
+We will need also a function to call our python example and get the performances automatically.
+<p id="297" class="paragraphStyle">
+	The <b>runPythonExample</b> is built the same way than the <b>runExample</b> function :
+</p>
+
+<table id="304" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">function</span>(runPythonExample scriptName installModuleDependency)
+	<span class="cmakeFunction">get_filename_component</span>(targetName <span class="dsNumber">${scriptName}</span> NAME_WE)
+	
+	<span class="cmakeFunction">add_custom_command</span>(OUTPUT <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt
+		COMMAND python3 <span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/<span class="dsNumber">${scriptName}</span> 2&gt; <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt
+		WORKING_DIRECTORY <span class="dsString">&quot;${CMAKE_CURRENT_BINARY_DIR}&quot;</span>
+		COMMENT <span class="dsString">&quot;Run python3 ${scriptName} program with target ${targetName}&quot;</span>
+		DEPENDS <span class="dsNumber">${scriptName}</span>
+	)
+	<span class="cmakeFunction">add_custom_target</span>(<span class="dsString">&quot;run_${targetName}&quot;</span>  DEPENDS <span class="dsNumber">${OUTPUT_PERF_DIR}</span>/<span class="dsNumber">${targetName}</span>.txt)
+	<span class="cmakeFunction">add_dependencies</span>(<span class="dsString">&quot;run_${targetName}&quot;</span> <span class="dsNumber">${installModuleDependency}</span>)
+	<span class="cmakeFunction">add_dependencies</span>(run_all <span class="dsString">&quot;run_${targetName}&quot;</span>)
+<span class="cmakeFunction">endfunction</span>(runPythonExample)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+	
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-1-276.html">The runExample function</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-3-306.html">The plotPerf function</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

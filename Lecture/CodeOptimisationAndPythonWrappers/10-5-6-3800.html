@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The performances</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-5-5-3794.html">The compilation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-5-3768.html">Intrinsics implementation</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-6-3818.html">Intrinsics implementation with a pitch</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="3800" class="section">10.5.6 : The performances</h3>
+
+
+<div id="3802" class="figureStyle">
+	<div id="3804" class="centerStyle">
+		<img id="3806" src="images/sgemmIntrinsicsElapsedTime.png" alt="nothing" />
+		<img id="3808" src="images/sgemmIntrinsicsElapsedTimeCyEl.png" alt="nothing" />
+		<p id="3810">Left panel : total averaged time for the sgemm function. Right panel : averaged time to compute one single element.</p>
+	</div>
+</div>
+
+The problem of this method is the matrices have to have a number of columns which is a multiple of the number of <b>float</b> in a vectorial register size.
+
+So you can try by yourself to find a solution to have an intrinsics method available for any matrix size.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-5-5-3794.html">The compilation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-5-3768.html">Intrinsics implementation</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-6-3818.html">Intrinsics implementation with a pitch</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

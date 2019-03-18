@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The source (asterics_alloc.cpp)</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-2-1-450.html">The header (asterics_alloc.h)</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-2-437.html">The allocation/deallocation files</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-3-462.html">The main header (asterics_hpc.h)</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="456" class="section">5.2.2 : The source (asterics_alloc.cpp)</h3>
+
+The <b>asterics_alloc.cpp</b> is :
+<table id="460" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#ifndef __APPLE__
+</span><span class="cppmacro">#	include &lt;malloc.h&gt;
+</span><span class="cppmacro">#else
+</span><span class="cppmacro">#	include &lt;stdlib.h&gt;
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#include &quot;asterics_alloc.h&quot;
+</span>
+<span class="cppmacro">#ifdef __APPLE__
+</span><span class="dsType">void</span> * <span class="cppstandardF">memalign</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> alignementInBytes, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> sizeOfVectorInBytes){
+	<span class="dsType">void</span> * ptr = <span class="pythonApiMacro">NULL</span>;
+	<span class="cppstandardF">posix_memalign</span>(&amp;ptr, alignementInBytes, sizeOfVectorInBytes);
+	<span class="dsKeyword">return</span> ptr;
+}
+<span class="cppmacro">#endif
+</span>
+<span class="dsType">void</span> * asterics_malloc(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> sizeOfVectorInBytes){
+	<span class="dsKeyword">return</span> <span class="cppstandardF">memalign</span>(VECTOR_ALIGNEMENT, sizeOfVectorInBytes);
+}
+
+<span class="dsType">void</span> asterics_free(<span class="dsType">void</span>* ptr){
+	<span class="cppstandardF">free</span>(ptr);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-2-1-450.html">The header (asterics_alloc.h)</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-2-437.html">The allocation/deallocation files</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-3-462.html">The main header (asterics_hpc.h)</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

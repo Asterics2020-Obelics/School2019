@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-2-4-3645.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-2-3625.html">The classical approach</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-2-6-3657.html">The performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="3651" class="section">10.2.5 : The compilation</h3>
+
+Let's compile :
+<table id="3653" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make
+-- Configuring done
+-- Generating done
+-- Build files have been written to: ExampleOptimisation/build
+[  2%] Built target hadamard_product_O2
+[  2%] Built target hadamard_product_O1
+[  4%] Built target hadamard_product_vectorize
+[  6%] Built target hadamard_product_O0
+[  8%] Built target hadamard_product_O3
+[ 10%] Built target hadamard_product_Ofast
+[ 12%] Built target hadamard_product_intrinsics
+[ 14%] Built target asterics_hpc
+[ 17%] Built target saxpy_O2
+[ 19%] Built target saxpy_O0
+[ 21%] Built target saxpy_O3
+[ 23%] Built target saxpy_O1
+[ 25%] Built target saxpy_Ofast
+[ 27%] Built target saxpy_vectorize
+[ 27%] Built target saxpy_intrinsics
+[ 29%] Built target reduction_real_O2
+[ 31%] Built target reduction_real_intrinsics_interleave8_O3
+[ 36%] Built target reduction_real_O1
+[ 38%] Built target reduction_real_Ofast
+[ 40%] Built target reduction_O0
+[ 42%] Built target reduction_O1
+[ 42%] Built target reduction_O2
+[ 44%] Built target reduction_O3
+[ 46%] Built target reduction_real_intrinsics_interleave4_O3
+[ 48%] Built target reduction_real_vectorize_Ofast
+[ 51%] Built target reduction_real_intrinsics_interleave2_O3
+[ 55%] Built target reduction_real_intrinsics_O3
+[ 57%] Built target reduction_real_O3
+[ 59%] Built target reduction_real_O0
+[ 63%] Built target reduction_real_vectorize_O3
+[ 65%] Built target barycentre_intrinsics
+[ 70%] Built target barycentre_base_O2
+[ 72%] Built target barycentre_base_O1
+[ 74%] Built target barycentre_base_O0
+[ 78%] Built target barycentre_vectorizeSplit_O3
+[ 80%] Built target barycentre_base_Ofast
+[ 82%] Built target barycentre_base_O3
+[ 85%] Built target barycentre_vectorize_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target sgemm_base_O3
+</span>[ 85%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_O3.dir/sgemm.cpp.o
+</span>[ 87%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_O3.dir/main_sgemm.cpp.o
+</span>[ 87%] <span class="makeTerminalLinking">Linking CXX executable sgemm_base_O3
+</span>[ 87%] Built target sgemm_base_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target sgemm_base_Ofast
+</span>[ 89%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_Ofast.dir/sgemm.cpp.o
+</span>[ 89%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_Ofast.dir/main_sgemm.cpp.o
+</span>[ 91%] <span class="makeTerminalLinking">Linking CXX executable sgemm_base_Ofast
+</span>[ 91%] Built target sgemm_base_Ofast
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target sgemm_base_O0
+</span>[ 93%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_O0.dir/sgemm.cpp.o
+</span>[ 93%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_O0.dir/main_sgemm.cpp.o
+</span>[ 95%] <span class="makeTerminalLinking">Linking CXX executable sgemm_base_O0
+</span>[ 95%] Built target sgemm_base_O0
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target sgemm_base_O1
+</span>[ 95%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_O1.dir/sgemm.cpp.o
+</span>[ 95%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_O1.dir/main_sgemm.cpp.o
+</span>[ 97%] <span class="makeTerminalLinking">Linking CXX executable sgemm_base_O1
+</span>[ 97%] Built target sgemm_base_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target sgemm_base_O2
+</span>[ 97%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_O2.dir/sgemm.cpp.o
+</span>[100%] <span class="makeTerminalBuildingObject">Building CXX object 6-Sgemm/CMakeFiles/sgemm_base_O2.dir/main_sgemm.cpp.o
+</span>[100%] <span class="makeTerminalLinking">Linking CXX executable sgemm_base_O2
+</span>[100%] Built target sgemm_base_O2</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Let's get the performances :
+<table id="3655" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make plot_all
+[  1%] Built target asterics_hpc
+[  2%] Built target sgemm_base_O2
+[  3%] Built target sgemm_base_O3
+[  6%] Built target sgemm_base_Ofast
+[  8%] Built target sgemm_base_O0
+[  9%] Built target sgemm_base_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_sgemmBase
+</span>[ 10%] Run sgemm_base_Ofast program
+SGEMM
+evaluateSgemm : nbElement = 10, cyclePerElement = 16.09 cy/el, elapsedTime = 1609 cy
+evaluateSgemm : nbElement = 20, cyclePerElement = 21.3275 cy/el, elapsedTime = 8531 cy
+evaluateSgemm : nbElement = 30, cyclePerElement = 29.9233 cy/el, elapsedTime = 26931 cy
+evaluateSgemm : nbElement = 50, cyclePerElement = 45.678 cy/el, elapsedTime = 114195 cy
+evaluateSgemm : nbElement = 80, cyclePerElement = 64.6194 cy/el, elapsedTime = 413564 cy
+evaluateSgemm : nbElement = 100, cyclePerElement = 80.6436 cy/el, elapsedTime = 806436 cy
+[ 10%] Run sgemm_base_O0 program
+SGEMM
+evaluateSgemm : nbElement = 10, cyclePerElement = 76.26 cy/el, elapsedTime = 7626 cy
+evaluateSgemm : nbElement = 20, cyclePerElement = 141.25 cy/el, elapsedTime = 56500 cy
+evaluateSgemm : nbElement = 30, cyclePerElement = 213.217 cy/el, elapsedTime = 191895 cy
+evaluateSgemm : nbElement = 50, cyclePerElement = 354.977 cy/el, elapsedTime = 887443 cy
+evaluateSgemm : nbElement = 80, cyclePerElement = 588.488 cy/el, elapsedTime = 3766326 cy
+evaluateSgemm : nbElement = 100, cyclePerElement = 724.719 cy/el, elapsedTime = 7247193 cy
+[ 12%] Run sgemm_base_O1 program
+SGEMM
+evaluateSgemm : nbElement = 10, cyclePerElement = 14.26 cy/el, elapsedTime = 1426 cy
+evaluateSgemm : nbElement = 20, cyclePerElement = 33.135 cy/el, elapsedTime = 13254 cy
+evaluateSgemm : nbElement = 30, cyclePerElement = 55.5922 cy/el, elapsedTime = 50033 cy
+evaluateSgemm : nbElement = 50, cyclePerElement = 101.988 cy/el, elapsedTime = 254970 cy
+evaluateSgemm : nbElement = 80, cyclePerElement = 187.36 cy/el, elapsedTime = 1199105 cy
+evaluateSgemm : nbElement = 100, cyclePerElement = 254.263 cy/el, elapsedTime = 2542630 cy
+[ 12%] Run sgemm_base_O2 program
+SGEMM
+evaluateSgemm : nbElement = 10, cyclePerElement = 17.45 cy/el, elapsedTime = 1745 cy
+evaluateSgemm : nbElement = 20, cyclePerElement = 35.305 cy/el, elapsedTime = 14122 cy
+evaluateSgemm : nbElement = 30, cyclePerElement = 58.2422 cy/el, elapsedTime = 52418 cy
+evaluateSgemm : nbElement = 50, cyclePerElement = 106.94 cy/el, elapsedTime = 267351 cy
+evaluateSgemm : nbElement = 80, cyclePerElement = 190.387 cy/el, elapsedTime = 1218476 cy
+evaluateSgemm : nbElement = 100, cyclePerElement = 252.578 cy/el, elapsedTime = 2525784 cy
+[ 12%] Run sgemm_base_O3 program
+SGEMM
+evaluateSgemm : nbElement = 10, cyclePerElement = 17.66 cy/el, elapsedTime = 1766 cy
+evaluateSgemm : nbElement = 20, cyclePerElement = 35.0475 cy/el, elapsedTime = 14019 cy
+evaluateSgemm : nbElement = 30, cyclePerElement = 57.0967 cy/el, elapsedTime = 51387 cy
+evaluateSgemm : nbElement = 50, cyclePerElement = 104.308 cy/el, elapsedTime = 260769 cy
+evaluateSgemm : nbElement = 80, cyclePerElement = 186.629 cy/el, elapsedTime = 1194424 cy
+evaluateSgemm : nbElement = 100, cyclePerElement = 250.513 cy/el, elapsedTime = 2505127 cy
+[ 13%] Call gnuplot sgemmBase
+[ 13%] Built target plot_sgemmBase
+[ 14%] Built target hadamard_product_intrinsics
+[ 15%] Built target hadamard_product_vectorize
+[ 16%] Built target hadamard_product_O3
+[ 19%] Built target plot_hadamardIntrinsics
+[ 20%] Built target hadamard_product_Ofast
+[ 21%] Built target hadamard_product_O2
+[ 21%] Built target hadamard_product_O1
+[ 22%] Built target hadamard_product_O0
+[ 25%] Built target plot_hadamardBase
+[ 26%] Built target plot_hadamardVectorize
+[ 26%] Built target saxpy_intrinsics
+[ 27%] Built target saxpy_O3
+[ 28%] Built target saxpy_vectorize
+[ 31%] Built target plot_saxpyIntrinsics
+[ 32%] Built target plot_saxpyVectorize
+[ 33%] Built target saxpy_Ofast
+[ 34%] Built target saxpy_O2
+[ 36%] Built target saxpy_O0
+[ 37%] Built target saxpy_O1
+[ 39%] Built target plot_saxpyBase
+[ 42%] Built target reduction_real_intrinsics_O3
+[ 43%] Built target reduction_real_intrinsics_interleave8_O3
+[ 44%] Built target reduction_real_Ofast
+[ 45%] Built target reduction_real_intrinsics_interleave4_O3
+[ 46%] Built target reduction_real_vectorize_Ofast
+[ 48%] Built target reduction_real_intrinsics_interleave2_O3
+[ 51%] Built target plot_reductionIntrinsicsInterleave8
+[ 54%] Built target reduction_real_vectorize_O3
+[ 55%] Built target reduction_real_O3
+[ 57%] Built target plot_reductionVectorize
+[ 59%] Built target reduction_O3
+[ 60%] Built target reduction_O0
+[ 61%] Built target reduction_O1
+[ 61%] Built target reduction_O2
+[ 63%] Built target plot_reductionBase
+[ 65%] Built target reduction_real_O0
+[ 66%] Built target reduction_real_O2
+[ 68%] Built target reduction_real_O1
+[ 72%] Built target plot_reductionReal
+[ 74%] Built target plot_reductionIntrinsicsInterleave2
+[ 77%] Built target plot_reductionIntrinsicsInterleave4
+[ 80%] Built target plot_reductionIntrinsics
+[ 81%] Built target barycentre_vectorize_O3
+[ 83%] Built target barycentre_intrinsics
+[ 85%] Built target barycentre_vectorizeSplit_O3
+[ 86%] Built target barycentre_base_O3
+[ 89%] Built target plot_barycentreIntrinsics
+[ 91%] Built target barycentre_base_O2
+[ 92%] Built target barycentre_base_O1
+[ 93%] Built target barycentre_base_O0
+[ 95%] Built target barycentre_base_Ofast
+[ 97%] Built target plot_barycentreBase
+[100%] Built target plot_barycentreVectorize
+[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-2-4-3645.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-2-3625.html">The classical approach</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-2-6-3657.html">The performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Get the performances</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-3-894.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-5-968.html">The first performances</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="955" class="chapter">Chapter 6.4 : Get the performances</h2>
+
+
+Let's call <b>CMake</b> :
+
+<pre id="959" class="terminalStyle">
+-- The C compiler identification is GNU 7.2.0
+-- The CXX compiler identification is GNU 7.2.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works                                                                                                                                 
+-- Detecting CXX compiler ABI info                                                                                                                                                       
+-- Detecting CXX compiler ABI info - done                                                                                                                                                
+-- Detecting CXX compile features                                                                                                                                                        
+-- Detecting CXX compile features - done                                                                                                                                                 
+-- Configuring done                                                                                                                                                                      
+-- Generating done                                                                                                                                                                       
+-- Build files have been written to: ExampleOptimisation/build
+</pre>
+
+
+We compile the programs :
+
+<table id="962" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target hadamard_product_Ofast
+</span>[ 10%] <span class="makeTerminalBuildingObject">Building CXX object 1-HadamardProduct/CMakeFiles/hadamard_product_Ofast.dir/main.cpp.o
+</span>[ 20%] <span class="makeTerminalLinking">Linking CXX executable hadamard_product_Ofast
+</span>[ 20%] Built target hadamard_product_Ofast
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target hadamard_product_O3
+</span>[ 30%] <span class="makeTerminalBuildingObject">Building CXX object 1-HadamardProduct/CMakeFiles/hadamard_product_O3.dir/main.cpp.o
+</span>[ 40%] <span class="makeTerminalLinking">Linking CXX executable hadamard_product_O3
+</span>[ 40%] Built target hadamard_product_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target hadamard_product_O0
+</span>[ 50%] <span class="makeTerminalBuildingObject">Building CXX object 1-HadamardProduct/CMakeFiles/hadamard_product_O0.dir/main.cpp.o
+</span>[ 60%] <span class="makeTerminalLinking">Linking CXX executable hadamard_product_O0
+</span>[ 60%] Built target hadamard_product_O0
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target hadamard_product_O1
+</span>[ 70%] <span class="makeTerminalBuildingObject">Building CXX object 1-HadamardProduct/CMakeFiles/hadamard_product_O1.dir/main.cpp.o
+</span>[ 80%] <span class="makeTerminalLinking">Linking CXX executable hadamard_product_O1
+</span>[ 80%] Built target hadamard_product_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target hadamard_product_O2
+</span>[ 90%] <span class="makeTerminalBuildingObject">Building CXX object 1-HadamardProduct/CMakeFiles/hadamard_product_O2.dir/main.cpp.o
+</span>[100%] <span class="makeTerminalLinking">Linking CXX executable hadamard_product_O2
+</span>[100%] Built target hadamard_product_O2</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+We run the programs :
+
+<table id="964" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make run_all
+[ 13%] Built target hadamard_product_O2
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target run_hadamard_product_O2
+</span>[ 20%] Run hadamard_product_O2 program
+Hadamard product
+evaluateHadamardProduct : nbElement = 1000, cyclePerElement = 1.147 cy/el, elapsedTime = 1147 cy
+evaluateHadamardProduct : nbElement = 2000, cyclePerElement = 1.137 cy/el, elapsedTime = 2274 cy
+evaluateHadamardProduct : nbElement = 3000, cyclePerElement = 1.18133 cy/el, elapsedTime = 3544 cy
+evaluateHadamardProduct : nbElement = 5000, cyclePerElement = 1.262 cy/el, elapsedTime = 6310 cy
+evaluateHadamardProduct : nbElement = 10000, cyclePerElement = 1.2649 cy/el, elapsedTime = 12649 cy
+[ 20%] Built target run_hadamard_product_O2
+[ 33%] Built target hadamard_product_Ofast
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target run_hadamard_product_Ofast
+</span>[ 40%] Run hadamard_product_Ofast program
+Hadamard product
+evaluateHadamardProduct : nbElement = 1000, cyclePerElement = 0.444 cy/el, elapsedTime = 444 cy
+evaluateHadamardProduct : nbElement = 2000, cyclePerElement = 0.38 cy/el, elapsedTime = 760 cy
+evaluateHadamardProduct : nbElement = 3000, cyclePerElement = 0.436333 cy/el, elapsedTime = 1309 cy
+evaluateHadamardProduct : nbElement = 5000, cyclePerElement = 0.475 cy/el, elapsedTime = 2375 cy
+evaluateHadamardProduct : nbElement = 10000, cyclePerElement = 0.4786 cy/el, elapsedTime = 4786 cy
+[ 40%] Built target run_hadamard_product_Ofast
+[ 53%] Built target hadamard_product_O3
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target run_hadamard_product_O3
+</span>[ 60%] Run hadamard_product_O3 program
+Hadamard product
+evaluateHadamardProduct : nbElement = 1000, cyclePerElement = 0.471 cy/el, elapsedTime = 471 cy
+evaluateHadamardProduct : nbElement = 2000, cyclePerElement = 0.389 cy/el, elapsedTime = 778 cy
+evaluateHadamardProduct : nbElement = 3000, cyclePerElement = 0.412 cy/el, elapsedTime = 1236 cy
+evaluateHadamardProduct : nbElement = 5000, cyclePerElement = 0.4628 cy/el, elapsedTime = 2314 cy
+evaluateHadamardProduct : nbElement = 10000, cyclePerElement = 0.4784 cy/el, elapsedTime = 4784 cy
+[ 60%] Built target run_hadamard_product_O3
+[ 73%] Built target hadamard_product_O0
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target run_hadamard_product_O0
+</span>[ 80%] Run hadamard_product_O0 program
+Hadamard product
+evaluateHadamardProduct : nbElement = 1000, cyclePerElement = 7.076 cy/el, elapsedTime = 7076 cy
+evaluateHadamardProduct : nbElement = 2000, cyclePerElement = 7.1175 cy/el, elapsedTime = 14235 cy
+evaluateHadamardProduct : nbElement = 3000, cyclePerElement = 7.089 cy/el, elapsedTime = 21267 cy
+evaluateHadamardProduct : nbElement = 5000, cyclePerElement = 7.0184 cy/el, elapsedTime = 35092 cy
+evaluateHadamardProduct : nbElement = 10000, cyclePerElement = 6.9753 cy/el, elapsedTime = 69753 cy
+[ 80%] Built target run_hadamard_product_O0
+[ 93%] Built target hadamard_product_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target run_hadamard_product_O1
+</span>[100%] Run hadamard_product_O1 program
+Hadamard product
+evaluateHadamardProduct : nbElement = 1000, cyclePerElement = 1.186 cy/el, elapsedTime = 1186 cy
+evaluateHadamardProduct : nbElement = 2000, cyclePerElement = 1.162 cy/el, elapsedTime = 2324 cy
+evaluateHadamardProduct : nbElement = 3000, cyclePerElement = 1.193 cy/el, elapsedTime = 3579 cy
+evaluateHadamardProduct : nbElement = 5000, cyclePerElement = 1.3002 cy/el, elapsedTime = 6501 cy
+evaluateHadamardProduct : nbElement = 10000, cyclePerElement = 1.2749 cy/el, elapsedTime = 12749 cy
+[100%] Built target run_hadamard_product_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target run_all
+</span>[100%] Built target run_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Now, we can make the plots :
+
+<table id="966" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make plot_all
+[ 12%] Built target hadamard_product_O2
+[ 25%] Built target hadamard_product_Ofast
+[ 37%] Built target hadamard_product_O3
+[ 50%] Built target hadamard_product_O0
+[ 62%] Built target hadamard_product_O1
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_hadamardBase
+</span>[ 68%] Call gnuplot hadamardBase
+[100%] Built target plot_hadamardBase
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target plot_all
+</span>[100%] Built target plot_all</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="6-3-894.html">The CMakeLists.txt file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="6-844.html">Optimisation of Hadamard product</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-5-968.html">The first performances</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

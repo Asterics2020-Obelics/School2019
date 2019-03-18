@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Optimisation of Hadamard product</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-7-817.html">The CMakeLists.txt</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-1-862.html">What is the Hadamard product ?</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h1 id="844" class="part">Part 6 : Optimisation of Hadamard product</h1>
+		<ul class="sommaire">
+			<li><a href="6-1-862.html">6.1) What is the Hadamard product ?</a></li>
+			<li><a href="6-2-871.html">6.2) Main to evaluate the Hadamard product</a></li>
+			<li><a href="6-3-894.html">6.3) The CMakeLists.txt file</a></li>
+			<li><a href="6-4-955.html">6.4) Get the performances</a></li>
+			<li><a href="6-5-968.html">6.5) The first performances</a></li>
+			<li><a href="6-6-983.html">6.6) How to vectorize the computation</a></li>
+			<li><a href="6-7-1287.html">6.7) How to create a hadamard python module</a></li>
+		</ul>
+
+
+<p id="846" class="paragraphStyle">
+	You can find the associated presentation
+	<a id="848" href="ressource/build/Presentation/1-OptimisationHadamardProduct/presentation_optimisation_hadamard_product.pdf">here</a>.
+</p>
+
+Let's create a directory <b>1-HadamardProduct</b> in the directory <b>ExampleOptimisation</b> for this example :
+
+<pre id="855" class="terminalStyle">
+$ mkdir 1-HadamardProduct
+</pre>
+
+
+Do not forget to complete the <b>ExampleOptimisation/CMakeLists.txt</b> file : 
+
+<table id="860" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HPC_ASTERICS)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">set</span>(PYTHON_EXECUTABLE <span class="dsString">&quot;python3&quot;</span> <span class="cmakeKWord">CACHE</span> <span class="cmakeKWord">BOOL</span> <span class="dsString">&quot;Python program&quot;</span>)
+
+<span class="cmakeFunction">add_subdirectory</span>(Performances)
+
+<span class="cmakeFunction">include</span>(runExample.cmake)
+<span class="cmakeFunction">include</span>(pythonCheck.cmake)
+
+<span class="cmakeFunction">set</span>(VECTOR_ALIGNEMENT 32)
+<span class="cmakeFunction">add_definitions</span>(-DVECTOR_ALIGNEMENT=<span class="dsNumber">${VECTOR_ALIGNEMENT}</span>)
+
+<span class="cmakeFunction">add_subdirectory</span>(0-CMakeHelloWorld)
+<span class="cmakeFunction">add_subdirectory</span>(AstericsHPC)
+<span class="cmakeFunction">include_directories</span>(<span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/AstericsHPC)
+
+<span class="cmakeFunction">add_subdirectory</span>(1-HadamardProduct)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-7-817.html">The CMakeLists.txt</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="6-1-862.html">What is the Hadamard product ?</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

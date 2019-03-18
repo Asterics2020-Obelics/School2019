@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Check the environnement</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-5-336.html">Functions to check Python environnement and build python module</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-5-336.html">Functions to check Python environnement and build python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-5-2-362.html">Make python module</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="347" class="section">4.5.1 : Check the environnement</h3>
+
+
+
+<p id="349" class="paragraphStyle">
+First, we have to set properly the installation prefix of modules by respect to the working environnement (if there is <b>Anaconda</b> or not) :
+</p>
+
+<table id="354" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">if</span>(DEFINED ENV{CONDA_DEFAULT_ENV})
+	<span class="cmakeFunction">message</span>(<span class="cmakeKWord">STATUS</span> <span class="dsString">&quot;ENV{CONDA_DEFAULT_ENV} exist $ENV{CONDA_DEFAULT_ENV}&quot;</span>)
+	<span class="cmakeFunction">message</span>(<span class="cmakeKWord">STATUS</span> <span class="dsString">&quot;ENV{CONDA_PREFIX} exist $ENV{CONDA_PREFIX}&quot;</span>)
+	<span class="cmakeFunction">message</span>(<span class="cmakeKWord">STATUS</span> <span class="dsString">&quot;ENV{CONDA_ENV_PATH} = $ENV{CONDA_ENV_PATH}&quot;</span>)
+	
+	<span class="cmakeFunction">if</span>(DEFINED ENV{CONDA_ENV_PATH})
+		<span class="cmakeFunction">set</span>(PYTHON_LIBRARY_DIR $ENV{CONDA_ENV_PATH}/lib <span class="cmakeKWord">CACHE</span> <span class="cmakeKWord">STRING</span> <span class="dsString">&quot;link directory of python&quot;</span>)
+	<span class="cmakeFunction">endif</span>()
+	<span class="cmakeFunction">if</span>(DEFINED ENV{CONDA_PREFIX})
+		<span class="cmakeFunction">set</span>(PYTHON_LIBRARY_DIR $ENV{CONDA_PREFIX}/lib <span class="cmakeKWord">CACHE</span> <span class="cmakeKWord">STRING</span> <span class="dsString">&quot;link directory of python&quot;</span>)
+	<span class="cmakeFunction">endif</span>()
+	<span class="cmakeFunction">set</span>(PYTHON_INSTALL_PREFIX <span class="dsString">&quot;&quot;</span> <span class="cmakeKWord">CACHE</span> <span class="cmakeKWord">STRING</span> <span class="dsString">&quot;Install prefix of the python plib functions&quot;</span>)
+<span class="cmakeFunction">else</span>()
+	<span class="cmakeFunction">message</span>(<span class="cmakeKWord">STATUS</span> <span class="dsString">&quot;ENV{CONDA_DEFAULT_ENV} does not exist&quot;</span>)
+	<span class="cmakeFunction">set</span>(PYTHON_INSTALL_PREFIX $ENV{HOME}/.local <span class="cmakeKWord">CACHE</span> <span class="cmakeKWord">STRING</span> <span class="dsString">&quot;Install prefix of the python plib functions&quot;</span>)
+<span class="cmakeFunction">endif</span>()
+
+<span class="cmakeFunction">if</span>(PYTHON_INSTALL_PREFIX)
+	<span class="cmakeFunction">set</span> (PYTHON_INSTALL_PREFIX <span class="dsString">&quot;--prefix=${PYTHON_INSTALL_PREFIX}&quot;</span>)
+<span class="cmakeFunction">endif</span>()</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then, we have to defined some useful <b>cmake</b> variables for the <b>python</b> part :
+
+<table id="360" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">set</span>(ASTERICS_HPC_INCLUDE <span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/AstericsHPC)
+<span class="cmakeFunction">set</span>(ASTERICS_HPC_PYINCLUDE <span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/AstericsHPC/astericshpc)
+<span class="cmakeFunction">set</span>(ASTERICS_CPP_LIBRARY_BUILD <span class="dsNumber">${CMAKE_CURRENT_BINARY_DIR}</span>/AstericsHPC)
+<span class="cmakeFunction">set</span>(ASTERICS_CPP_LIBRARY_DIR <span class="dsNumber">${CMAKE_INSTALL_PREFIX}</span>/lib)
+<span class="cmakeFunction">set</span>(SCRIPT_CALL_PYTHON_SETUP <span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/AstericsHPC/astericshpc/scriptCallPythonSetup.sh.cmake)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-5-336.html">Functions to check Python environnement and build python module</a></td>
+			<td style="text-align: center;">Parent<br /><a href="4-5-336.html">Functions to check Python environnement and build python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-5-2-362.html">Make python module</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

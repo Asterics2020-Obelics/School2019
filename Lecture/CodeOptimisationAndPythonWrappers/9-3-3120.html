@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The vectorization of barycentre</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="9-2-6-3105.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="9-3043.html">Application/exercice : Optimisation barycentre computation</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="9-3-1-3137.html">The barycentre_vectorize.h</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="3120" class="chapter">Chapter 9.3 : The vectorization of barycentre</h2>
+		<ul class="sommaire">
+			<li><a href="9-3-1-3137.html">9.3.1) The barycentre_vectorize.h</a></li>
+			<li><a href="9-3-2-3143.html">9.3.2) The barycentre_vectorize.cpp</a></li>
+			<li><a href="9-3-3-3149.html">9.3.3) The main_barycentre_vectorize.cpp</a></li>
+			<li><a href="9-3-4-3155.html">9.3.4) The barycentre_vectorizeSplit.h</a></li>
+			<li><a href="9-3-5-3161.html">9.3.5) The barycentre_vectorizeSplit.cpp</a></li>
+			<li><a href="9-3-6-3176.html">9.3.6) The main_barycentre_vectorizeSplit.cpp</a></li>
+			<li><a href="9-3-7-3182.html">9.3.7) The CMakeLists.txt</a></li>
+			<li><a href="9-3-8-3188.html">9.3.8) The compilation</a></li>
+			<li><a href="9-3-9-3194.html">9.3.9) The performances</a></li>
+		</ul>
+
+
+We, again, have to inform the compiler :
+		<ul>
+
+			<li> The tables (or pointers) are aligned with <b>__builtin_assume_aligned</b>
+	</li>
+		<li> The tables (or pointers) do not overhead eachother with <b> __restrict__</b>
+	</li>
+		<li> Enable the vectorization with <b>-O3 -ftree-vectorize -march=native -mtune=native -mavx2</b>
+</li>
+		</ul>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="9-2-6-3105.html">The performances</a></td>
+			<td style="text-align: center;">Parent<br /><a href="9-3043.html">Application/exercice : Optimisation barycentre computation</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="9-3-1-3137.html">The barycentre_vectorize.h</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

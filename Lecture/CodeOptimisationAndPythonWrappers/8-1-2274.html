@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>What is a reduction ?</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2256.html">Optimisation of a reduction</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2256.html">Optimisation of a reduction</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-2-2286.html">The classical approach</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="2274" class="chapter">Chapter 8.1 : What is a reduction ?</h2>
+
+
+A reduction is a sum of all the elements of a vector.
+
+<pre id="2276" class="adviseStyle">
+	It can also be a product of all the elements of a vector, but in our case it is a sum.
+</pre>
+
+
+Mathematicaly it is :
+
+<br /><img src="images/imgMath2279.png" alt="nothing" />
+
+<p id="2281" class="paragraphStyle">
+In C++ code :
+</p>
+
+<table id="2284" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">float</span> reduction(<span class="dsType">const</span> <span class="dsType">float</span> * tabValue, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement){
+	<span class="dsType">float</span> res(<span class="dsNumber">0</span><span class="dsNumber">.0f</span>);
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		res += tabValue[i];
+	}
+	<span class="dsKeyword">return</span> res;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-2256.html">Optimisation of a reduction</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-2256.html">Optimisation of a reduction</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-2-2286.html">The classical approach</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

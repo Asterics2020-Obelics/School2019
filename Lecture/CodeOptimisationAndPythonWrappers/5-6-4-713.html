@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The wrapper module source : astericshpc.cpp</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-3-651.html">Wrapper of the matrices allocation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-5-769.html">The module configuration : setup.py</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="713" class="section">5.6.4 : The wrapper module source : astericshpc.cpp</h3>
+
+		
+<p id="715" class="paragraphStyle">
+	Now, we have to write the module file <b>astericshpc.cpp</b>.
+	It will define the python module and the wrapped function to be called.
+</p>
+
+
+First, we have to activate the <b>numpy</b> we disabled in the previous files.
+Otherwise, you will get a segmentation fault out of knowhere.
+
+<table id="723" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then, we include all the previous wrapper and the python stuff, of course.
+
+<table id="725" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &lt;string&gt;
+</span>
+<span class="cppmacro">#include &quot;allocTableWrapper.h&quot;
+</span><span class="cppmacro">#include &quot;allocMatrixWrapper.h&quot;
+</span><span class="cppmacro">#include &quot;timerWrapper.h&quot;
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+It is always good to have a documentation of your function. The folowing will appear when you call a function with '?' or shift-tab in <b>jupyter-notebook</b> :
+
+<table id="729" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> allocTable_docstring = <span class="dsString">&quot;Allocate a table of float with a padding\n\
+Parameters :\n\
+	nbElement : number of elements of the table\n\
+Return :\n\
+	1 dimentional aligned numpy array initialised to 0&quot;</span>;
+
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> allocMatrix_docstring = <span class="dsString">&quot;Allocate a matrix of float with a pitch\n\
+Parameters :\n\
+	nbRow : number of rows of the matrix\n\
+	nbCol : number of colmuns of the matrix\n\
+Return :\n\
+	2 dimentional aligned numpy array initialised to 0 with a pitch&quot;</span>;
+
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> timerWrapper_docString = <span class="dsString">&quot;Get the number of cycles since the begining of the program\n\
+Return :\n\
+	number of cycles since the begining of the program in uint64&quot;</span>;</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+We define the callable method of our wrapper :
+
+<table id="731" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">static</span> <span class="pythonApiFunction">PyMethodDef</span> _astericshpc_methods[] = {
+	{<span class="dsString">&quot;allocTable&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)allocTableWrapper, <span class="pythonApiMacro">METH_VARARGS</span>, allocTable_docstring.<span class="cppstandardF">c_str</span>()},
+	{<span class="dsString">&quot;allocMatrix&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)allocMatrixWrapper, <span class="pythonApiMacro">METH_VARARGS</span>, allocMatrix_docstring.<span class="cppstandardF">c_str</span>()},
+	{<span class="dsString">&quot;rdtsc&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)timerWrapper, <span class="pythonApiMacro">METH_NOARGS</span>, timerWrapper_docString.<span class="cppstandardF">c_str</span>()},
+
+	{<span class="pythonApiMacro">NULL</span>, <span class="pythonApiMacro">NULL</span>}
+};</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<pre id="733" class="adviseStyle">
+	Notice that you can expose the functions you want, not all the functions you developed.
+</pre>
+
+
+Now, we have to define the <b>python</b> module itself :
+
+<table id="738" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsType">static</span> <span class="pythonApiFunction">PyModuleDef</span> _astericshpc_module = {
+	<span class="pythonApiMacro">PyModuleDef_HEAD_INIT</span>,
+	<span class="dsString">&quot;astericshpc&quot;</span>,
+	<span class="dsString">&quot;&quot;</span>,
+	-<span class="dsNumber">1</span>,
+	_astericshpc_methods,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>
+};</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Now we define the function which will be called on the <b>import</b> of our module.
+
+<pre id="742" class="warningStyle">
+	Notice you must call this function <b>PyInit_</b>NameOfYouModule where <b>NameOfYouModule</b> is the name of <b>THIS</b> file.
+</pre>
+
+
+We create the module, which is a <b>PyObject</b>.
+
+<pre id="753" class="warningStyle">
+	Do not forget to call <b>import_array</b> otherwise you will get a warning on the best cases and a segmentation fault on your module <b>import</b>.
+</pre>
+
+
+<table id="760" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMono">///Create the python module astericshpc
+</span><span class="dsDocMulti">/**	@return python module astericshpc
+*/</span>
+<span class="pythonApiMacro">PyMODINIT_FUNC</span> PyInit_astericshpc(<span class="dsType">void</span>){
+	<span class="cppqtMacro">PyObject</span> *m;
+	<span class="pythonApiFunction">import_array</span>();
+	
+	m = <span class="pythonApiFunction">PyModule_Create</span>(&amp;_astericshpc_module);
+	<span class="dsKeyword">if</span>(m == <span class="pythonApiMacro">NULL</span>){
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> m;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>astericshpc.cpp</b> file :
+
+<table id="765" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &lt;string&gt;
+</span>
+<span class="cppmacro">#include &quot;allocTableWrapper.h&quot;
+</span><span class="cppmacro">#include &quot;allocMatrixWrapper.h&quot;
+</span><span class="cppmacro">#include &quot;timerWrapper.h&quot;
+</span>
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> allocTable_docstring = <span class="dsString">&quot;Allocate a table of float with a padding\n\
+Parameters :\n\
+	nbElement : number of elements of the table\n\
+Return :\n\
+	1 dimentional aligned numpy array initialised to 0&quot;</span>;
+
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> allocMatrix_docstring = <span class="dsString">&quot;Allocate a matrix of float with a pitch\n\
+Parameters :\n\
+	nbRow : number of rows of the matrix\n\
+	nbCol : number of colmuns of the matrix\n\
+Return :\n\
+	2 dimentional aligned numpy array initialised to 0 with a pitch&quot;</span>;
+
+<span class="cppstdF">std</span>::<span class="cppstdF">string</span> timerWrapper_docString = <span class="dsString">&quot;Get the number of cycles since the begining of the program\n\
+Return :\n\
+	number of cycles since the begining of the program in uint64&quot;</span>;
+
+<span class="dsType">static</span> <span class="pythonApiFunction">PyMethodDef</span> _astericshpc_methods[] = {
+	{<span class="dsString">&quot;allocTable&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)allocTableWrapper, <span class="pythonApiMacro">METH_VARARGS</span>, allocTable_docstring.<span class="cppstandardF">c_str</span>()},
+	{<span class="dsString">&quot;allocMatrix&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)allocMatrixWrapper, <span class="pythonApiMacro">METH_VARARGS</span>, allocMatrix_docstring.<span class="cppstandardF">c_str</span>()},
+	{<span class="dsString">&quot;rdtsc&quot;</span>, (<span class="pythonApiFunction">PyCFunction</span>)timerWrapper, <span class="pythonApiMacro">METH_NOARGS</span>, timerWrapper_docString.<span class="cppstandardF">c_str</span>()},
+
+	{<span class="pythonApiMacro">NULL</span>, <span class="pythonApiMacro">NULL</span>}
+};
+
+<span class="dsType">static</span> <span class="pythonApiFunction">PyModuleDef</span> _astericshpc_module = {
+	<span class="pythonApiMacro">PyModuleDef_HEAD_INIT</span>,
+	<span class="dsString">&quot;astericshpc&quot;</span>,
+	<span class="dsString">&quot;&quot;</span>,
+	-<span class="dsNumber">1</span>,
+	_astericshpc_methods,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>,
+	<span class="pythonApiMacro">NULL</span>
+};
+
+<span class="dsDocMono">///Create the python module astericshpc
+</span><span class="dsDocMulti">/**	@return python module astericshpc
+*/</span>
+<span class="pythonApiMacro">PyMODINIT_FUNC</span> PyInit_astericshpc(<span class="dsType">void</span>){
+	<span class="cppqtMacro">PyObject</span> *m;
+	<span class="pythonApiFunction">import_array</span>();
+	
+	m = <span class="pythonApiFunction">PyModule_Create</span>(&amp;_astericshpc_module);
+	<span class="dsKeyword">if</span>(m == <span class="pythonApiMacro">NULL</span>){
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> m;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+You can download it <a id="767" href="ressource/build/Correction/astericshpc/astericshpc.cpp">here</a>.
+		
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-3-651.html">Wrapper of the matrices allocation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-5-769.html">The module configuration : setup.py</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

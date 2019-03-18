@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Several useful CMake functions</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="3-174.html">Starting the project</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-1-276.html">The runExample function</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h1 id="240" class="part">Part 4 : Several useful CMake functions</h1>
+		<ul class="sommaire">
+			<li><a href="4-1-276.html">4.1) The runExample function</a></li>
+			<li><a href="4-2-295.html">4.2) The runPythonExample function</a></li>
+			<li><a href="4-3-306.html">4.3) The plotPerf function</a></li>
+			<li><a href="4-4-324.html">4.4) Summary</a></li>
+			<li><a href="4-5-336.html">4.5) Functions to check Python environnement and build python module</a></li>
+		</ul>
+
+
+Before going further in this tutorial, we have to develop two small functions which will simplify the rest of the tutorial.
+
+		<ul>
+
+			<li> A function to lauch automatically the programs to be timed (<b>runExample</b>).
+	</li>
+		<li> A function to plot the result of the timer to have a automatic vizualisation of what we are doing (<b>plotPerf</b>).
+</li>
+		</ul>
+
+
+<p id="253" class="paragraphStyle">
+These two functions will be in the file <b>runExample.cmake</b>.
+</p>
+
+First we have to defined two target :
+
+		<ul>
+
+			<li> A target to run all the timing process (<b>run_all</b>).
+	</li>
+		<li> A target to plot all the results (<b>plot_all</b>).
+</li>
+		</ul>
+
+
+We have also to define the output directory of all the produced files.
+
+<p id="269" class="paragraphStyle">
+The header of the file <b>runExample.cmake</b> is :
+</p>
+
+<table id="274" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">add_custom_target</span>(run_all)
+<span class="cmakeFunction">add_custom_target</span>(plot_all)
+
+<span class="cmakeFunction">add_dependencies</span>(plot_all run_all)
+
+<span class="cmakeFunction">set</span>(OUTPUT_PERF_DIR <span class="dsString">&quot;${CMAKE_BINARY_DIR}/Performances&quot;</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="3-174.html">Starting the project</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-1-276.html">The runExample function</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

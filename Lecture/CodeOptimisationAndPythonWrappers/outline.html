@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Outline</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<h1 class="mainTitle">Outline</h1>
+		<ul class="sommairePage">
+			<ul>
+				<li><a href="index.html">Main Page</a></li>
+			<li><a href="1-41.html">1 : Introduction to High Performance Computing</a></li>
+				<ul>
+				</ul>
+			<li><a href="2-49.html">2 : Basic use of CMake</a></li>
+				<ul>
+			<li><a href="2-1-51.html">2.1 : What is CMake ?</a></li>
+				<ul>
+				</ul>
+			<li><a href="2-2-100.html">2.2 : Hello world with CMake</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="3-174.html">3 : Starting the project</a></li>
+				<ul>
+				</ul>
+			<li><a href="4-240.html">4 : Several useful CMake functions</a></li>
+				<ul>
+			<li><a href="4-1-276.html">4.1 : The runExample function</a></li>
+				<ul>
+				</ul>
+			<li><a href="4-2-295.html">4.2 : The runPythonExample function</a></li>
+				<ul>
+				</ul>
+			<li><a href="4-3-306.html">4.3 : The plotPerf function</a></li>
+				<ul>
+				</ul>
+			<li><a href="4-4-324.html">4.4 : Summary</a></li>
+				<ul>
+				</ul>
+			<li><a href="4-5-336.html">4.5 : Functions to check Python environnement and build python module</a></li>
+				<ul>
+			<li><a href="4-5-1-347.html">4.5.1 : Check the environnement</a></li>
+				<ul>
+				</ul>
+			<li><a href="4-5-2-362.html">4.5.2 : Make python module</a></li>
+				<ul>
+				</ul>
+			<li><a href="4-5-3-368.html">4.5.3 : Summary</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+			<li><a href="5-382.html">5 : Creation of a HPC/Timer library</a></li>
+				<ul>
+			<li><a href="5-1-412.html">5.1 : The rdtsc files</a></li>
+				<ul>
+			<li><a href="5-1-1-425.html">5.1.1 : The header (timer.h)</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-1-2-431.html">5.1.2 : The source (timer.cpp)</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="5-2-437.html">5.2 : The allocation/deallocation files</a></li>
+				<ul>
+			<li><a href="5-2-1-450.html">5.2.1 : The header (asterics_alloc.h)</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-2-2-456.html">5.2.2 : The source (asterics_alloc.cpp)</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="5-3-462.html">5.3 : The main header (asterics_hpc.h)</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-4-468.html">5.4 : The CMakeLists.txt</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-5-474.html">5.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-6-479.html">5.6 : The associated python module</a></li>
+				<ul>
+			<li><a href="5-6-1-507.html">5.6.1 : Wrapper of the timer</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-6-2-572.html">5.6.2 : Wrapper of the tables allocation</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-6-3-651.html">5.6.3 : Wrapper of the matrices allocation</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-6-4-713.html">5.6.4 : The wrapper module source : astericshpc.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-6-5-769.html">5.6.5 : The module configuration : setup.py</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-6-6-807.html">5.6.6 : The python install cmake script</a></li>
+				<ul>
+				</ul>
+			<li><a href="5-6-7-817.html">5.6.7 : The CMakeLists.txt</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+			<li><a href="6-844.html">6 : Optimisation of Hadamard product</a></li>
+				<ul>
+			<li><a href="6-1-862.html">6.1 : What is the Hadamard product ?</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-2-871.html">6.2 : Main to evaluate the Hadamard product</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-3-894.html">6.3 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-4-955.html">6.4 : Get the performances</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-5-968.html">6.5 : The first performances</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-983.html">6.6 : How to vectorize the computation</a></li>
+				<ul>
+			<li><a href="6-6-1-985.html">6.6.1 : What is vectorization ?</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-2-1016.html">6.6.2 : Automatic vectorization (by the compiler)</a></li>
+				<ul>
+			<li><a href="6-6-2-1-1018.html">6.6.2.1 : Things to verify before vectorizing</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-2-2-1109.html">6.6.2.2 : The full main_vectorize.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-2-3-1117.html">6.6.2.3 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-2-4-1143.html">6.6.2.4 : Compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-2-5-1154.html">6.6.2.5 : The performances with vectorization by the compiler</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="6-6-3-1168.html">6.6.3 : Manual vectorization (by Intrinsic functions)</a></li>
+				<ul>
+			<li><a href="6-6-3-1-1212.html">6.6.3.1 : Begining of the main_intrinsics.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-3-2-1221.html">6.6.3.2 : The hadamard_product function</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-3-3-1234.html">6.6.3.3 : The function to evaluate performances</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-3-4-1238.html">6.6.3.4 : The main function</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-3-5-1244.html">6.6.3.5 : Full main_intrinsics.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-3-6-1252.html">6.6.3.6 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-3-7-1256.html">6.6.3.7 : Compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-6-3-8-1260.html">6.6.3.8 : The performances with Intrinsics</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="6-6-4-1274.html">6.6.4 : Conclusion on vectorization</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="6-7-1287.html">6.7 : How to create a hadamard python module</a></li>
+				<ul>
+			<li><a href="6-7-1-1293.html">6.7.1 : The C++ kernel</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-2-1312.html">6.7.2 : The wrapper function</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-3-1360.html">6.7.3 : The C++ module file</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-4-1416.html">6.7.4 : The setup.py file</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-5-1453.html">6.7.5 : Peformances tests</a></li>
+				<ul>
+			<li><a href="6-7-5-1-1457.html">6.7.5.1 : A naive implementation of the hadamard product</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-5-2-1504.html">6.7.5.2 : Hadamard product with numpy functions</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-5-3-1547.html">6.7.5.3 : Hadamard product with our intrinsics pitch implementation</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-5-4-1587.html">6.7.5.4 : What hapened if I use python list instead of numpy array for naive implementation ?</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="6-7-6-1628.html">6.7.6 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-7-1659.html">6.7.7 : Performances results</a></li>
+				<ul>
+			<li><a href="6-7-7-1-1661.html">6.7.7.1 : Basic performances</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-7-2-1675.html">6.7.7.2 : And the lists ?</a></li>
+				<ul>
+				</ul>
+			<li><a href="6-7-7-3-1689.html">6.7.7.3 : Summary</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+				</ul>
+			<li><a href="7-1705.html">7 : Optimisation of saxpy</a></li>
+				<ul>
+			<li><a href="7-1-1723.html">7.1 : What is a Saxpy ?</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-2-1739.html">7.2 : The classical approach</a></li>
+				<ul>
+			<li><a href="7-2-1-1743.html">7.2.1 : The main.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-2-2-1749.html">7.2.2 : The CMakeLists.txt</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-2-3-1755.html">7.2.3 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-2-4-1761.html">7.2.4 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="7-3-1776.html">7.3 : The vectorization of Saxpy</a></li>
+				<ul>
+			<li><a href="7-3-1-1793.html">7.3.1 : The main_vectorize.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-3-2-1799.html">7.3.2 : The CMakeLists.txt</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-3-3-1805.html">7.3.3 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-3-4-1809.html">7.3.4 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="7-4-1825.html">7.4 : The intrinsics version of Saxpy</a></li>
+				<ul>
+			<li><a href="7-4-1-1858.html">7.4.1 : The main_intrinsics.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-4-2-1864.html">7.4.2 : The CMakeLists.txt</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-4-3-1870.html">7.4.3 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-4-4-1874.html">7.4.4 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="7-5-1890.html">7.5 : How to create a saxpy python module</a></li>
+				<ul>
+			<li><a href="7-5-1-1896.html">7.5.1 : The C++ kernel</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-5-2-1915.html">7.5.2 : The wrapper function</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-5-3-1965.html">7.5.3 : The C++ module file</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-5-4-2021.html">7.5.4 : The setup.py file</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-5-5-2058.html">7.5.5 : Peformances tests</a></li>
+				<ul>
+			<li><a href="7-5-5-1-2062.html">7.5.5.1 : A naive implementation of the saxpy</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-5-5-2-2109.html">7.5.5.2 : Saxpy with numpy functions</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-5-5-3-2152.html">7.5.5.3 : Saxpy with our intrinsics implementation</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="7-5-6-2192.html">7.5.6 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-5-7-2223.html">7.5.7 : Performances results</a></li>
+				<ul>
+			<li><a href="7-5-7-1-2225.html">7.5.7.1 : Basic performances</a></li>
+				<ul>
+				</ul>
+			<li><a href="7-5-7-2-2239.html">7.5.7.2 : Summary</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+				</ul>
+			<li><a href="8-2256.html">8 : Optimisation of a reduction</a></li>
+				<ul>
+			<li><a href="8-1-2274.html">8.1 : What is a reduction ?</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-2286.html">8.2 : The classical approach</a></li>
+				<ul>
+			<li><a href="8-2-1-2288.html">8.2.1 : The main.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-2-2294.html">8.2.2 : The CMakeLists.txt</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-3-2300.html">8.2.3 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-4-2312.html">8.2.4 : The performances</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-5-2363.html">8.2.5 : Solving the performance problem</a></li>
+				<ul>
+			<li><a href="8-2-5-1-2380.html">8.2.5.1 : The reduction.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-5-2-2386.html">8.2.5.2 : The reduction.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-5-3-2392.html">8.2.5.3 : The main_reduction.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-5-4-2398.html">8.2.5.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-5-5-2404.html">8.2.5.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-2-5-6-2410.html">8.2.5.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+			<li><a href="8-3-2425.html">8.3 : The vectorization of reduction</a></li>
+				<ul>
+			<li><a href="8-3-1-2442.html">8.3.1 : The reduction_vectorize.h</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-3-2-2448.html">8.3.2 : The reduction_vectorize.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-3-3-2454.html">8.3.3 : The main_vectorize.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-3-4-2460.html">8.3.4 : The CMakeLists.txt</a></li>
+				<ul>
+			<li><a href="8-3-4-1-2466.html">8.3.4.1 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-3-4-2-2472.html">8.3.4.2 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+			<li><a href="8-4-2488.html">8.4 : The vectorization of reduction with intrinsic functions</a></li>
+				<ul>
+			<li><a href="8-4-1-2523.html">8.4.1 : The reduction_intrinsics.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-4-2-2529.html">8.4.2 : The reduction_intrinsics.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-4-3-2535.html">8.4.3 : The main_intrinsics.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-4-4-2541.html">8.4.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-4-5-2547.html">8.4.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-4-6-2553.html">8.4.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="8-5-2569.html">8.5 : How to optimize more</a></li>
+				<ul>
+			<li><a href="8-5-1-2584.html">8.5.1 : Interleaving 2 times</a></li>
+				<ul>
+			<li><a href="8-5-1-1-2586.html">8.5.1.1 : The reduction_intrinsics_interleave2.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-1-2-2592.html">8.5.1.2 : The reduction_intrinsics_interleave2.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-1-3-2598.html">8.5.1.3 : The main_intrinsics_interleave2.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-1-4-2604.html">8.5.1.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-1-5-2610.html">8.5.1.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-1-6-2616.html">8.5.1.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="8-5-2-2630.html">8.5.2 : Interleaving 4 times</a></li>
+				<ul>
+			<li><a href="8-5-2-1-2632.html">8.5.2.1 : The reduction_intrinsics_interleave4.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-2-2-2638.html">8.5.2.2 : The reduction_intrinsics_interleave4.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-2-3-2644.html">8.5.2.3 : The main_intrinsics_interleave4.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-2-4-2650.html">8.5.2.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-2-5-2656.html">8.5.2.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-2-6-2662.html">8.5.2.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="8-5-3-2676.html">8.5.3 : Interleaving 8 times</a></li>
+				<ul>
+			<li><a href="8-5-3-1-2678.html">8.5.3.1 : The reduction_intrinsics_interleave8.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-3-2-2684.html">8.5.3.2 : The reduction_intrinsics_interleave8.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-3-3-2690.html">8.5.3.3 : The main_intrinsics_interleave8.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-3-4-2696.html">8.5.3.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-3-5-2702.html">8.5.3.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-5-3-6-2708.html">8.5.3.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="8-5-4-2722.html">8.5.4 : Summary</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="8-6-2738.html">8.6 : How to create a reduction python module</a></li>
+				<ul>
+			<li><a href="8-6-1-2758.html">8.6.1 : The wrapper function</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-6-2-2804.html">8.6.2 : The C++ module file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-6-3-2860.html">8.6.3 : The setup.py file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-6-4-2897.html">8.6.4 : Peformances tests</a></li>
+				<ul>
+			<li><a href="8-6-4-1-2901.html">8.6.4.1 : Reduction with numpy functions</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-6-4-2-2939.html">8.6.4.2 : Reduction with our intrinsics implementation</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="8-6-5-2979.html">8.6.5 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-6-6-3010.html">8.6.6 : Performances results</a></li>
+				<ul>
+			<li><a href="8-6-6-1-3012.html">8.6.6.1 : Basic performances</a></li>
+				<ul>
+				</ul>
+			<li><a href="8-6-6-2-3026.html">8.6.6.2 : Summary</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+				</ul>
+			<li><a href="9-3043.html">9 : Application/exercice : Optimisation barycentre computation</a></li>
+				<ul>
+			<li><a href="9-1-3061.html">9.1 : What is a barycentre ?</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-2-3073.html">9.2 : The classical approach</a></li>
+				<ul>
+			<li><a href="9-2-1-3075.html">9.2.1 : The barycentre.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-2-2-3081.html">9.2.2 : The barycentre.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-2-3-3087.html">9.2.3 : The main_barycentre.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-2-4-3093.html">9.2.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-2-5-3099.html">9.2.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-2-6-3105.html">9.2.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="9-3-3120.html">9.3 : The vectorization of barycentre</a></li>
+				<ul>
+			<li><a href="9-3-1-3137.html">9.3.1 : The barycentre_vectorize.h</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-3-2-3143.html">9.3.2 : The barycentre_vectorize.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-3-3-3149.html">9.3.3 : The main_barycentre_vectorize.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-3-4-3155.html">9.3.4 : The barycentre_vectorizeSplit.h</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-3-5-3161.html">9.3.5 : The barycentre_vectorizeSplit.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-3-6-3176.html">9.3.6 : The main_barycentre_vectorizeSplit.cpp</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-3-7-3182.html">9.3.7 : The CMakeLists.txt</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-3-8-3188.html">9.3.8 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-3-9-3194.html">9.3.9 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="9-4-3210.html">9.4 : The intrinsics version of barycentre</a></li>
+				<ul>
+			<li><a href="9-4-1-3243.html">9.4.1 : The barycentre_intrinsics.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-4-2-3249.html">9.4.2 : The barycentre_intrinsics.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-4-3-3255.html">9.4.3 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-4-4-3261.html">9.4.4 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-4-5-3267.html">9.4.5 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="9-5-3283.html">9.5 : How to create a barycentre python module</a></li>
+				<ul>
+			<li><a href="9-5-1-3303.html">9.5.1 : The wrapper function</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-5-2-3349.html">9.5.2 : The C++ module file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-5-3-3405.html">9.5.3 : The setup.py file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-5-4-3442.html">9.5.4 : Peformances tests</a></li>
+				<ul>
+			<li><a href="9-5-4-1-3446.html">9.5.4.1 : Barycentre with numpy functions</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-5-4-2-3484.html">9.5.4.2 : Barycentre with our intrinsics implementation</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="9-5-5-3524.html">9.5.5 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-5-6-3555.html">9.5.6 : Performances results</a></li>
+				<ul>
+			<li><a href="9-5-6-1-3557.html">9.5.6.1 : Basic performances</a></li>
+				<ul>
+				</ul>
+			<li><a href="9-5-6-2-3571.html">9.5.6.2 : Summary</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+				</ul>
+			<li><a href="10-3587.html">10 : Optimisation of Dense Matrix-Matrix multiplication</a></li>
+				<ul>
+			<li><a href="10-1-3605.html">10.1 : What is a SGEMM ?</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-2-3625.html">10.2 : The classical approach</a></li>
+				<ul>
+			<li><a href="10-2-1-3627.html">10.2.1 : The sgemm.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-2-2-3633.html">10.2.2 : The sgemm.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-2-3-3639.html">10.2.3 : The main_sgemm.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-2-4-3645.html">10.2.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-2-5-3651.html">10.2.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-2-6-3657.html">10.2.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="10-3-3672.html">10.3 : Let's swap the loops over j and k</a></li>
+				<ul>
+			<li><a href="10-3-1-3674.html">10.3.1 : The sgemm_swap.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-3-2-3680.html">10.3.2 : The sgemm_swap.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-3-3-3686.html">10.3.3 : The main_sgemm_swap.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-3-4-3692.html">10.3.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-3-5-3698.html">10.3.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-3-6-3704.html">10.3.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="10-4-3720.html">10.4 : Vectorization</a></li>
+				<ul>
+			<li><a href="10-4-1-3722.html">10.4.1 : The sgemm_vectorize.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-4-2-3728.html">10.4.2 : The sgemm_vectorize.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-4-3-3734.html">10.4.3 : The main_sgemm_vectorize.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-4-4-3740.html">10.4.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-4-5-3746.html">10.4.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-4-6-3752.html">10.4.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="10-5-3768.html">10.5 : Intrinsics implementation</a></li>
+				<ul>
+			<li><a href="10-5-1-3770.html">10.5.1 : The sgemm_intrinsics.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-5-2-3776.html">10.5.2 : The sgemm_intrinsics.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-5-3-3782.html">10.5.3 : The main_sgemm_intrinsics.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-5-4-3788.html">10.5.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-5-5-3794.html">10.5.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-5-6-3800.html">10.5.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="10-6-3818.html">10.6 : Intrinsics implementation with a pitch</a></li>
+				<ul>
+			<li><a href="10-6-1-3820.html">10.6.1 : The sgemm_intrinsics_pitch.h file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-6-2-3826.html">10.6.2 : The sgemm_intrinsics_pitch.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-6-3-3832.html">10.6.3 : The main_sgemm_intrinsics_pitch.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-6-4-3838.html">10.6.4 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-6-5-3844.html">10.6.5 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-6-6-3850.html">10.6.6 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="10-7-3866.html">10.7 : How to create a sgemm python module</a></li>
+				<ul>
+			<li><a href="10-7-1-3886.html">10.7.1 : The wrapper function</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-7-2-3932.html">10.7.2 : The C++ module file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-7-3-3988.html">10.7.3 : The setup.py file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-7-4-4025.html">10.7.4 : Peformances tests</a></li>
+				<ul>
+			<li><a href="10-7-4-1-4029.html">10.7.4.1 : Sgemm with numpy functions</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-7-4-2-4067.html">10.7.4.2 : Sgemm with our intrinsics implementation</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="10-7-5-4107.html">10.7.5 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-7-6-4138.html">10.7.6 : Performances results</a></li>
+				<ul>
+			<li><a href="10-7-6-1-4140.html">10.7.6.1 : Basic performances</a></li>
+				<ul>
+				</ul>
+			<li><a href="10-7-6-2-4154.html">10.7.6.2 : Summary</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+				</ul>
+			<li><a href="11-4170.html">11 : What about branching ? (bonus)</a></li>
+				<ul>
+			<li><a href="11-1-4191.html">11.1 : Classical implementation</a></li>
+				<ul>
+			<li><a href="11-1-1-4193.html">11.1.1 : The main.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-1-2-4199.html">11.1.2 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-1-3-4205.html">11.1.3 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-1-4-4211.html">11.1.4 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="11-2-4226.html">11.2 : Implementation without if</a></li>
+				<ul>
+			<li><a href="11-2-1-4228.html">11.2.1 : The main_optimise.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-2-2-4234.html">11.2.2 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-2-3-4240.html">11.2.3 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-2-4-4246.html">11.2.4 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="11-3-4262.html">11.3 : Vectorization Implementation</a></li>
+				<ul>
+			<li><a href="11-3-1-4264.html">11.3.1 : The main_vectorize.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-3-2-4270.html">11.3.2 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-3-3-4276.html">11.3.3 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-3-4-4282.html">11.3.4 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+			<li><a href="11-4-4298.html">11.4 : Intrinsics Implementation</a></li>
+				<ul>
+			<li><a href="11-4-1-4300.html">11.4.1 : The main_intrinsics.cpp file</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-4-2-4306.html">11.4.2 : The CMakeLists.txt file</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-4-3-4312.html">11.4.3 : The compilation</a></li>
+				<ul>
+				</ul>
+			<li><a href="11-4-4-4318.html">11.4.4 : The performances</a></li>
+				<ul>
+				</ul>
+				</ul>
+				</ul>
+			</ul>
+		</ul>
+	</body>
+</html>
+

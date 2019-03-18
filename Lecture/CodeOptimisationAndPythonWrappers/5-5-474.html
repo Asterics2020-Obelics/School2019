@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The compilation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-4-468.html">The CMakeLists.txt</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-382.html">Creation of a HPC/Timer library</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-479.html">The associated python module</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="474" class="chapter">Chapter 5.5 : The compilation</h2>
+
+
+Then we can compile :
+<table id="476" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/pierre/projects/COURS/ExampleOptimisation/build
+[ 11%] Built target hadamard_product_O2
+[ 23%] Built target hadamard_product_O1
+[ 35%] Built target hadamard_product_vectorize
+[ 47%] Built target hadamard_product_O0
+[ 58%] Built target hadamard_product_O3
+[ 70%] Built target hadamard_product_Ofast
+[ 82%] Built target hadamard_product_intrinsics
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target asterics_hpc
+</span>[ 88%] <span class="makeTerminalBuildingObject">Building CXX object AstericsHPC/CMakeFiles/asterics_hpc.dir/asterics_alloc.cpp.o
+</span>[ 94%] <span class="makeTerminalBuildingObject">Building CXX object AstericsHPC/CMakeFiles/asterics_hpc.dir/timer.cpp.o
+</span>[100%] <span class="makeTerminalLinking">Linking CXX shared library libasterics_hpc.so
+</span>[100%] Built target asterics_hpc</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Now, we have a library to allocate/deallocate data and to time functions.
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-4-468.html">The CMakeLists.txt</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-382.html">Creation of a HPC/Timer library</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-479.html">The associated python module</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

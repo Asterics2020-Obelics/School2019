@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Starting the project</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="2-2-100.html">Hello world with CMake</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h1 id="174" class="part">Part 3 : Starting the project</h1>
+
+
+We will develop all the code for this tutorial in a directory <b>ExampleOptimisation</b>.
+
+<pre id="178" class="terminalStyle">
+$ mkdir ExampleOptimisation
+</pre>
+
+
+In this directory we will create other directories :
+
+		<ul>
+
+			<li> <b>Performances</b> : to store all the performances results.
+	</li>
+		<li> <b>build</b> : to build the project (call <b>CMake</b> and <b>Make</b>).
+	</li>
+		<li> All the future example during this tutorial.
+</li>
+		</ul>
+
+
+<pre id="198" class="terminalStyle">
+$ mkdir Performances
+$ mkdir build
+</pre>
+
+
+It will be our project directory, and we have to create a <b>CMakeLists.txt</b> in the <b>ExampleOptimisation</b> directory :
+
+<table id="205" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HPC_ASTERICS)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">add_subdirectory</span>(Performances)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Do not forget to create an other <b>CMakeLists.txt</b> in the <b>Performances</b> directory :
+
+<table id="211" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HPC_ASTERICS)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Now you have :
+
+		<ul>
+
+			<li> <b>ExampleOptimisation</b>
+			<ul>
+
+				<li> <b>build</b>
+		</li>
+		<li> <b>Performances</b>
+				<ul>
+
+					<li> CMakeLists.txt
+		</li>
+		</ul>
+
+		</li>
+		<li> CMakeLists.txt
+	</li>
+		</ul>
+
+</li>
+		</ul>
+
+
+
+
+
+
+
+
+		</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="2-2-100.html">Hello world with CMake</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="4-240.html">Several useful CMake functions</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

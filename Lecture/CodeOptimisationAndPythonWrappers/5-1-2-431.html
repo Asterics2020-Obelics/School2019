@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The source (timer.cpp)</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-1-1-425.html">The header (timer.h)</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-1-412.html">The rdtsc files</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-2-437.html">The allocation/deallocation files</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="431" class="section">5.1.2 : The source (timer.cpp)</h3>
+
+The <b>timer.cpp</b> is :
+<table id="435" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &quot;timer.h&quot;
+</span>
+<span class="cppmacro">#ifdef __i386
+</span><span class="dsKeyword">extern</span> <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> rdtsc(<span class="dsType">void</span>) {
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> x;
+	<span class="cppqtMacro">__asm__</span> <span class="dsKeyword">volatile</span> (<span class="dsString">&quot;rdtsc&quot;</span> : <span class="dsString">&quot;=A&quot;</span> (x));
+	<span class="dsKeyword">return</span> x;
+}
+<span class="cppmacro">#elif defined __amd64
+</span><span class="dsKeyword">extern</span> <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> rdtsc(<span class="dsType">void</span>) {
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> a, d;
+	<span class="cppqtMacro">__asm__</span> <span class="dsKeyword">volatile</span> (<span class="dsString">&quot;rdtsc&quot;</span> : <span class="dsString">&quot;=a&quot;</span> (a), <span class="dsString">&quot;=d&quot;</span> (d));
+	<span class="dsKeyword">return</span> (d&lt;&lt;<span class="dsNumber">32</span>) | a;
+}
+<span class="cppmacro">#endif
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-1-1-425.html">The header (timer.h)</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-1-412.html">The rdtsc files</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-2-437.html">The allocation/deallocation files</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

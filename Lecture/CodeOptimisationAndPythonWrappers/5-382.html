@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Creation of a HPC/Timer library</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-5-3-368.html">Summary</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-1-412.html">The rdtsc files</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h1 id="382" class="part">Part 5 : Creation of a HPC/Timer library</h1>
+		<ul class="sommaire">
+			<li><a href="5-1-412.html">5.1) The rdtsc files</a></li>
+			<li><a href="5-2-437.html">5.2) The allocation/deallocation files</a></li>
+			<li><a href="5-3-462.html">5.3) The main header (asterics_hpc.h)</a></li>
+			<li><a href="5-4-468.html">5.4) The CMakeLists.txt</a></li>
+			<li><a href="5-5-474.html">5.5) The compilation</a></li>
+			<li><a href="5-6-479.html">5.6) The associated python module</a></li>
+		</ul>
+
+
+<p id="384" class="paragraphStyle">
+	You can find the associated presentation
+	<a id="386" href="ressource/build/Presentation/2-AstericsHPC/presentation_asterics_hpc.pdf">here</a>.
+</p>
+
+<p id="389" class="paragraphStyle">
+In this part, we will create a small library to avoid these repetitions and focus on the relevant part of the following examples.
+</p>
+
+<p id="392" class="paragraphStyle">
+This library will be in the <b>ExampleOptimisation/AstericsHPC</b> directory.
+</p>
+
+Do not forget to modify the <b>ExampleOptimisation/CMakeLists.txt</b> file :
+
+<table id="399" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HPC_ASTERICS)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">set</span>(PYTHON_EXECUTABLE <span class="dsString">&quot;python3&quot;</span> <span class="cmakeKWord">CACHE</span> <span class="cmakeKWord">BOOL</span> <span class="dsString">&quot;Python program&quot;</span>)
+
+<span class="cmakeFunction">add_subdirectory</span>(Performances)
+
+<span class="cmakeFunction">include</span>(runExample.cmake)
+<span class="cmakeFunction">include</span>(pythonCheck.cmake)
+
+<span class="cmakeFunction">set</span>(VECTOR_ALIGNEMENT 32)
+<span class="cmakeFunction">add_definitions</span>(-DVECTOR_ALIGNEMENT=<span class="dsNumber">${VECTOR_ALIGNEMENT}</span>)
+
+<span class="cmakeFunction">add_subdirectory</span>(0-CMakeHelloWorld)
+<span class="cmakeFunction">add_subdirectory</span>(AstericsHPC)
+<span class="cmakeFunction">include_directories</span>(<span class="dsNumber">${CMAKE_CURRENT_SOURCE_DIR}</span>/AstericsHPC)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+This <b>Asterics HPC</b> library will provide :
+		<ul>
+
+			<li> The <b>rdtsc</b> function
+	</li>
+		<li> The aligned allocation/deallocation functions
+</li>
+		</ul>
+
+
+			</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="4-5-3-368.html">Summary</a></td>
+			<td style="text-align: center;">Parent<br /><a href="index.html">Main Page</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-1-412.html">The rdtsc files</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

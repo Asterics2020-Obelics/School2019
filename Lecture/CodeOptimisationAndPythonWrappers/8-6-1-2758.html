@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The wrapper function</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-6-2738.html">How to create a reduction python module</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-6-2738.html">How to create a reduction python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-6-2-2804.html">The C++ module file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="2758" class="section">8.6.1 : The wrapper function</h3>
+
+		
+The header file <b>reductionWrapper.h</b> is very simple :
+
+<table id="2762" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#ifndef __REDUCTION_WRAPPER_H__
+</span><span class="cppmacro">#define __REDUCTION_WRAPPER_H__
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span>
+<span class="cppqtMacro">PyObject</span> * reductionWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args);
+
+<span class="cppmacro">#endif
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="2764" href="ressource/build/Correction/reduction/wrapper/reductionWrapper.h">here</a>.
+
+<p id="2766" class="paragraphStyle">
+Now, let's write the <b>reductionWrapper.cpp</b> file :
+</p>
+
+
+Again in this example, since we are using <b>numpy</b> in the module, we have to define the <b>NO_IMPORT_ARRAY</b> to avoid multiple definitions of the same numpy function.
+And we also have to specify the version of the <b>numpy</b> API to avoid warnings :
+
+<table id="2778" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#define NO_IMPORT_ARRAY
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then we include appropriate files. Do not forget to include the <b>asterics_alloc.h</b> file to use our allocation function :
+
+<table id="2782" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;iostream&gt;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span><span class="cppmacro">#include &lt;bytearrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;reduction_intrinsics_interleave8.h&quot;
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+To parse static parameters, we have to use the function <b>PyArg_ParseTuple</b>, this function works the same as the <b>scanf</b> function
+from the C standard library.
+<p id="2788" class="paragraphStyle">
+Here, we parse the output table and the two input tables with <b>'O'</b> which corresponds to a <b>PyObject</b> type.
+</p>
+
+<table id="2795" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMono">///Do the reduction computation
+</span><span class="dsDocMulti">/**	@param self : parent of the function if it exist
+ * 	@param args : arguments passed to the function
+ * 	@return result of the reduction result
+*/</span>
+<span class="cppqtMacro">PyObject</span> * reductionWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args){
+	<span class="cppqtMacro">PyArrayObject</span> *objTabX = <span class="pythonApiMacro">NULL</span>;
+	<span class="dsKeyword">if</span>(!<span class="pythonApiFunction">PyArg_ParseTuple</span>(args, <span class="dsString">&quot;O&quot;</span>, &amp;objTabX)){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;reductionWrapper : wrong set of arguments. Expect tabX\n&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">if</span>(<span class="pythonApiFunction">PyArray_NDIM</span>(objTabX) != <span class="dsNumber">1</span>){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_TypeError</span>, <span class="dsString">&quot;reductionWrapper : input table must be a one dimension array&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> sizeElement(<span class="pythonApiFunction">PyArray_DIMS</span>(objTabX)[<span class="dsNumber">0</span>]);
+	
+	<span class="dsType">const</span> <span class="dsType">float</span> * tabX = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="pythonApiFunction">PyArray_DATA</span>(objTabX);
+	<span class="dsType">float</span> res(reduction(tabX, sizeElement));
+	
+	<span class="dsKeyword">return</span> <span class="pythonApiFunction">Py_BuildValue</span>(<span class="dsString">&quot;f&quot;</span>, res);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>reductionWrapper.cpp</b> file :
+
+<table id="2800" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#define NO_IMPORT_ARRAY
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span>
+<span class="cppmacro">#include &lt;iostream&gt;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span><span class="cppmacro">#include &lt;bytearrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;reduction_intrinsics_interleave8.h&quot;
+</span>
+<span class="dsDocMono">///Do the reduction computation
+</span><span class="dsDocMulti">/**	@param self : parent of the function if it exist
+ * 	@param args : arguments passed to the function
+ * 	@return result of the reduction result
+*/</span>
+<span class="cppqtMacro">PyObject</span> * reductionWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args){
+	<span class="cppqtMacro">PyArrayObject</span> *objTabX = <span class="pythonApiMacro">NULL</span>;
+	<span class="dsKeyword">if</span>(!<span class="pythonApiFunction">PyArg_ParseTuple</span>(args, <span class="dsString">&quot;O&quot;</span>, &amp;objTabX)){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;reductionWrapper : wrong set of arguments. Expect tabX\n&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">if</span>(<span class="pythonApiFunction">PyArray_NDIM</span>(objTabX) != <span class="dsNumber">1</span>){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_TypeError</span>, <span class="dsString">&quot;reductionWrapper : input table must be a one dimension array&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> sizeElement(<span class="pythonApiFunction">PyArray_DIMS</span>(objTabX)[<span class="dsNumber">0</span>]);
+	
+	<span class="dsType">const</span> <span class="dsType">float</span> * tabX = (<span class="dsType">const</span> <span class="dsType">float</span>*)<span class="pythonApiFunction">PyArray_DATA</span>(objTabX);
+	<span class="dsType">float</span> res(reduction(tabX, sizeElement));
+	
+	<span class="dsKeyword">return</span> <span class="pythonApiFunction">Py_BuildValue</span>(<span class="dsString">&quot;f&quot;</span>, res);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="2802" href="ressource/build/Correction/reduction/wrapper/reductionWrapper.cpp">here</a>.
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="8-6-2738.html">How to create a reduction python module</a></td>
+			<td style="text-align: center;">Parent<br /><a href="8-6-2738.html">How to create a reduction python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="8-6-2-2804.html">The C++ module file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

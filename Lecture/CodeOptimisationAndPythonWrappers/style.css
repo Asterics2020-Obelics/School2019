@@ -1,0 +1,535 @@
+body {
+	background-color: #efefef;
+	color: black;
+	padding-left: 0px;
+	padding-right: 0px;
+	font-size: 16px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.pageContent{
+	background-color: white;
+	color: black;
+	font-size: 16px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.mainTitle {
+	text-align: center;
+	color: black;
+	font-size: 40px
+}
+
+.navigationMenu{
+	width: 100%;
+	color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	
+	text-align: center;
+	background-color: #373434;
+}
+
+.navigationMenu a{
+	color: white;
+}
+
+.navigationMenuBottom{
+	width: 100%;
+	color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	
+	text-align: center;
+	background-color: #373434;
+}
+
+.navigationMenuBottom a{
+	color: white;
+}
+
+.author {
+	text-align: center;
+	color: black;
+	font-size: 20px
+}
+
+.date {
+	text-align: center;
+	color: black;
+}
+
+.sommaire{
+	color: white;
+	background-color: #373434;
+	
+	font-size: 14px;
+	
+	border: 2px solid silver;
+	border-radius: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.sommaire a{
+	font-size: 16px;
+	color: white;
+	text-decoration: none;
+}
+
+.sommaire a:hover{
+	color: white;
+	text-decoration: none;
+}
+
+
+.sommairePage a{
+	color: red;
+	text-decoration: none;
+}
+.sommairePage a:hover{
+	color: white;
+	text-decoration: none;
+}
+.sommairePage{
+	color: white;
+	background-color: black;
+	
+	border: 2px solid silver;
+	border-radius: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+.part {
+	color: black;
+	text-align: center;
+	font-size: 30px;
+}
+
+.chapter {
+	color: black;
+	text-align: center;
+	font-size: 25px;
+}
+
+.section {
+	color: black;
+	font-size: 22px;
+}
+
+.subsection {
+	color: black;
+	font-size: 22px;
+}
+
+.subsubsection {
+	color: black;
+	font-size: 22px;
+}
+
+.centerStyle{
+	text-align:center;
+}
+
+.columnStyle{
+	background-color: white;
+	border: 2px solid silver;
+	border-radius: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.figureStyle{
+	background-color: white;
+	border: 2px solid silver;
+	border-radius: 10px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.tableStyle{
+	background-color: white;
+	border: 2px solid silver;
+	border-radius: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+/* ============================= */
+/*                               */
+/*       Highlighting code       */
+/*                               */
+/* ============================= */
+
+.code {
+	background-color: black;
+	font-family: Courier New;
+	width: 100%;
+	color: black;
+	border: 2px solid silver;
+	border-radius: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	box-shadow: 5px 5px grey;
+}
+
+.lineNumbers {
+	background-color: black;
+	color: #0095a2;
+	text-align: right;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.source {
+	background-color: black;
+	color: white;
+	text-align: left;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.colLineNumbers{
+	width: 30px;
+}
+
+/* ========================================================================== */
+/*                                                                            */
+/* Basic styles for types, string, char, keywords, documentation and comments */
+/*                                                                            */
+/* ========================================================================== */
+
+.dsNumber {
+	color: #fbe84f;
+}
+
+.dsType {
+	color: #2662a4;
+}
+
+.dsString {
+	color: #de2929;
+}
+
+.dsChar {
+	color: #f252fb;
+}
+
+.dsKeyword {
+	color: white;
+	font-weight: bold;
+}
+
+.dsDocMono {
+	color: #00A6FF;
+}
+
+.dsDocMulti {
+	color: #00A6FF;
+}
+
+.dsCommentMono {
+	color: #d3d7cf;
+	font-style: italic;
+}
+
+.dsCommentMulti {
+	color: #d3d7cf;
+	font-style: italic;
+}
+
+/* ===================== */
+/*                       */
+/* C++ language specific */
+/*                       */
+/* ===================== */
+
+.cppstandardF {
+	color: #825ae5;
+}
+
+.cppstdF {
+	color: #bf7291;
+}
+
+.cppglMacro {
+	color: #008302;
+}
+
+.cppqtMacro {
+	color: #38b8ff;
+	font-weight: bold;
+}
+
+.bultinFunction{
+	color: #f854ff;
+}
+
+.cppmacro {
+	color: #73cb14;
+}
+
+.pythonApiFunction{
+	color: #1aa3a4;
+}
+
+.pythonApiMacro{
+	color: #ec5a78;
+}
+
+.pythonApiPyObject{
+	color: #38a242;
+}
+
+/* ======================= */
+/*                         */
+/* CMake language specific */
+/*                         */
+/* ======================= */
+
+.cmakeKWord {
+	color: #00ff00;
+	font-weight: bold;
+}
+
+.cmakeFunction {
+	color: #d6dd49;
+	font-weight: bold;
+}
+
+.cmakeVar {
+	color: #b08000;
+}
+
+.cmakeChaine {
+	color: #d81e1c;
+}
+
+.cmakeCommentaire {
+	color: #8b8a89;
+	font-style: italic;
+}
+
+/* ================================ */
+/*                                  */
+/* CMake terminal language specific */
+/*                                  */
+/* ================================ */
+
+.makeTerminalScaningDependencies{
+	color: #8a6580;
+}
+
+.makeTerminalBuildingObject{
+	color: #1b5d04;
+}
+
+.makeTerminalLinking{
+	color: #6eb529;
+}
+
+.makeTerminalInstallProject{
+	color: #046b62;
+}
+
+
+/* =============================== */
+/*                                 */
+/*      Make language specific     */
+/*                                 */
+/* =============================== */
+
+
+.makeFunction{
+	color: #dd4050;
+}
+
+/* ============================== */
+/*                                */
+/*      Dot language specific     */
+/*                                */
+/* ============================== */
+
+.dotAttibute{
+	color: #0080ff;
+}
+
+.dotGraph{
+	color: white;
+	font-weight: bold;
+}
+
+.dotIdentifer{
+	color: #924c9d;
+}
+
+/* =============================== */
+/*                                 */
+/*      Glsl language specific     */
+/*                                 */
+/* =============================== */
+
+.glslfunction{
+	color: #7d57b8;
+	font-weight: bold;
+}
+
+.glslVariables{
+	color: #7d57b8;
+}
+
+/* ================================= */
+/*                                   */
+/*      Python language specific     */
+/*                                   */
+/* ================================= */
+
+.pyValue{
+	color: #006e28;
+}
+
+.pyFunction{
+	color: #0057ae;
+}
+
+.pyAction{
+	color: #ff80e0;
+}
+
+/* ================================ */
+/*                                  */
+/*      Latex language specific     */
+/*                                  */
+/* ================================ */
+
+.texFunction{
+	color: green;
+}
+
+.texBeginFunction{
+	color: red;
+}
+
+.texStructure{
+	color: white;
+	font-weight: bold;
+}
+
+.texEnvironment{
+	color: white;
+	font-weight: bold;
+}
+
+.textMathCrochet{
+	color: blue;
+}
+
+.styleMathDollars{
+	color: green;
+}
+
+
+
+.terminalStyle{
+
+	background-color: black;
+	font-family: Courier New;
+	color: white;
+	border: 2px solid black;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	}
+
+.textStyle{
+
+	background-color: white;
+	font-family: Courier New;
+	color: black;
+	border: 2px solid black;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	}
+
+.questionStyle{
+
+	color: blue;
+	border: 2px solid blue;
+	background-color: rgba(0,0,255,0.4);
+	border-radius: 10px;
+	padding: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	}
+
+.answerStyle{
+
+	color: green;
+	border: 2px solid green;
+	background-color: rgba(0,255,0,0.4);
+	border-radius: 10px;
+	padding: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	}
+
+.adviseStyle{
+
+	color: green;
+	border: 2px solid green;
+	background-color: rgba(0,255,0,0.4);
+	border-radius: 10px;
+	padding: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	}
+
+.warningStyle{
+
+	color: red;
+	border: 2px solid red;
+	background-color: rgba(255,0,0,0.1);
+	border-radius: 10px;
+	padding: 10px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	}
+

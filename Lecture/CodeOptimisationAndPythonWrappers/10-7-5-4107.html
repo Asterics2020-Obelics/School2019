@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The CMakeLists.txt file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-7-4-2-4067.html">Sgemm with our intrinsics implementation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-7-3866.html">How to create a sgemm python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-7-6-4138.html">Performances results</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="4107" class="section">10.7.5 : The CMakeLists.txt file</h3>
+
+
+<p id="4109" class="paragraphStyle">
+Now, let's write the <b>CMakeLists.txt</b> file :
+</p>
+
+First we manage the project name and the minimal <b>cmake</b> version for the file :
+<table id="4117" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(SgemmWrapper)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Then, we get the files used to build the module :
+<table id="4119" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">file</span>(<span class="cmakeKWord">GLOB</span> moduleSrc <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.cpp&quot;</span> <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.py&quot;</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+We call the <b>cmake</b> function to create a module :
+<table id="4123" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+createPythonModule(install_sgemm_module setup.py <span class="dsNumber">${moduleSrc}</span>)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Now, we call the <b>cmake</b> function to run the python performances tests
+<table id="4127" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+runPythonExample(sgemmIntrinsicsPitchPython.py install_sgemm_module)
+runPythonExample(sgemmNumpyPython.py install_asterics_hpc_module)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Finally, we make some plots to compare the Python performances with the C++ ones :
+<table id="4129" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+plotPerf(<span class="dsString">&quot;sgemmBasePy&quot;</span> sgemmNumpyPython sgemm_swap_Ofast sgemm_vectorize_Ofast)
+
+plotPerf(<span class="dsString">&quot;sgemmSummaryPython&quot;</span> sgemmNumpyPython sgemm_swap_Ofast sgemm_vectorize_Ofast sgemmIntrinsicsPitchPython sgemm_intrinsicsPitch_O3)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>CMakeLists.txt</b> file :
+
+<table id="4134" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(SgemmWrapper)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">file</span>(<span class="cmakeKWord">GLOB</span> moduleSrc <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.cpp&quot;</span> <span class="dsString">&quot;${CMAKE_CURRENT_SOURCE_DIR}/*.py&quot;</span>)
+
+createPythonModule(install_sgemm_module setup.py <span class="dsNumber">${moduleSrc}</span>)
+
+runPythonExample(sgemmIntrinsicsPitchPython.py install_sgemm_module)
+runPythonExample(sgemmNumpyPython.py install_asterics_hpc_module)
+
+plotPerf(<span class="dsString">&quot;sgemmBasePy&quot;</span> sgemmNumpyPython sgemm_swap_Ofast sgemm_vectorize_Ofast)
+
+plotPerf(<span class="dsString">&quot;sgemmSummaryPython&quot;</span> sgemmNumpyPython sgemm_swap_Ofast sgemm_vectorize_Ofast sgemmIntrinsicsPitchPython sgemm_intrinsicsPitch_O3)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="4136" href="ressource/build/Correction/sgemm/wrapper/CMakeLists.txt">here</a>.
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-7-4-2-4067.html">Sgemm with our intrinsics implementation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-7-3866.html">How to create a sgemm python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-7-6-4138.html">Performances results</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

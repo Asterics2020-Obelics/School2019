@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Wrapper of the matrices allocation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-2-572.html">Wrapper of the tables allocation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-4-713.html">The wrapper module source : astericshpc.cpp</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="651" class="section">5.6.3 : Wrapper of the matrices allocation</h3>
+
+		
+<p id="653" class="paragraphStyle">
+The purpose is very similar than the previous part, so let's begin :
+</p>
+
+The header is really simple :
+
+<table id="656" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#ifndef __ALLOCMATRIXWRAPPER_H__
+</span><span class="cppmacro">#define __ALLOCMATRIXWRAPPER_H__
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &quot;structmember.h&quot;
+</span>
+<span class="cppqtMacro">PyObject</span> * allocMatrix(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbRow, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbCol);
+<span class="cppqtMacro">PyObject</span> * allocMatrixWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args);
+
+<span class="cppmacro">#endif
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<p id="658" class="paragraphStyle">
+	Let's write the source file <b>allocMatrixWrapper.cpp</b>.
+</p>
+
+
+Again and again, in this example, since we are using <b>numpy</b> in the module, we have to define the <b>NO_IMPORT_ARRAY</b> to avoid multiple definitions of the same numpy function.
+And we also have to specify the version of the <b>numpy</b> API to avoid warnings :
+
+<table id="670" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#define NO_IMPORT_ARRAY
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Then we include appropriate files. Do not forget to include the <b>asterics_alloc.h</b> file to use our allocation function :
+
+<table id="674" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span><span class="cppmacro">#include &lt;bytearrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;asterics_alloc.h&quot;
+</span>
+<span class="cppmacro">#include &quot;allocMatrixWrapper.h&quot;
+</span></pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+In this wrapper we will allocate our proper tables, so <b>python</b> does not know how to deallocate them too.
+For that, we have to define a deallocation function for our tables.
+This mechanism is called <b>PyCapsule</b> in <b>python</b>, you can find more documentation <a id="682" href="https://docs.python.org/3/c-api/capsule.html">here</a>.
+<p id="684" class="paragraphStyle">
+In this function, we get a <b>PyCapsule</b>. Then, we ge the associated pointer by name and finally we deallocate it :
+</p>
+
+<table id="689" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMono">///Free the capsule memory
+</span><span class="dsDocMulti">/**	@param obj : object with contains the capsule
+*/</span>
+<span class="dsType">void</span> empty_freeArray(<span class="cppqtMacro">PyObject</span>* obj){
+	<span class="dsType">float</span>* ptr = (<span class="dsType">float</span>*) PyCapsule_GetPointer(obj,<span class="dsString">&quot;emptyMatrix&quot;</span>);
+	<span class="cppstandardF">free</span>(ptr);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Now, we have to implement the function which allocates <b>numpy</b> matrix :
+
+<table id="693" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMono">///Create a numpy matrix
+</span><span class="dsDocMulti">/**	@param nbRow : number of rows of the matrix
+ * 	@param nbCol : number of columns of the matrix
+ * 	@return numpy array
+*/</span>
+<span class="cppqtMacro">PyObject</span> * allocMatrix(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbRow, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbCol){
+	<span class="dsCommentMono">//Set the size of the numpy array
+</span>	npy_intp attr_size[<span class="dsNumber">2</span>];
+	attr_size[<span class="dsNumber">0</span>] = nbRow;
+	attr_size[<span class="dsNumber">1</span>] = nbCol;
+	
+	<span class="dsType">float</span>* mat = asterics_malloc<span class="dsNumber">2</span>f(nbRow, nbCol);
+	<span class="dsKeyword">if</span>(mat == <span class="pythonApiMacro">NULL</span>){
+		<span class="cppqtMacro">PyObject</span>* objMat = PyArray_EMPTY(<span class="dsNumber">2</span>, attr_size, NPY_FLOAT<span class="dsNumber">32</span>, <span class="dsNumber">0</span>);
+		<span class="dsKeyword">if</span>(objMat == <span class="pythonApiMacro">NULL</span>){
+			<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;allocMatrix : Could not allocated memory\n&quot;</span>);
+			<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+		}
+		<span class="dsKeyword">return</span> objMat;
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> pitch(getPitch(nbCol));
+	
+	PyArray_Dims strides = {<span class="pythonApiMacro">NULL</span>, <span class="dsNumber">0</span>};
+	strides.ptr = PyDimMem_NEW(<span class="dsNumber">2</span>);
+	strides.len = <span class="dsNumber">2</span>;
+	PyArray_Descr *descr = PyArray_DescrFromType(NPY_FLOAT<span class="dsNumber">32</span>);
+	strides.ptr[<span class="dsNumber">1</span>] = (npy_intp)<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>);		     <span class="dsCommentMono">// Last strides is equal to element size
+</span>	strides.ptr[<span class="dsNumber">0</span>] = (pitch + nbCol) *  strides.ptr[<span class="dsNumber">1</span>];
+	
+	<span class="cppqtMacro">PyObject</span>* objMat = PyArray_NewFromDescr(&amp;PyArray_Type, descr, <span class="dsNumber">2</span>, attr_size, strides.ptr, (<span class="dsType">void</span> *)mat, NPY_ARRAY_WRITEABLE, <span class="pythonApiMacro">NULL</span>);
+	
+	<span class="dsCommentMono">//Desalocation stuff
+</span>	<span class="cppqtMacro">PyObject</span>* memory_capsule = PyCapsule_New(mat, <span class="dsString">&quot;emptyMatrix&quot;</span>, empty_freeArray);
+	<span class="dsKeyword">if</span>(PyArray_SetBaseObject((<span class="cppqtMacro">PyArrayObject</span>*)objMat, memory_capsule) &lt; <span class="dsNumber">0</span>){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;Fail to create PyCapsule\n&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> objMat;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+To parse static parameters, we have to use the function <b>PyArg_ParseTuple</b>, this function wroks the same as the <b>scanf</b> function
+from the C standard library.
+<p id="699" class="paragraphStyle">
+Once we have the desired size of the table (in number of elements), we call the <b>allocMatrix</b> function :
+</p>
+
+<table id="704" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMono">///Allocate an aligned matrix of float with a pitch
+</span><span class="dsDocMulti">/**	@param self : pointer to the parent object if it exist
+ * 	@param args : arguments passed to the program
+ * 	@return allocated numpy array
+*/</span>
+<span class="cppqtMacro">PyObject</span> * allocMatrixWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args){
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbRow(<span class="dsNumber">0lu</span>), nbCol(<span class="dsNumber">0lu</span>);
+	<span class="dsKeyword">if</span>(!<span class="pythonApiFunction">PyArg_ParseTuple</span>(args, <span class="dsString">&quot;kk&quot;</span>, &amp;nbRow, &amp;nbCol)){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;allocMatrixWrapper : wrong set of arguments. Expects two arguments for the matrix size\n&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> allocMatrix(nbRow, nbCol);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+The full <b>allocMatrixWrapper.cpp</b> file :
+
+<table id="709" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="dsDocMulti">/***************************************
+	Auteur : Pierre Aubert
+	Mail : aubertp7@gmail.com
+	Licence : CeCILL-C
+****************************************/</span>
+
+<span class="cppmacro">#define NO_IMPORT_ARRAY
+</span><span class="cppmacro">#ifndef DISABLE_COOL_ARRAY
+</span><span class="cppmacro">#define PY_ARRAY_UNIQUE_SYMBOL core_ARRAY_API
+</span><span class="cppmacro">#endif
+</span>
+<span class="cppmacro">#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+</span>
+<span class="cppmacro">#include &lt;Python.h&gt;
+</span><span class="cppmacro">#include &lt;numpy/arrayobject.h&gt;
+</span><span class="cppmacro">#include &lt;bytearrayobject.h&gt;
+</span>
+<span class="cppmacro">#include &quot;asterics_alloc.h&quot;
+</span>
+<span class="cppmacro">#include &quot;allocMatrixWrapper.h&quot;
+</span>
+<span class="dsDocMono">///Free the capsule memory
+</span><span class="dsDocMulti">/**	@param obj : object with contains the capsule
+*/</span>
+<span class="dsType">void</span> empty_freeArray(<span class="cppqtMacro">PyObject</span>* obj){
+	<span class="dsType">float</span>* ptr = (<span class="dsType">float</span>*) PyCapsule_GetPointer(obj,<span class="dsString">&quot;emptyMatrix&quot;</span>);
+	<span class="cppstandardF">free</span>(ptr);
+}
+
+<span class="dsDocMono">///Create a numpy matrix
+</span><span class="dsDocMulti">/**	@param nbRow : number of rows of the matrix
+ * 	@param nbCol : number of columns of the matrix
+ * 	@return numpy array
+*/</span>
+<span class="cppqtMacro">PyObject</span> * allocMatrix(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbRow, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbCol){
+	<span class="dsCommentMono">//Set the size of the numpy array
+</span>	npy_intp attr_size[<span class="dsNumber">2</span>];
+	attr_size[<span class="dsNumber">0</span>] = nbRow;
+	attr_size[<span class="dsNumber">1</span>] = nbCol;
+	
+	<span class="dsType">float</span>* mat = asterics_malloc<span class="dsNumber">2</span>f(nbRow, nbCol);
+	<span class="dsKeyword">if</span>(mat == <span class="pythonApiMacro">NULL</span>){
+		<span class="cppqtMacro">PyObject</span>* objMat = PyArray_EMPTY(<span class="dsNumber">2</span>, attr_size, NPY_FLOAT<span class="dsNumber">32</span>, <span class="dsNumber">0</span>);
+		<span class="dsKeyword">if</span>(objMat == <span class="pythonApiMacro">NULL</span>){
+			<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;allocMatrix : Could not allocated memory\n&quot;</span>);
+			<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+		}
+		<span class="dsKeyword">return</span> objMat;
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> pitch(getPitch(nbCol));
+	
+	PyArray_Dims strides = {<span class="pythonApiMacro">NULL</span>, <span class="dsNumber">0</span>};
+	strides.ptr = PyDimMem_NEW(<span class="dsNumber">2</span>);
+	strides.len = <span class="dsNumber">2</span>;
+	PyArray_Descr *descr = PyArray_DescrFromType(NPY_FLOAT<span class="dsNumber">32</span>);
+	strides.ptr[<span class="dsNumber">1</span>] = (npy_intp)<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>);		     <span class="dsCommentMono">// Last strides is equal to element size
+</span>	strides.ptr[<span class="dsNumber">0</span>] = (pitch + nbCol) *  strides.ptr[<span class="dsNumber">1</span>];
+	
+	<span class="cppqtMacro">PyObject</span>* objMat = PyArray_NewFromDescr(&amp;PyArray_Type, descr, <span class="dsNumber">2</span>, attr_size, strides.ptr, (<span class="dsType">void</span> *)mat, NPY_ARRAY_WRITEABLE, <span class="pythonApiMacro">NULL</span>);
+	
+	<span class="dsCommentMono">//Desalocation stuff
+</span>	<span class="cppqtMacro">PyObject</span>* memory_capsule = PyCapsule_New(mat, <span class="dsString">&quot;emptyMatrix&quot;</span>, empty_freeArray);
+	<span class="dsKeyword">if</span>(PyArray_SetBaseObject((<span class="cppqtMacro">PyArrayObject</span>*)objMat, memory_capsule) &lt; <span class="dsNumber">0</span>){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;Fail to create PyCapsule\n&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> objMat;
+}
+
+<span class="dsDocMono">///Allocate an aligned matrix of float with a pitch
+</span><span class="dsDocMulti">/**	@param self : pointer to the parent object if it exist
+ * 	@param args : arguments passed to the program
+ * 	@return allocated numpy array
+*/</span>
+<span class="cppqtMacro">PyObject</span> * allocMatrixWrapper(<span class="cppqtMacro">PyObject</span> *self, <span class="cppqtMacro">PyObject</span> *args){
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbRow(<span class="dsNumber">0lu</span>), nbCol(<span class="dsNumber">0lu</span>);
+	<span class="dsKeyword">if</span>(!<span class="pythonApiFunction">PyArg_ParseTuple</span>(args, <span class="dsString">&quot;kk&quot;</span>, &amp;nbRow, &amp;nbCol)){
+		<span class="pythonApiFunction">PyErr_SetString</span>(<span class="pythonApiPyObject">PyExc_RuntimeError</span>, <span class="dsString">&quot;allocMatrixWrapper : wrong set of arguments. Expects two arguments for the matrix size\n&quot;</span>);
+		<span class="dsKeyword">return</span> <span class="pythonApiMacro">NULL</span>;
+	}
+	<span class="dsKeyword">return</span> allocMatrix(nbRow, nbCol);
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+You can download it <a id="711" href="ressource/build/Correction/astericshpc/allocMatrixWrapper.cpp">here</a>.
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="5-6-2-572.html">Wrapper of the tables allocation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="5-6-479.html">The associated python module</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="5-6-4-713.html">The wrapper module source : astericshpc.cpp</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

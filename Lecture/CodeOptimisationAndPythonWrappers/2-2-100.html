@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Hello world with CMake</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="2-1-51.html">What is CMake ?</a></td>
+			<td style="text-align: center;">Parent<br /><a href="2-49.html">Basic use of CMake</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="3-174.html">Starting the project</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h2 id="100" class="chapter">Chapter 2.2 : Hello world with CMake</h2>
+
+	
+<p id="102" class="paragraphStyle">
+	Let's consider a <b>main.cpp</b> file :
+</p>
+
+<table id="107" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;iostream&gt;
+</span>
+<span class="dsType">int</span> <span class="cppstandardF">main</span>(<span class="dsType">int</span> argc, <span class="dsType">char</span>** argv){
+	<span class="cppstdF">std</span>::<span class="cppstdF">cout</span> &lt;&lt; <span class="dsString">&quot;Hello World&quot;</span> &lt;&lt; <span class="cppstdF">std</span>::<span class="cppstdF">endl</span>;
+	<span class="dsKeyword">return</span> <span class="dsNumber">0</span>;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+The <b>CMakeLists.txt</b> file to be used to compile the <b>main.cpp</b> file is :
+
+<table id="113" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cmakeFunction">project</span>(HelloWorld)
+<span class="cmakeFunction">cmake_minimum_required</span>(<span class="cmakeKWord">VERSION</span> 3.0)
+
+<span class="cmakeFunction">add_executable</span>(hello_world main.cpp)</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+The structure is simple :
+
+		<ul>
+
+			<li> Name of the project (basically, what you want).
+	</li>
+		<li> Minimum version of <b>CMake</b> to used the <b>CMakeLists.txt</b>.
+	</li>
+		<li> Create an executable <b>hello_world</b> which uses source file <b>make.cpp</b>
+</li>
+		</ul>
+
+
+First, go in your project directory and create a <b>build</b> directory :
+
+<pre id="134" class="terminalStyle">
+$ cd my/project
+$ mkdir build
+</pre>
+
+
+Then, the <b>build</b> directory is created :
+
+<pre id="139" class="terminalStyle">
+$ ls
+build  CMakeLists.txt  main.cpp
+</pre>
+
+
+Let's go in the <b>build</b> directory and call <b>CMake</b> :
+
+<pre id="146" class="terminalStyle">
+$ cd build
+$ cmake ..
+</pre>
+
+
+<pre id="149" class="adviseStyle">
+The <b>..</b> is the path to the parent directory (Where <b>CMake</b> expects a <b>CMakeLists.txt</b> file).
+</pre>
+
+
+Which gives :
+
+<pre id="158" class="terminalStyle">
+$ cmake ..
+-- The C compiler identification is GNU 7.2.0
+-- The CXX compiler identification is GNU 7.2.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: XXX/HelloWorldCMake/build
+</pre>
+
+
+<pre id="161" class="adviseStyle">
+	<b>CMake</b> is looking at your compiler automatically.
+</pre>
+
+
+Then call <b>make</b> :
+
+<table id="168" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+$ make
+<span class="makeTerminalScaningDependencies">Scanning dependencies of target hello_world
+</span>[ 50%] <span class="makeTerminalBuildingObject">Building CXX object CMakeFiles/hello_world.dir/main.cpp.o
+</span>[100%] <span class="makeTerminalLinking">Linking CXX executable hello_world
+</span>[100%] Built target hello_world</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+Finally, you can call you program :
+<pre id="170" class="terminalStyle">
+$ ./hello_world 
+Hello World
+</pre>
+
+
+
+
+		</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="2-1-51.html">What is CMake ?</a></td>
+			<td style="text-align: center;">Parent<br /><a href="2-49.html">Basic use of CMake</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="3-174.html">Starting the project</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

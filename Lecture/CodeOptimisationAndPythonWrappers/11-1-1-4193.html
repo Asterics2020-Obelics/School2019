@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The main.cpp file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="11-1-4191.html">Classical implementation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="11-1-4191.html">Classical implementation</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="11-1-2-4199.html">The CMakeLists.txt file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="4193" class="section">11.1.1 : The main.cpp file</h3>
+
+The <b>main.cpp</b> file :
+<table id="4197" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;stdlib.h&gt;
+</span><span class="cppmacro">#include &lt;iostream&gt;
+</span><span class="cppmacro">#include &quot;asterics_hpc.h&quot;
+</span>
+<span class="dsKeyword">using</span> <span class="dsKeyword">namespace</span> <span class="cppstdF">std</span>;
+
+<span class="dsDocMono">///Get a random number between 0 and 1
+</span><span class="dsDocMulti">/**	@return random number between 0 and 1
+*/</span>
+<span class="dsType">float</span> randFloat(){
+	<span class="dsKeyword">return</span> ((<span class="dsType">float</span>)rand())/((<span class="dsType">float</span>)RAND_MAX);
+}
+
+<span class="dsDocMono">///Do the dummy copy
+</span><span class="dsDocMulti">/**	@param[out] tabResult : table of results of tabX*tabY
+ * 	@param tabX : input table
+ * 	@param tabY : input table
+ * 	@param tabProba : table of probability
+ * 	@param nbElement : number of elements in the tables
+ * 	@param proba : probability to copy tabX in tabResult
+*/</span>
+<span class="dsType">void</span> dummyCopy(<span class="dsType">float</span>* tabResult, <span class="dsType">const</span> <span class="dsType">float</span> * tabX, <span class="dsType">const</span> <span class="dsType">float</span>* tabY, <span class="dsType">const</span> <span class="dsType">float</span> * tabProba, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement, <span class="dsType">float</span> proba){
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		<span class="dsKeyword">if</span>(tabProba[i] &lt; proba){			<span class="dsCommentMono">//Random branching
+</span>			tabResult[i] = tabX[i];
+		}<span class="dsKeyword">else</span>{
+			tabResult[i] = tabY[i];
+		}
+	}
+}
+
+<span class="dsDocMono">///Get the number of cycles per elements of the saxpy
+</span><span class="dsDocMulti">/**	@param proba : probability to copy a value in the table X 
+ * 	@param nbRepetition : number of repetition to evaluate the function saxpy
+*/</span>
+<span class="dsType">void</span> evaluateDummyCopy(<span class="dsType">float</span> proba, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbRepetition){
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement(<span class="dsNumber">10000lu</span>);
+	<span class="dsType">float</span> * tabResult = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	<span class="dsType">float</span> * tabX = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	<span class="dsType">float</span> * tabY = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	<span class="dsType">float</span> * tabProba = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement);
+	
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement; ++i){
+		tabX[i] = (<span class="dsType">float</span>)(i*<span class="dsNumber">32lu</span>%<span class="dsNumber">17lu</span>);
+		tabY[i] = (<span class="dsType">float</span>)(i*<span class="dsNumber">57lu</span>%<span class="dsNumber">31lu</span>);
+		tabProba[i] = randFloat();
+	}
+	
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> beginTime(rdtsc());
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbRepetition; ++i){
+		dummyCopy(tabResult, tabX, tabY, tabProba, nbElement, proba);
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> elapsedTime((<span class="dsType">double</span>)(rdtsc() - beginTime)/((<span class="dsType">double</span>)nbRepetition));
+	
+	<span class="dsType">double</span> cyclePerElement(((<span class="dsType">double</span>)elapsedTime)/((<span class="dsType">double</span>)nbElement));
+	<span class="cppstdF">cout</span> &lt;&lt; <span class="dsString">&quot;evaluateDummyCopy : proba = &quot;</span>&lt;&lt;proba&lt;&lt;<span class="dsString">&quot;, nbElement = &quot;</span>&lt;&lt;nbElement
+		&lt;&lt;<span class="dsString">&quot;, cyclePerElement = &quot;</span> &lt;&lt; cyclePerElement &lt;&lt; <span class="dsString">&quot; cy/el, elapsedTime = &quot;</span> &lt;&lt; elapsedTime &lt;&lt; <span class="dsString">&quot; cy&quot;</span> &lt;&lt; <span class="cppstdF">endl</span>;
+	<span class="cppstdF">cerr</span> &lt;&lt; proba &lt;&lt; <span class="dsString">&quot;\t&quot;</span> &lt;&lt; cyclePerElement &lt;&lt; <span class="dsString">&quot;\t&quot;</span> &lt;&lt; elapsedTime &lt;&lt; <span class="cppstdF">endl</span>;
+	
+	asterics_free(tabProba);
+	asterics_free(tabResult);
+	asterics_free(tabX);
+	asterics_free(tabY);
+}
+
+<span class="dsType">int</span> <span class="cppstandardF">main</span>(<span class="dsType">int</span> argc, <span class="dsType">char</span>** argv){
+	<span class="cppstdF">cout</span> &lt;&lt; <span class="dsString">&quot;Branching probability&quot;</span> &lt;&lt; <span class="cppstdF">endl</span>;
+	evaluateDummyCopy(<span class="dsNumber">0</span><span class="dsNumber">.1f</span>, <span class="dsNumber">10000lu</span>);
+	evaluateDummyCopy(<span class="dsNumber">0</span><span class="dsNumber">.2f</span>, <span class="dsNumber">10000lu</span>);
+	evaluateDummyCopy(<span class="dsNumber">0</span><span class="dsNumber">.3f</span>, <span class="dsNumber">10000lu</span>);
+	evaluateDummyCopy(<span class="dsNumber">0</span><span class="dsNumber">.4f</span>, <span class="dsNumber">10000lu</span>);
+	evaluateDummyCopy(<span class="dsNumber">0</span><span class="dsNumber">.5f</span>, <span class="dsNumber">10000lu</span>);
+	evaluateDummyCopy(<span class="dsNumber">0</span><span class="dsNumber">.6f</span>, <span class="dsNumber">10000lu</span>);
+	evaluateDummyCopy(<span class="dsNumber">0</span><span class="dsNumber">.7f</span>, <span class="dsNumber">10000lu</span>);
+	evaluateDummyCopy(<span class="dsNumber">0</span><span class="dsNumber">.8f</span>, <span class="dsNumber">10000lu</span>);
+	evaluateDummyCopy(<span class="dsNumber">0</span><span class="dsNumber">.9f</span>, <span class="dsNumber">10000lu</span>);
+	<span class="dsKeyword">return</span> <span class="dsNumber">0</span>;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="11-1-4191.html">Classical implementation</a></td>
+			<td style="text-align: center;">Parent<br /><a href="11-1-4191.html">Classical implementation</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="11-1-2-4199.html">The CMakeLists.txt file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

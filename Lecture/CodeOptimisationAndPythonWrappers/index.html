@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>How to optimize computation with HPC</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="1-41.html">Introduction to High Performance Computing</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+	<h1 class="mainTitle">How to optimize computation with HPC</h1>
+	<h5 class="author">Pierre Aubert</h5>
+		<ul class="sommaire">
+			<li><a href="1-41.html">1) Introduction to High Performance Computing</a></li>
+			<li><a href="2-49.html">2) Basic use of CMake</a></li>
+			<li><a href="3-174.html">3) Starting the project</a></li>
+			<li><a href="4-240.html">4) Several useful CMake functions</a></li>
+			<li><a href="5-382.html">5) Creation of a HPC/Timer library</a></li>
+			<li><a href="6-844.html">6) Optimisation of Hadamard product</a></li>
+			<li><a href="7-1705.html">7) Optimisation of saxpy</a></li>
+			<li><a href="8-2256.html">8) Optimisation of a reduction</a></li>
+			<li><a href="9-3043.html">9) Application/exercice : Optimisation barycentre computation</a></li>
+			<li><a href="10-3587.html">10) Optimisation of Dense Matrix-Matrix multiplication</a></li>
+			<li><a href="11-4170.html">11) What about branching ? (bonus)</a></li>
+		</ul>
+
+
+
+
+	<h1 id="4">Prerequisites</h1>
+
+	
+		<h2 id="6">Compiler</h2>
+
+		We are going to use the <b>GCC-7</b> compiler.
+		If you are stucked with an other compiler or with an older version of <b>GCC</b> you can install it with <b>Anaconda</b> (in your tutorial environement) :
+		
+<pre id="14" class="terminalStyle">
+conda install gcc7
+</pre>
+
+
+		<h2 id="17">Compilation tools</h2>
+
+	
+		We will use <b>CMake</b> and <b>Make</b> to compile our programs.
+		
+		<h2 id="23">Ploting tools</h2>
+
+		We will use <b>Gnuplot</b> to plot the results of our tests.
+
+		<h2 id="27">Architecture tools</h2>
+
+		
+		We will use the program <b>hwloc-ls</b> to show the CPU architecture.
+		
+		<h2 id="31">Optimisations</h2>
+
+	
+		We are going to focus on the optimisation of single precision floating points computations.
+		Basically, you can divide all the following speed-up by 2 to have the equivalent for double precision.
+
+<pre id="33" class="warningStyle">
+The double precision computation sounds more precise that single precision computation.
+But, if you are doing non sence with double precision it also fails.
+</pre>
+
+
+The correction of the whole tutorial is available <a id="36" href="ressource/build/Correction/Examples.tar.gz">here</a>.
+If you want to start with the basic library you can download the minimal example <a id="38" href="ressource/build/Correction/ExampleMinimal.tar.gz">here</a>.
+
+
+		</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="1-41.html">Introduction to High Performance Computing</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+

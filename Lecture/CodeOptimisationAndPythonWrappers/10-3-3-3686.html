@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>The main_sgemm_swap.cpp file</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<table class="navigationMenu">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-3-2-3680.html">The sgemm_swap.cpp file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-3-3672.html">Let's swap the loops over j and k</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-3-4-3692.html">The CMakeLists.txt file</a></td>
+			</tr>
+		</table>
+		<div class="pageContent">
+		<h3 id="3686" class="section">10.3.3 : The main_sgemm_swap.cpp file</h3>
+
+
+The <b>main_sgemm_swap.cpp</b> file :
+<table id="3690" class="code">
+	<tbody>
+		<tr>
+			<td class="colLineNumbers">
+				<pre class="lineNumbers">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+</pre>
+			</td>
+			<td>
+				<pre class="source">
+<span class="cppmacro">#include &lt;iostream&gt;
+</span><span class="cppmacro">#include &quot;asterics_hpc.h&quot;
+</span><span class="cppmacro">#include &quot;sgemm_swap.h&quot;
+</span>
+<span class="dsKeyword">using</span> <span class="dsKeyword">namespace</span> <span class="cppstdF">std</span>;
+
+<span class="dsDocMono">///Get the number of cycles per elements of the reduction
+</span><span class="dsDocMulti">/**	@param nbElement : number of elements of the tables
+ * 	@param nbRepetition : number of repetition to evaluate the function reduction
+*/</span>
+<span class="dsType">void</span> evaluateSgemm(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbElement, <span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> nbRepetition){
+	<span class="dsType">float</span> * matX = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement*nbElement);
+	<span class="dsType">float</span> * matY = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement*nbElement);
+	<span class="dsType">float</span> * matOut = (<span class="dsType">float</span>*)asterics_malloc(<span class="dsKeyword">sizeof</span>(<span class="dsType">float</span>)*nbElement*nbElement);
+	
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbElement*nbElement; ++i){
+		matX[i] = (<span class="dsType">float</span>)(i*<span class="dsNumber">32lu</span>%<span class="dsNumber">17lu</span>);
+		matY[i] = (<span class="dsType">float</span>)(i*<span class="dsNumber">77lu</span>%<span class="dsNumber">31lu</span>);
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> beginTime(rdtsc());
+	<span class="dsKeyword">for</span>(<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> i(<span class="dsNumber">0lu</span>); i &lt; nbRepetition; ++i){
+		sgemm(matOut, matX, matY, nbElement);
+	}
+	<span class="dsType">long</span> <span class="dsType">unsigned</span> <span class="dsType">int</span> elapsedTime((<span class="dsType">double</span>)(rdtsc() - beginTime)/((<span class="dsType">double</span>)nbRepetition));
+	
+	<span class="dsType">double</span> cyclePerElement(((<span class="dsType">double</span>)elapsedTime)/((<span class="dsType">double</span>)(nbElement*nbElement)));
+	<span class="cppstdF">cout</span> &lt;&lt; <span class="dsString">&quot;evaluateSgemm : nbElement = &quot;</span>&lt;&lt;nbElement&lt;&lt;<span class="dsString">&quot;, cyclePerElement = &quot;</span> &lt;&lt; cyclePerElement &lt;&lt; <span class="dsString">&quot; cy/el, elapsedTime = &quot;</span> &lt;&lt; elapsedTime &lt;&lt; <span class="dsString">&quot; cy&quot;</span> &lt;&lt; <span class="cppstdF">endl</span>;
+	<span class="cppstdF">cerr</span> &lt;&lt; nbElement &lt;&lt; <span class="dsString">&quot;\t&quot;</span> &lt;&lt; cyclePerElement &lt;&lt; <span class="dsString">&quot;\t&quot;</span> &lt;&lt; elapsedTime &lt;&lt; <span class="cppstdF">endl</span>;
+	
+	asterics_free(matOut);
+	asterics_free(matY);
+	asterics_free(matX);
+}
+
+<span class="dsType">int</span> <span class="cppstandardF">main</span>(<span class="dsType">int</span> argc, <span class="dsType">char</span>** argv){
+	<span class="cppstdF">cout</span> &lt;&lt; <span class="dsString">&quot;SGEMM Swap&quot;</span> &lt;&lt; <span class="cppstdF">endl</span>;
+	evaluateSgemm(<span class="dsNumber">10lu</span>, <span class="dsNumber">100000lu</span>);
+	evaluateSgemm(<span class="dsNumber">20lu</span>, <span class="dsNumber">100000lu</span>);
+	evaluateSgemm(<span class="dsNumber">30lu</span>, <span class="dsNumber">100000lu</span>);
+	evaluateSgemm(<span class="dsNumber">50lu</span>, <span class="dsNumber">10000lu</span>);
+	evaluateSgemm(<span class="dsNumber">80lu</span>, <span class="dsNumber">10000lu</span>);
+	evaluateSgemm(<span class="dsNumber">100lu</span>, <span class="dsNumber">10000lu</span>);
+	<span class="dsKeyword">return</span> <span class="dsNumber">0</span>;
+}</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+				</div>
+		<table class="navigationMenuBottom">
+			<tr>
+			<td style="text-align: left;">Previous<br /><a href="10-3-2-3680.html">The sgemm_swap.cpp file</a></td>
+			<td style="text-align: center;">Parent<br /><a href="10-3-3672.html">Let's swap the loops over j and k</a></td>
+			<td><a href="outline.html">Outline</a></td>
+			<td style="text-align: right;">Next<br /><a href="10-3-4-3692.html">The CMakeLists.txt file</a></td>
+			</tr>
+		</table>
+	</body>
+</html>
+
