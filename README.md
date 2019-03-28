@@ -149,12 +149,12 @@ conda env update -f environment.yml
 
 Once the environment has been created and all dependencies installed, you may activate it with (you will need to do that every time you want to use this environment):
 ```
-conda activate school18
+conda activate school19
 ```
 
 > Note that if you haven't followed the [Anaconda installation](#python) or have an Anaconda version < 4.4, you will have to run
 ```
-source activate school18
+source activate school19
 ```
 
 # Having troubles? <a name="issues"></a>
