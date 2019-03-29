@@ -28,9 +28,10 @@ dependencies:
     - snakeviz
     - folium
     - pycodestyle
+    - keras
+    - tensorflow
     - pip:
         - wpca
         - autograd
-        - tensorflow
         - edward
         - psrecord
