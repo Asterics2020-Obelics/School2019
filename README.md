@@ -137,7 +137,7 @@ conda update conda
 ```
 Windows users: run this command (and the followings) from the  `Anaconda prompt` terminal.
 
-To create the environment, you just need to run the following command from the directory where you cloned this School2018 repository (since this repository contains the file `environment.yml`):
+To create the environment, you just need to run the following command from the directory where you cloned this School2019 repository (since this repository contains the file `environment.yml`):
 ```
 conda env create -f environment.yml
 ```
@@ -197,7 +197,7 @@ See the [links file](LINKS.md)
 
 - 2017 edition of the school: [program](https://indico.in2p3.fr/event/14227) and [github](https://github.com/Asterics2020-Obelics/School2017)
 
-- 2018 edition of the school: [program](https://indico.in2p3.fr/event/18333/) and [github](https://github.com/Asterics2020-Obelics/School2018)
+- 2018 edition of the school: [program](https://indico.in2p3.fr/event/16864/) and [github](https://github.com/Asterics2020-Obelics/School2018)
 
 Complete Python tutorials:
  * [Python for Scientific Computing](http://bender.astro.sunysb.edu/classes/python-science/)
