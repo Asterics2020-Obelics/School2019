@@ -48,12 +48,12 @@ If you already have Anaconda installed, you may skip to the [Library requirement
     - CERN Scientific Linux 6: `sudo yum install -y git tar bzip2 wget`
     - CERN CentOS 7: `sudo yum install -y git bzip2 wget`
 
-1. [Download](https://repo.anaconda.com/archive/Anaconda3-5.1.0-Linux-x86_64.sh)
-the Linux `Anaconda` installer for Python 3.6.
+1. [Download](https://www.anaconda.com/distribution/#download-section)
+the Linux `Anaconda` installer for Python 3.7.
 
 1. Run the following command line:
 
-		bash Anaconda3-5.1.0-Linux-x86_64.sh
+		bash Anaconda3-2018.12-Linux-x86_64.sh
 
 1. Accept the License by pressing `<Enter>`, then scrolling down to the bottom using `<space>` and writing `yes`
 
@@ -83,12 +83,12 @@ Set the correct path to your anaconda installation. If you do not include the se
 
 ## Mac <a name="mac"></a>
 
-1. [Download](https://repo.anaconda.com/archive/Anaconda3-5.1.0-MacOSX-x86_64.sh)
-the Mac `Anaconda` installer for Python 3.6.
+1. [Download](https://www.anaconda.com/distribution/#download-section)
+the Mac `Anaconda` installer for Python 3.7.
 
 1. Run the following command line:
 ```
-bash Anaconda3-5.1.0-MacOSX-x86_64.sh
+bash Anaconda3-2018.12-MacOSX-x86_64.sh
 ```
 
 1. Accept the License by pressing `<Enter>`, then scrolling down to the bottom using `<space>` and writing `yes`
@@ -122,7 +122,7 @@ There are two possibilities for Windows users:
 2. Alternatively, you can run the Windows Anaconda executable. In this case please use the following instructions:
 
 Instruction for Windows can be found
-[here](https://www.continuum.io/downloads#windows) for the installation of Anaconda. Once installed, you can run `Anaconda navigator`. To run Jupyter, on the main page of the Anaconda navigator, click on `Launch` on the Jupyter notebook box. This will open your favorite browser. From there, you can either load a notebook (e.g. from the Git folder) or create a new notebook by clicking `new -> Python 3`.
+[here](https://www.anaconda.com/distribution/#download-section) for the installation of Anaconda. Once installed, you can run `Anaconda navigator`. To run Jupyter, on the main page of the Anaconda navigator, click on `Launch` on the Jupyter notebook box. This will open your favorite browser. From there, you can either load a notebook (e.g. from the Git folder) or create a new notebook by clicking `new -> Python 3`.
 
 When a `conda` command is required, run it from the `Anaconda prompt` terminal.
 
