@@ -3,6 +3,7 @@ channels:
     - anaconda
     - astropy
     - conda-forge
+    - quantstack
 dependencies:
     - python=3.6
     - astropy
@@ -30,6 +31,9 @@ dependencies:
     - pycodestyle
     - keras
     - tensorflow
+    - gcc-7
+    - cmake
+    - make
     - pip:
         - wpca
         - autograd
