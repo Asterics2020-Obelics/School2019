@@ -1,0 +1,33 @@
+\section{Continuous Integration}
+\headlineframe{Continuous Integration}
+
+\begin{frame}[c]{Continuous Integration}
+  \begin{itemize}
+    \item Automatically run your test suite on new pushes and pull requests
+    \item Let's you see if a PR will break or fix stuff
+    \item Automatically create releases on tagged versions
+    \item Build and upload documention
+    \item ...
+  \end{itemize} 
+\end{frame}
+\begin{frame}[c, fragile]{Travis-CI}
+  \begin{itemize}
+    \item Travis provides free CI linux servers for public github repositories
+    \item Configured by a \texttt{.travis.yml} file in the repo
+  \end{itemize}
+
+  Simple Python example:
+
+  \begin{lstlisting}
+    language: python
+    python:  # run tests on python 3.5 and 3.6
+      - "3.5"
+      - "3.6"
+    install:
+      - pip install .
+    script:
+      - pytest -v
+  \end{lstlisting}
+
+  Much more complex tasks are possible: e.g. deploy to PyPI on tags, build and upload documentation etc.
+\end{frame}
