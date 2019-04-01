@@ -10,6 +10,7 @@ programming for astrophysics and astroparticle physics".
 
 # Table of contents
 
+- [Install `git` and other tools](#git)
 - [Get a copy of this repository with `git`](#repo)
 - [Recommendation for Python install](#python)
     - [Linux](#linux)
@@ -24,7 +25,27 @@ programming for astrophysics and astroparticle physics".
 - [Resources](#resources)
 
 
-# Get a copy of this repository with `git` <a name="repo"></a>
+## Install git and other needed software <a name="git">
+
+### Linux
+
+1. Install required distribution packages :
+    - Ubuntu: `sudo apt-get install -y git bzip2 wget`
+    - Fedora 25: `sudo dnf install -y git wget bzip2`
+    - CERN Scientific Linux 6: `sudo yum install -y git tar bzip2 wget`
+    - CERN CentOS 7: `sudo yum install -y git bzip2 wget`
+    - ARCH: `sudo pacman -S git bzip2 wget`
+
+### Mac
+
+Install git and other development tools by running
+
+```
+xcode-select --install
+```
+
+
+## Get a copy of this repository with `git` <a name="repo"></a>
 
 Clone this repository on your personal computer.
 
@@ -33,21 +54,15 @@ Clone this repository on your personal computer.
 You will need it before the school to install the different tools, and
 during the school while attending the hands-on. For Windows, see [below](#windows).
 
-# Recommendation for Python install <a name="python"></a>
+## Recommendation for Python install <a name="python"></a>
 
 You must install Python >=3.6 and a few Python libraries.
 The recommended way to do so is to use [Anaconda](https://www.anaconda.com/distribution#download-section).
 The procedure described below will help you install what is needed for the school.
 If you already have Anaconda installed, you may skip to the [Library requirements section](#req).
 
-## Linux <a name="linux"></a>
 
-1. Install required distribution packages :
-    - Ubuntu: `sudo apt-get install -y git bzip2 wget`
-    - Fedora 25: `sudo dnf install -y git wget bzip2`
-    - CERN Scientific Linux 6: `sudo yum install -y git tar bzip2 wget`
-    - CERN CentOS 7: `sudo yum install -y git bzip2 wget`
-    - ARCH: `sudo pacman -S git bzip2 wget`
+### Linux <a name="linux"></a>
 
 1. [Download](https://www.anaconda.com/distribution/#download-section)
 the Linux `Anaconda` installer for Python 3.7.
@@ -76,13 +91,7 @@ you need to run `conda activate` before using python for this workshop.
 
 1. Install the [Requirements](#req)
 
-## Mac <a name="mac"></a>
-
-Install git and other development tools by running
-
-```
-xcode-select --install
-```
+### Mac <a name="mac"></a>
 
 1. [Download](https://www.anaconda.com/distribution/#download-section)
 the Mac `Anaconda` installer for Python 3.7.
@@ -109,7 +118,7 @@ you need to run `conda activate` before using python for this workshop.
 
 1. Install the [Requirements](#req)
 
-## Windows <a name="windows"></a>
+### Windows <a name="windows"></a>
 
 There are two possibilities for Windows users:
 
@@ -129,6 +138,7 @@ When a `conda` command is required, run it from the `Anaconda prompt` terminal.
 
 You can also install a Git tool for Windows: [Git for Windows](https://git-for-windows.github.io/).
 Launch `Git GUI` or `Git bash` to get started.
+
 
 ## Library requirements <a name="req"></a>
 
@@ -170,7 +180,7 @@ Once the environment has been created and all dependencies installed, you may ac
 conda activate school19
 ```
 
-# Having troubles? <a name="issues"></a>
+## Having troubles? <a name="issues"></a>
 
 If you have any technical issue (e.g. regarding the install), first have a look at the [Issues](https://github.com/Asterics2020-Obelics/School2019/issues) tab and check that the issue has not been solved already (check the closed ones too). If not, please do open an issue (you will need a github account) for each question you may have before or during the school about software install and/or about one of the
 classes.
@@ -178,7 +188,7 @@ classes.
 You may also ask a question on [slack](#chat).
 
 
-# Jupyter <a name="jupyter"></a>
+## Jupyter <a name="jupyter"></a>
 
 To launch a Jupyter notebook, simply run the following command:
 
@@ -186,7 +196,7 @@ To launch a Jupyter notebook, simply run the following command:
 
 On Windows, see in the [above](#windows).
 
-# IDE: PyCharm <a name="pycharm"></a>
+## IDE: PyCharm <a name="pycharm"></a>
 
 We recommend to use pycharm, a full python IDE.
 Free Community Edition: [Download PyCharm](https://www.jetbrains.com/pycharm/download) or opt for a free copy of the Professional Edition under [Student License](https://www.jetbrains.com/student/).
@@ -195,7 +205,7 @@ A more flexible text editor with good python integration is VS Code: https://cod
 
 
 
-# Chat rooms <a name="chat"></a>
+## Chat rooms <a name="chat"></a>
 
 [Slack chat rooms](https://obelics-school.slack.com/) are available before,
 during and after the school (you should have received an email with an invitation).
@@ -208,12 +218,12 @@ There is also a channel *Social* to help you to get out together during the even
 
 You can get the slack app directly on your phone: [Android](https://play.google.com/store/apps/details?id=com.Slack) or [Apple](https://itunes.apple.com/fr/app/slack/id618783545?mt=8). You can also get it for Windows, Mac, or Linux [here](https://slack.com).
 
-# Tutors <a name="tutors"></a>
+## Tutors <a name="tutors"></a>
 
 The full list of tutors is available [here](https://indico.in2p3.fr/event/18333/page/2038-list-of-tutors).
 
 
-# Resources <a name="resources"></a>
+## Resources <a name="resources"></a>
 
 See the [links file](LINKS.md)
 
