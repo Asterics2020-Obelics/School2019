@@ -78,6 +78,12 @@ you need to run `conda activate` before using python for this workshop.
 
 ## Mac <a name="mac"></a>
 
+Install git and other development tools by running
+
+```
+xcode-select --install
+```
+
 1. [Download](https://www.anaconda.com/distribution/#download-section)
 the Mac `Anaconda` installer for Python 3.7.
 
