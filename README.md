@@ -20,6 +20,7 @@ programming for astrophysics and astroparticle physics".
 - [Having troubles?](#issues)
 - [Jupyter](#jupyter)    
 - [IDE: PyCharm](#pycharm)
+- [Julia](#julia)
 - [Chat room](#chat)
 - [Tutors](#tutors)
 - [Resources](#resources)
@@ -203,7 +204,9 @@ Free Community Edition: [Download PyCharm](https://www.jetbrains.com/pycharm/dow
 
 A more flexible text editor with good python integration is VS Code: https://code.visualstudio.com.
 
+## Julia <a name="julia"></a>
 
+There will be a short talk (in form of a live demonstration) on the [Julia Language](https://julialang.org). If you are interested and want to follow along, download the package here: https://julialang.org/downloads/
 
 ## Chat rooms <a name="chat"></a>
 
