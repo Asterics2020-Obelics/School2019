@@ -67,7 +67,7 @@ If you already have Anaconda installed, you may skip to the [Library requirement
 1. [Download](https://www.anaconda.com/distribution/#download-section)
 the Linux `Anaconda` installer for Python 3.7.
 
-1. Run the following command line:
+1. Run the following command line in the directory with the file you downloaded:
 
 ```
 bash Anaconda3-2018.12-Linux-x86_64.sh -b -p $HOME/.local/anaconda3
@@ -96,7 +96,7 @@ you need to run `conda activate` before using python for this workshop.
 1. [Download](https://www.anaconda.com/distribution/#download-section)
 the Mac `Anaconda` installer for Python 3.7.
 
-1. Run the following command line:
+1. Run the following command line in the directory with the file you downloaded:
 ```
 bash Anaconda3-2018.12-MacOSX-x86_64.sh -b -p $HOME/.local/anaconda3
 ```
