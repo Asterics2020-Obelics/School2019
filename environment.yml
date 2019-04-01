@@ -28,5 +28,8 @@ dependencies:
   - folium
   - pycodestyle
   - pyflakes
+  - make
+  - cmake
+  - gnuplot
   - pip:
     - psrecord
