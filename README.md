@@ -208,6 +208,8 @@ A more flexible text editor with good python integration is VS Code: https://cod
 
 There will be a short talk (in form of a live demonstration) on the [Julia Language](https://julialang.org). If you are interested and want to follow along, download the package here: https://julialang.org/downloads/
 
+If you don't want to install anything but still eager to try Julia, you can spawn a Jupyter notebook on [JuliaBox](https://juliabox.com) for free.
+
 ## Chat rooms <a name="chat"></a>
 
 [Slack chat rooms](https://obelics-school.slack.com/) are available before,
