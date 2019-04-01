@@ -37,7 +37,7 @@ during the school while attending the hands-on. For Windows, see [below](#window
 
 You must install Python >=3.6 and a few Python libraries.
 The recommended way to do so is to use [Anaconda](https://www.anaconda.com/distribution#download-section).
-The procedure described bellow will help you install what is needed for the school.
+The procedure described below will help you install what is needed for the school.
 If you already have Anaconda installed, you may skip to the [Library requirements section](#req).
 
 ## Linux <a name="linux"></a>
