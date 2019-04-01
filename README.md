@@ -134,9 +134,25 @@ conda update conda
 Windows users: run this command (and the followings) from the  `Anaconda prompt` terminal.
 
 To create the environment, you just need to run the following command from the directory where you cloned this School2019 repository (since this repository contains the file `environment.yml`):
+
 ```
 conda env create -f environment.yml
 ```
+
+For the c++ tutorial, we are going to need the anaocnda compiler tools.
+For Linux the WSL run
+```
+conda activate school19
+conda install gcc_linux-64 gxx_linux-64 gfortran_linux-64
+```
+
+For macos run
+
+```
+conda activate school19
+conda install clang_osx-64 clangxx_osx-64 gfortran_osx-64
+```
+
 
 If after the creation the file `environment.yml` was updated, you can update your installation with:
 ```
