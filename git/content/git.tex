@@ -91,6 +91,39 @@
 \end{frame}
 
 
+
+\begin{frame}{Full Picture}
+
+  \vspace{3em}
+  \centering
+  \begin{tikzpicture}[
+      line width=1.5,
+      gitstep/.style={
+        draw,
+        rounded corners,
+        thick,
+        minimum width=4cm,
+        minimum height=1.2cm,
+      },
+    ]
+    \node (wd) at (0, 0) [gitstep, fill=red!20, visible on=<1->] {Working directory};
+    \node (idx) [gitstep, fill=yellow!20, visible on=<1->, below=0.4cm of wd] {Staging};
+    \node (hist) [gitstep, fill=green!20, visible on=<1->, below=0.4cm of idx] {History};
+    \node (remote) [below=0.4cm of hist,draw,rounded corners,thick,minimum width=4cm,minimum height=1.2cm,fill=blue!20] {Remote};
+
+    \draw[thick,->] ([yshift=-0.15cm] wd.east) to[out=0,in=0] node[right] {\texttt{git add}} (idx.east);
+    \draw[thick,->] ([yshift=-0.15cm] idx.west) to[out=180,in=180] node[left] {\texttt{git commit}} ([yshift=0.15cm]hist.west);
+
+    \draw[thick,->] ([yshift=0.15cm] hist.east) to[out=0, in=0, looseness=3] node[right]{\texttt{git checkout}} ([yshift=0.15cm]wd.east);
+    \draw[thick,->] ([yshift=0.15cm] idx.west) to[out=180, in=180] node[left]{\texttt{git reset}} (wd.west);
+
+    \draw[thick,->] ([yshift=-0.15cm] hist.east) to[out=0,in=0] node[right] {\texttt{git push}} (remote.east);
+    \draw[thick,->] (remote.west) to[out=180,in=180] node[left] {\texttt{git pull}} ([yshift=-0.15cm]hist.west);
+  \end{tikzpicture}
+
+\end{frame}
+
+
 \begin{frame}{History}
   \only<1>{
     \begin{tikzpicture}
