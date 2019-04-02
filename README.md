@@ -156,19 +156,15 @@ To create the environment, you just need to run the following command from the d
 conda env create -f environment.yml
 ```
 
-For the c++ tutorial, we are going to need the anaocnda compiler tools.
-For Linux the WSL run
+For the c++ tutorial,
+we are going to need compiler tools.
+For Linux and Windows with the WSL run
 ```
 conda activate school19
 conda install gcc_linux-64 gxx_linux-64 gfortran_linux-64
 ```
 
-For macos run
-
-```
-conda activate school19
-conda install clang_osx-64 clangxx_osx-64 gfortran_osx-64
-```
+For macos we will just use the system compiler (`clang`).
 
 
 If after the creation the file `environment.yml` was updated, you can update your installation with:
