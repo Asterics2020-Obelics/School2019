@@ -125,7 +125,7 @@
 
 
 \begin{frame}{History}
-  \only<1>{
+  \only<1-2>{
     \begin{tikzpicture}
       \graph [
         grow right=1.5cm,
@@ -136,26 +136,7 @@
       ]{
         "ICRC 2017" [visible on=<4->, green!60!black, x=6];
         a <- b <- c <- d <- master [vertexDarkRed];
-        f[visible on=<2>] ->[visble on=<2>] -> a;
-        "ICRC 2017"[visible on=<2>] ->[visible on=<3>] c;
-      };
-    \end{tikzpicture}
-  }
-  \only<2>{
-    \begin{tikzpicture}
-      \graph [
-        grow right=1.5cm,
-        nodes={
-          blue!70!black,
-          node font=\ttfamily,
-        },
-      ]{
-        "ICRC 2017" [visible on=<4->, green!60!black, x=6];
-        a <- b <- c <- {
-          d <- master [vertexDarkRed],
-          e <- foo [vertexDarkRed]
-        };
-        "ICRC 2017"[visible on=<3>] ->[visible on=<3>] c;
+        c <-[visible on=<2>] "\strut e"[x=4.5, visible on=<2>] <-[visible on=<2>] foo [vertexDarkRed, visible on=<2>, x=4.1];
       };
     \end{tikzpicture}
   }
@@ -167,10 +148,13 @@
           blue!70!black,
           node font=\ttfamily,
         },
-      ] {
+      ]{
         "ICRC 2017" [visible on=<4->, green!60!black, x=6],
-        a <- b <- c <- d <- {e <- f, g [x=0]} <- h <- {i <-[visible on=<2->] master [vertexDarkRed, visible on=<3->], j <-[visible on=<2->] foo [vertexDarkRed, visible on=<3->]};
-        "ICRC 2017" ->[visible on=<4->] e ;
+        "\strut a" <- b <- c <- {
+          d <- f,
+          "\strut e",
+        } <- g [x=0] <- h <- {i <-[visible on=<2->] master [vertexDarkRed, visible on=<3->]};
+        "ICRC 2017" ->[visible on=<4->] f;
       };
     \end{tikzpicture}
   }
@@ -238,9 +222,9 @@
 
 \begin{frame}{\texttt{git diff}}
   \begin{tabu}{>{\ttfamily}l X[,L]}
-    git diff                     & Show difference between CWD and staging\\
-    git diff --staged            & Show difference between staging and last commit \\
-    git diff <commit1> <commit2> & Show difference between two commits
+    git diff                     & Show diff between CWD and staging\\
+    git diff --staged            & Show diff between staging and last commit \\
+    git diff <commit1> <commit2> & Show diff between two commits
   \end{tabu}
 \end{frame}
 
