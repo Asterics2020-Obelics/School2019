@@ -7,7 +7,7 @@ given during [3rd ASTERICS-OBELICS International School](https://indico.in2p3.fr
 **Emille E. O. Ishida** - CNRS/LPC-Clermont, France  
 [email][mei], [twitter][tei], [website][wei]
 
-**Alexandre Boucaud** - Paris-Saclay Center for Data Science, France  
+**Alexandre Boucaud** - Laboratoire Astroparticule et Cosmologie, France  
 [email][mab], [twitter][tab], [github][gab]
 
 [mei]: mailto:emilleishida@gmail.com
@@ -26,6 +26,6 @@ given during [3rd ASTERICS-OBELICS International School](https://indico.in2p3.fr
 
 [slides](slides/)  
 
-[EDA: Galaxies/QSO from SDSS](notebooks/Regression_boston.ipynb)  
-[EDA: The Teddy photometric redshift catalog](notebooks/Regression_PhotoZ.ipynb)  
+[EDA-1: Sources from SDSS](notebooks/EDA1_SDSS.ipynb)  
+[EDA-2: The Teddy photometric redshift catalog](notebooks/EDA2_PhotoZ.ipynb)  
 
