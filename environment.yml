@@ -4,6 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.6
+  - pip
   - astropy
   - pyyaml
   - cython
@@ -33,3 +34,4 @@ dependencies:
   - gnuplot
   - pip:
     - psrecord
+    - tqdm
