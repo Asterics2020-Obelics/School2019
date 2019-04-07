@@ -26,6 +26,6 @@ given during [3rd ASTERICS-OBELICS International School](https://indico.in2p3.fr
 
 [slides](slides/)  
 
-[EDA-1: Sources from SDSS](notebooks/EDA1_SDSS.ipynb)  
-[EDA-2: The Teddy photometric redshift catalog](notebooks/EDA2_PhotoZ.ipynb)  
+[EDA: Sources from SDSS](notebooks/EDA_SDSS.ipynb)  
+[Regression: Photometric redshift](notebooks/EDA_Teddy.ipynb)  
 
