@@ -32,6 +32,7 @@ dependencies:
   - make
   - cmake
   - gnuplot
+  - pyscaffold
   - pip:
     - psrecord
     - tqdm
