@@ -34,6 +34,7 @@ dependencies:
   - gnuplot
   - aplpy
   - pydrive
+  - tqdm
   - pip:
     - psrecord
-    - tqdm
+
