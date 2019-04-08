@@ -45,6 +45,13 @@ Install git and other development tools by running
 xcode-select --install
 ```
 
+### Settings
+
+You should tell git who you are:
+```
+git config --global user.name 'John Doe'
+git config --global user.email 'john.doe@gmail.com'
+```
 
 ## Get a copy of this repository with `git` <a name="repo"></a>
 
