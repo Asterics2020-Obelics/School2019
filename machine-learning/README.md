@@ -15,3 +15,4 @@ Schedule
 
 References
 ----------
+- [Deep learning](references/deeplearning.md)
