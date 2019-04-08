@@ -355,7 +355,22 @@ If you want to do more precise timing of small bits of Python code (say less tha
 
 Both [%time](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-time) and [%timeit](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit) are available from ipython and Jupyter.
 
-We've already used this a lot yesterday, so let's move on.
+:point_right: Let's work through the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. Instructions how to start it are in the [Setup](#setup) section.
+
+Using [%timeit](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit) can be confusing.
+Let's look at a simple example:
+```
+In [1]: %%timeit a = 42 
+   ...: a * a 
+   ...:  
+   ...:                                                                                                         
+40.8 ns ± 1.5 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+```
+* The statement on the first line is setup, **not** included in the measured time. You can also do this in a previous input prompt instead of putting it after the `%%timeit`.
+* There were 7 runs and 10 million loops for each run. That means the statement `a * a` was timed 70 million times.
+* For each run, only the **minimum** time is used - that's the best estimate of execution time under optimal conditions.
+* `%timeit` reports the mean and std. dev. of the runs. So the main number of interest is the first one on the line, in this case: multiplying two Python ints takes 40.8 ns. The std. dev. (1.5 ns in this case) isn't really of interest, except to judge the reliability of the measurement a little bit: it should be much smaller than the mean.
+* As you will see on the `%timeit?` help page, you can use `-r` to set the number of runs (default is 7) and `-n` to set the number of loops per run. The default for `-n` is to use an adaptive method, so that if it will run very often if your code executes very quickly, and only one or a few times if your code takes a long time (e.g. 1 second) to execute.
 
 ## 6. Function-level profiling
 
