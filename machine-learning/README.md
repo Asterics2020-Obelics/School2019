@@ -3,8 +3,8 @@ Machine learning course
 
 Authors
 -------
-Emille E. O. Ishida - emille _at_ cosmostatistics-initiative.org  
-Alexandre Boucaud - aboucaud _at_ apc.in2p3.fr  
+[Emille E. O. Ishida](www.emilleishida.com) - emille _at_ cosmostatistics-initiative.org  
+[Alexandre Boucaud](https://aboucaud.github.io/) - aboucaud _at_ apc.in2p3.fr  
 
 Schedule
 --------
