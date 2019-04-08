@@ -32,6 +32,8 @@ dependencies:
   - make
   - cmake
   - gnuplot
+  - aplpy
+  - pydrive
   - tqdm
   - pip:
     - psrecord
