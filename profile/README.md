@@ -2,6 +2,10 @@
 
 This is a tutorial how to get started with profiling Python code by Christoph Deil.
 
+This tutorial assumes that you have used a terminal, Python ipython and Jupyter
+before. No experience with Python profiling is assumed, this tutorial will get
+you started and focus on the basics.
+
 We will only cover timing and profiling CPU and memory use.
 Other kinds of profiling, or how to optimise will not be covered.
 
@@ -11,7 +15,8 @@ This is the first time I'm giving a tutorial on this topic. Please let me know i
 
 ## Outline
 
-- [Prerequisites](#prerequisites)
+- [Questions](#questions)
+- [Setup](#setup)
 - [1. When to profile?](#1-when-to-profile)
 - [2. How to profile?](#2-how-to-profile)
 - [3. What to profile?](#3-what-to-profile)
@@ -35,18 +40,15 @@ Please help me adjust the tutorial content and speed a bit:
 - Have you used `memory_profiler` or `%memit` or `%mprun`?
 - Have you used any other Python profiling tool?
 
-## Prerequisites
-
-This tutorial assumes that you have used a terminal, Python, ipython and Jupyter before.
-No experience with Python profiling is assumed, this tutorial will get you started and focus on the basics.
-
----
+## Setup
 
 Before we start, let's make sure we have everything set up.
 
 :point_right: Check your setup!
 
-You should have `python` (Python 3.5 or later), `ipython`, `jupyter`, `psutil`, `psrecord`, `line_profiler`, `memory_profiler` and `snakeviz`. Use these commands to check:
+You should have `python` (Python 3.5 or later), `ipython`, `jupyter`, `psutil`,
+`psrecord`, `line_profiler`, `memory_profiler` and `snakeviz`. Use these
+commands to check:
 ```
 python --version
 ipython --version
@@ -58,6 +60,25 @@ python -c 'import psutil, psrecord, line_profiler, memory_profiler, snakeviz'
 ```
 python -m pip install psutil psrecord line_profiler memory_profiler snakeviz
 ```
+
+---
+
+As part of this tutorial, we will go over the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. It's freely available at https://github.com/jakevdp/PythonDataScienceHandbook and generally is a great resource to learn, so I wanted to introduce it.
+
+:point_right: Get set up with the Python Data Science Handbook to execute the notebooks on your computer now.
+
+Follow these steps:
+* Open a new terminal (because we'll run `jupyter lab` there and then it can't be used for anything else)
+* Change directory to where you have your repositories
+* Run these commands:
+  ```
+  conda activate school18
+  git clone https://github.com/jakevdp/PythonDataScienceHandbook.git
+  cd PythonDataScienceHandbook/notebooks
+  jupyter lab Index.ipynb
+  ```
+* Open the "Profiling and Timing Code" (`01.07-Timing-and-Profiling.ipynb`) notebook from Chapter 1.
+* Leave it open, but go back to this tutorial for now.
 
 ## 1. When to profile?
 
@@ -474,15 +495,8 @@ Make sure you explore the output a bit, especially try both "Sunburst" and "Icic
 With function-level profiling you can find the functions that are relevant to the performance of your application.
  But what if you want to know which lines of code in the function are slow? The [line_profiler](https://github.com/rkern/line_profiler) package let's you measure execution time line by line, from Python, ipython or Jupyter.
 
-For this section, we will switch to the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. It's freely available at https://github.com/jakevdp/PythonDataScienceHandbook and generally is a great resource to learn, so I wanted to introduce it.
+:point_right: Let's work through the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. Instructions how to start it are in the [Setup](#setup) section.
 
-:point_right: Clone the `PythonDataScienceHandbook` git repository and start Jupyter.
-```
-cd <where you have your repositories>
-git clone https://github.com/jakevdp/PythonDataScienceHandbook.git
-cd PythonDataScienceHandbook
-jupyter notebook notebooks/01.07-Timing-and-Profiling.ipynb
-```
 
 ## 8. Memory profiling
 
