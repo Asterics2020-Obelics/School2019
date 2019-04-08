@@ -197,14 +197,14 @@ But you can create a `psutil.Process` object for any process running on your mac
 
 :point_right: Print the `pid` and `name` of the last 10 processes started.
 ```python
-for pid in psutil.pids()[:10]:
+for pid in psutil.pids()[-10:]:
     p = psutil.Process(pid)
     print(p.pid, p.name())
 ```
 
 :point_right: Print the current CPU and memory use of the current process.
 ```python
-p = Process()
+p = psutil.Process()
 p.cpu_percent()
 p.memory_full_info().rss / 1e6 # in MB
 ```
@@ -251,7 +251,7 @@ In the recorded [compute_and_io.png](compute_and_io.png) one can nicely see the 
 - And when disk or network I/O happens, Python makes calls into the operating sytem, and the CPU utilisation is lower. It can be between 0% and 100%, depending on the I/O task and your computer.
 
 Note that Numpy, Scipy, Pandas or other libraries you use might use multiple CPU cores in some functions (see [here](https://scipy.github.io/old-wiki/pages/ParallelProgramming)
-). E.g. to compute the doc product of two arrays, [numpy.dot](https://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html) calls into a linear algebra library  and often uses multiple CPU cores if they are available and if that would speed up the computation. Sometimes more cores don't help because the bottleneck is the data access from memory. The performance of a given script might be very different not just depending on your CPU, but also your software (e.g. Numpy and BLAS), see e.g. [here](http://markus-beuckelmann.de/blog/boosting-numpy-blas.html). Anaconda by default gives you a high performance [Intel MKL](https://en.wikipedia.org/wiki/Math_Kernel_Library).
+). E.g. to compute the dot product of two arrays, [numpy.dot](https://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html) calls into a linear algebra library  and often uses multiple CPU cores if they are available and if that would speed up the computation. Sometimes more cores don't help because the bottleneck is the data access from memory. The performance of a given script might be very different not just depending on your CPU, but also your software (e.g. Numpy and BLAS), see e.g. [here](http://markus-beuckelmann.de/blog/boosting-numpy-blas.html). Anaconda by default gives you a high performance [Intel MKL](https://en.wikipedia.org/wiki/Math_Kernel_Library).
 
 :point_right: Use `numpy.show_config` to see which linear algebra library (called BLAS and LAPACK) you are using.
 
@@ -272,11 +272,11 @@ If you want to write functions yourself that use multiple cores, this is possibl
 ```python
 import psutil
 p = psutil.Process()
-p.open_files()
+print(p.open_files())
 fh = open('spam.py')
-p.open_files()
+print(p.open_files())
 fh.close()
-p.open_files()
+print(p.open_files())
 ```
 
 ## 5. Time code execution
@@ -304,7 +304,7 @@ Detailed information about the three times is given
 [here](https://www.quora.com/Unix-What-is-the-difference-between-real-user-and-sys-when-I-call-time). Basically:
 
 - The `real` time is the wall clock time. It's what you usually care about and want to be small.
-- The `user` and `sys` are the time spent in "user mode" and "in the kernel". You usually don't care about this.
+- The `user` and `sys` are the time spent in "user mode" and "in the kernel". You usually don't care about this breakdown.
 
 Note that `real` time, i.e. wall clock time, doesn't depend on the number of CPU cores that was used. But `user` and `sys` does, for processes that use multiple cores, they can be larger than the `real` time. Here's an example:
 ```
@@ -372,7 +372,9 @@ $ python -m cProfile compute.py
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
 ```
 
-:point_right: Use `compute.py` through `cProfile` and store the resulting stats in `compute.stats`. Use `pstats` to read and view the stats in different ways.
+TODO: add explanation of columns here.
+
+:point_right: Profile `compute.py` and store the resulting stats in `compute.prof`. Use `pstats` to read and view the stats in different ways.
 ```
 $ python -m cProfile -o compute.prof compute.py
 $ python -m pstats
@@ -425,7 +427,7 @@ compute.prof% quit
 Goodbye.
 ```
 
-The `cProfile` and `stats` are described in detail in the tutorials [here](https://pymotw.com/3/profile/index.html) or [here](https://docs.python.org/3.6/library/profile.html). They are very powerful, but can be a bit cumbersome to use. Let's look at two user-friendly options that use `cProfile` under the hood.
+`cProfile` and `stats` are described in detail in the tutorials [here](https://pymotw.com/3/profile/index.html) or [here](https://docs.python.org/3.6/library/profile.html). They are very powerful, but can be a bit cumbersome to use. Let's look at two user-friendly options that use `cProfile` under the hood.
 
 ---
 
