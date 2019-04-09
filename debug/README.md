@@ -24,8 +24,9 @@ if you have any suggestions to improve!
 - [2. How Python executes code](#2-how-python-executes-code)
 - [3. Exceptions and tracebacks](#3-exceptions-and-tracebacks)
 - [4. Debugging with pdb](#4-debugging-with-pdb)
-- [5. Debugging with ipython and Jupyter](#5-debugging-with-ipython-and-jupyter)
-- [6. Debugging with PyCharm](#6-debugging-with-pycharm)
+- [5. Debugging with ipython](#5-debugging-with-ipython)
+- [6. Debugging with Jupyter](#6-debugging-with-jupyter)
+- [7. Debugging with PyCharm](#7-debugging-with-pycharm)
 - [Things to remember](#things-to-remember)
 - [Going further](#going-further)
 
@@ -55,6 +56,8 @@ $ jupyter --version
 If you don't have this, one nice option to get it is [Anaconda
 Python](https://www.anaconda.com/download/).
 
+---
+
 At the end of this tutorial, i will demo how to use the visual debugger in
 PyCharm.
 
@@ -68,7 +71,7 @@ PyCharm, you need to configure two things: your Python interpreter and execute
 One way to launch PyCharm is to cd into the directory for this tutorial and use
 the command line launcher like this:
 ```
-cd python-tutorials/debug
+cd School2019/debug
 charm .
 ```
 Then right-click on `analysis.py` and select "run analysis". A console at the
@@ -80,6 +83,34 @@ Code](https://code.visualstudio.com/). I'm not familiar with those, and in any
 case we will not have time to sort out installation / setup problems for those
 during the tutorial. If you want to use those, try them after the tutorial and
 try to re-do the examples from this tutorial.*
+
+---
+
+As part of this tutorial, we will go over the [Errors and Debugging](https://jakevdp.github.io/PythonDataScienceHandbook/01.06-errors-and-debugging.html)
+Jupyter notebook from the excellent [Python Data Science
+Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake
+VanderPlas. It's freely available at
+https://github.com/jakevdp/PythonDataScienceHandbook and generally is a great
+resource to learn, so I wanted to introduce it.
+
+:point_right: Get set up with the Python Data Science Handbook to execute the
+notebooks on your computer now.
+
+Follow these steps:
+* Open a new terminal (because we'll run `jupyter lab` there and then it can't
+  be used for anything else)
+* Change directory to where you have your repositories
+* Run these commands:
+  ```
+  conda activate school18
+  git clone https://github.com/jakevdp/PythonDataScienceHandbook.git
+  cd PythonDataScienceHandbook/notebooks
+  jupyter lab Index.ipynb
+  ```
+* Open the "Errors and Debugging" (`01.06-Errors-and-Debugging.ipynb`)
+  notebook from Chapter 1.
+* Leave it open, but go back to this tutorial for now.
+
 
 ## 1. When to debug?
 
@@ -244,7 +275,7 @@ Let's use the Python scripts from above ([exception.py](exception.py) and
 - `import pdb; pdb.set_trace()`
 - `python -m pdb myscript.py`
 
-## 5. Debugging with ipython and Jupyter
+## 5. Debugging with ipython
 
 Similarly how `ipython` and `jupyter` often give a nicer interactive Python
 environment than `python`, they also make it often easier to debug.
@@ -252,6 +283,8 @@ environment than `python`, they also make it often easier to debug.
 - `ipython -i`
 - `import IPython; IPython.embed()`
 - `ipdb`
+
+## 6. Debugging with Jupyter
 
 To learn debugging from Jupyter, let's use the [Errors and
 Debugging](https://jakevdp.github.io/PythonDataScienceHandbook/01.06-errors-and-debugging.html)
@@ -274,7 +307,7 @@ jupyter notebook notebooks/01.07-Timing-and-Profiling.ipynb
 - `%run -d`
 - `%pdb`
 
-## 6. Debugging with PyCharm
+## 7. Debugging with PyCharm
 
 PyCharm has a great visual debugger. 
 
