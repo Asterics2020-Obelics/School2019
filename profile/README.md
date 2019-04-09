@@ -1,17 +1,21 @@
 # Profiling Python code
 
-This is a tutorial how to get started with profiling Python code by Christoph Deil.
+This is a tutorial how to get started with profiling Python code by Christoph
+Deil.
 
 This tutorial assumes that you have used a terminal, Python ipython and Jupyter
 before. No experience with Python profiling is assumed, this tutorial will get
 you started and focus on the basics.
 
-We will only cover timing and profiling CPU and memory use.
-Other kinds of profiling, or how to optimise will not be covered.
+We will only cover timing and profiling CPU and memory use. Other kinds of
+profiling, or how to optimise will not be covered.
 
-Throughout the tutorial you will find short exercises marked with :point_right:. Usually the solution is given directly below. Please execute the examples and try things for yourself. Interrupt with questions at any time!
+Throughout the tutorial you will find short exercises marked with :point_right:.
+Usually the solution is given directly below. Please execute the examples and
+try things for yourself. Interrupt with questions at any time!
 
-This is the first time I'm giving a tutorial on this topic. Please let me know if you have any suggestions to improve!
+This is the first time I'm giving a tutorial on this topic. Please let me know
+if you have any suggestions to improve!
 
 ## Outline
 
@@ -25,6 +29,7 @@ This is the first time I'm giving a tutorial on this topic. Please let me know i
 - [6. Function-level profiling](#6-function-level-profiling)
 - [7. Line-level profiling](#7-line-level-profiling)
 - [8. Memory profiling](#8-memory-profiling)
+- [Exercise](#exercise)
 - [Things to remember](#things-to-remember)
 - [Going further](#going-further)
 
@@ -63,12 +68,20 @@ python -m pip install psutil psrecord line_profiler memory_profiler snakeviz
 
 ---
 
-As part of this tutorial, we will go over the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. It's freely available at https://github.com/jakevdp/PythonDataScienceHandbook and generally is a great resource to learn, so I wanted to introduce it.
+As part of this tutorial, we will go over the [Profiling and Timing
+Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html)
+Jupyter notebook from the excellent [Python Data Science
+Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake
+VanderPlas. It's freely available at
+https://github.com/jakevdp/PythonDataScienceHandbook and generally is a great
+resource to learn, so I wanted to introduce it.
 
-:point_right: Get set up with the Python Data Science Handbook to execute the notebooks on your computer now.
+:point_right: Get set up with the Python Data Science Handbook to execute the
+notebooks on your computer now.
 
 Follow these steps:
-* Open a new terminal (because we'll run `jupyter lab` there and then it can't be used for anything else)
+* Open a new terminal (because we'll run `jupyter lab` there and then it can't
+  be used for anything else)
 * Change directory to where you have your repositories
 * Run these commands:
   ```
@@ -77,14 +90,17 @@ Follow these steps:
   cd PythonDataScienceHandbook/notebooks
   jupyter lab Index.ipynb
   ```
-* Open the "Profiling and Timing Code" (`01.07-Timing-and-Profiling.ipynb`) notebook from Chapter 1.
+* Open the "Profiling and Timing Code" (`01.07-Timing-and-Profiling.ipynb`)
+  notebook from Chapter 1.
 * Leave it open, but go back to this tutorial for now.
 
 ## 1. When to profile?
 
-You've probably heard this before: "Premature optimization is the root of all evil".
+You've probably heard this before: "Premature optimization is the root of all
+evil".
 
-Timing and profiling is very much related to optimisation: you only do it if your code is too slow or you run out of memory.
+Timing and profiling is very much related to optimisation: you only do it if
+your code is too slow or you run out of memory.
 
 The general recommendation concerning profiling and optimisation:
 
@@ -93,45 +109,65 @@ The general recommendation concerning profiling and optimisation:
 - Start using your code for your application.
 - Never profile or optimise!
 
-Computers these days are fast and have a lot of memory. Your time is precious. For the vast majority of code you write, optimisation and profiling are simply not needed.
+Computers these days are fast and have a lot of memory. Your time is precious.
+For the vast majority of code you write, optimisation and profiling are simply
+not needed.
 
-Python and the libraries are so high-level, that you can write very advanced applications quickly. It's OK and advisable to re-factor or completly re-write using lessons learned from a first implementation, using better data structures, algorithms, or e.g. using [numba](https://numba.pydata.org/) for the small performance-critical part.
+Python and the libraries are so high-level, that you can write very advanced
+applications quickly. It's OK and advisable to re-factor or completly re-write
+using lessons learned from a first implementation, using better data structures,
+algorithms, or e.g. using [numba](https://numba.pydata.org/) for the small
+performance-critical part.
 
-Of course, today is one of the few days in your life where you need to do profiling (you joined this tutorial), so let's do it.
+Of course, today is one of the few days in your life where you need to do
+profiling (you joined this tutorial), so let's do it.
 
 ## 2. How to profile?
 
 Then the general recommendation is to proceed systematically in these steps:
 
-- Write a "benchmark", a script that reflects a real use case where you want better performance.
-- Define the key performance numbers (often runtime or peak memory usage) that you care about.
-- Measure and write down current performance.
-  Make sure your current code version is checked in to version control before starting the profiling and optimisation.
+- Write a "benchmark", a script that reflects a real use case where you want
+  better performance.
+- Define the key performance numbers (often runtime or peak memory usage) that
+  you care about.
+- Measure and write down current performance. Make sure your current code
+  version is checked in to version control before starting the profiling and
+  optimisation.
 - Time and profile to find the performance bottlenecks
 - Optimise only the parts where it matters.
 
-The advice "measure first, using a real use case of your application" always holds. Python is a very dynamic language, understanding even basic performance characteristics is hard and surprising. E.g. attribute access and function calls are fast in most languages, but in Python are slow. For real complex applications it's impossible just from looking at the code.
+The advice "measure first, using a real use case of your application" always
+holds. Python is a very dynamic language, understanding even basic performance
+characteristics is hard and surprising. E.g. attribute access and function calls
+are fast in most languages, but in Python are slow. For real complex
+applications it's impossible just from looking at the code.
 
 ## 3. What to profile?
 
-In this section we will look a bit at the following components of your computer using Python examples:
+In this section we will look a bit at the following components of your computer
+using Python examples:
 - CPU (usually multi-core)
 - memory
 - disk
 - network
 
-In this tutorial we will mainly focus on CPU and memory. We will not cover I/O (disk and network) much, and not mention GPU or multi-CPU at all.
+In this tutorial we will mainly focus on CPU and memory. We will not cover I/O
+(disk and network) much, and not mention GPU or multi-CPU at all.
 
-Note that your computer hardware and software is incredibly complex. It is quite common performance bottlenecks and behaviour is surprising and confusing. Also, results will differ, mostly based on your hardware and operating system.
+Note that your computer hardware and software is incredibly complex. It is quite
+common performance bottlenecks and behaviour is surprising and confusing. Also,
+results will differ, mostly based on your hardware and operating system.
 
 ---
 
-To see what your system is doing, the easiest way is to use your system monitor tool. I'm on Mac, where it's an app called
-[Activity Monitor](https://en.wikipedia.org/wiki/List_of_macOS_components#Activity_Monitor).
+To see what your system is doing, the easiest way is to use your system monitor
+tool. I'm on Mac, where it's an app called [Activity
+Monitor](https://en.wikipedia.org/wiki/List_of_macOS_components#Activity_Monitor).
 
 :point_right: Open up your system monitor tool.
 
-:bulb: This tool is different for every operating system, so please use Google to find out how to do this.
+:bulb: This tool is different for every operating system, so please use Google
+to find out how to do this.
 
 ---
 
@@ -141,11 +177,14 @@ Let's use [spam.py](spam.py) as an example of a Python script that uses up a lot
 
 # 4. Measure CPU and memory usage
 
-Running the Python script starts a **process** and within the process runs your code in a single **thread**.
+Running the Python script starts a **process** and within the process runs your
+code in a single **thread**.
 
-So only one CPU core will be used by your Python script, unless you call into Python C extensions that can use multiple CPU cores.
+So only one CPU core will be used by your Python script, unless you call into
+Python C extensions that can use multiple CPU cores.
 
-We will not need this for the rest of this tutorial, but sometimes it can be useful to know how to figure out the ID of your Python process or thread.
+We will not need this for the rest of this tutorial, but sometimes it can be
+useful to know how to figure out the ID of your Python process or thread.
 
 To find out the number of a Python process:
 ```python
@@ -160,7 +199,14 @@ To find out the active thread count, and thread identifier of the current thread
 >>> threading.get_ident()
 ```
 
-To learn more about threads and processes, and how to create and control them from Python, see the Python standard library [threading](https://pymotw.com/3/threading/), [multiprocessing](https://pymotw.com/3/multiprocessing/) and [subprocess](https://pymotw.com/3/subprocess/) modules. The [os](https://pymotw.com/3/os/) and [resource](https://pymotw.com/3/resource/) modules give you access to information about your operating system and sytem resources.
+To learn more about threads and processes, and how to create and control them
+from Python, see the Python standard library
+[threading](https://pymotw.com/3/threading/),
+[multiprocessing](https://pymotw.com/3/multiprocessing/) and
+[subprocess](https://pymotw.com/3/subprocess/) modules. The
+[os](https://pymotw.com/3/os/) and [resource](https://pymotw.com/3/resource/)
+modules give you access to information about your operating system and sytem
+resources.
 
 :point_right: Check how many CPU cores you have.
 ```python
@@ -168,13 +214,24 @@ To learn more about threads and processes, and how to create and control them fr
 >>> multiprocessing.cpu_count()
 ```
 
-Note that sometimes the number reported does not reflect the number of hardware CPU cores. E.g. I have an Intel CPU with 4 cores, but here and in the activity monitor see 8. This is due to [hyper-threading](https://en.wikipedia.org/wiki/Hyper-threading), where each physical CPU core appears as two logical cores.
+Note that sometimes the number reported does not reflect the number of hardware
+CPU cores. E.g. I have an Intel CPU with 4 cores, but here and in the activity
+monitor see 8. This is due to
+[hyper-threading](https://en.wikipedia.org/wiki/Hyper-threading), where each
+physical CPU core appears as two logical cores.
 
 ---
 
-In the Python standard library, things are pretty scattered and sometimes a bit cumbersome to use. Thankfully, there is a third-party Python package for process and system monitoring: [psutil](http://psutil.readthedocs.io/). To quote from the docs:
+In the Python standard library, things are pretty scattered and sometimes a bit
+cumbersome to use. Thankfully, there is a third-party Python package for process
+and system monitoring: [psutil](http://psutil.readthedocs.io/). To quote from
+the docs:
 
-> psutil (python system and process utilities) is a cross-platform library for retrieving information on running processes and system utilization (CPU, memory, disks, network, sensors) in Python. It is useful mainly for system monitoring, profiling, limiting process resources and the management of running processes.
+> psutil (python system and process utilities) is a cross-platform library for
+> retrieving information on running processes and system utilization (CPU,
+> memory, disks, network, sensors) in Python. It is useful mainly for system
+> monitoring, profiling, limiting process resources and the management of
+> running processes.
 
 Let's try out just a few of the things `psutil` can do:
 ```python
@@ -205,16 +262,20 @@ psutil.disk_usage('/').free / 1e9
 len(psutil.pids())
 ```
 
-The [recipes](http://psutil.readthedocs.io/en/latest/#recipes) section in the `psutil` docs contains examples how to find and filter and control processes.
+The [recipes](http://psutil.readthedocs.io/en/latest/#recipes) section in the
+`psutil` docs contains examples how to find and filter and control processes.
 
 ---
 
-To get information about a specific process, you create a `psutil.Process` object. By default, the process will be the current process (with the number given by `os.getpid()`)
+To get information about a specific process, you create a `psutil.Process`
+object. By default, the process will be the current process (with the number
+given by `os.getpid()`)
 ```python
 >>> psutil.Process()
 psutil.Process(pid=19651, name='python3.6', started='18:01:23')
 ```
-But you can create a `psutil.Process` object for any process running on your machine, by giving the `PID`.
+But you can create a `psutil.Process` object for any process running on your
+machine, by giving the `PID`.
 
 :point_right: Print the `pid` and `name` of the last 10 processes started.
 ```python
@@ -230,22 +291,34 @@ p.cpu_percent()
 p.memory_full_info().rss / 1e6 # in MB
 ```
 
-Note that the CPU percent is given per core. So if you have 4 cores and a process that uses all of them, it will show up with `cpu_percent = 400`. To quote from the docs [here](http://psutil.readthedocs.io/en/latest/#psutil.Process.cpu_percent):
+Note that the CPU percent is given per core. So if you have 4 cores and a
+process that uses all of them, it will show up with `cpu_percent = 400`. To
+quote from the docs
+[here](http://psutil.readthedocs.io/en/latest/#psutil.Process.cpu_percent):
 
+> The returned value is explicitly NOT split evenly between all available
+logical CPUs. This means that a busy loop process running on a system with 2
+logical CPUs will be reported as having 100% CPU utilization instead of 50%.
 
-> The returned value is explicitly NOT split evenly between
-all available logical CPUs. This means that a busy loop process
-running on a system with 2 logical CPUs will be reported as
-having 100% CPU utilization instead of 50%.
-
-
-The `psutil` docs are very good; one gotcha to watch out for is that some functions appear twice, e.g. there is [psutil.cpu_percent](http://psutil.readthedocs.io/en/latest/#psutil.cpu_percent) for the whole system, and there is [psutil.Process.cpu_percent](http://psutil.readthedocs.io/en/latest/#psutil.Process.cpu_percent) for a given process.
+The `psutil` docs are very good; one gotcha to watch out for is that some
+functions appear twice, e.g. there is
+[psutil.cpu_percent](http://psutil.readthedocs.io/en/latest/#psutil.cpu_percent)
+for the whole system, and there is
+[psutil.Process.cpu_percent](http://psutil.readthedocs.io/en/latest/#psutil.Process.cpu_percent)
+for a given process.
 
 ---
 
-You can use `psutil` directly from your script, or use tools built on top of `psutil`. There are some [example applications](https://github.com/giampaolo/psutil#example-applications), many [projects using psutil](https://github.com/giampaolo/psutil#projects-using-psutil) and [ports](https://github.com/giampaolo/psutil#portings) to other languages.
+You can use `psutil` directly from your script, or use tools built on top of
+`psutil`. There are some [example
+applications](https://github.com/giampaolo/psutil#example-applications), many
+[projects using
+psutil](https://github.com/giampaolo/psutil#projects-using-psutil) and
+[ports](https://github.com/giampaolo/psutil#portings) to other languages.
 
-One tool I find nice is [psrecord](https://github.com/astrofrog/psrecord), which makes it simple to record and plot the CPU and memory activity of a given process.
+One tool I find nice is [psrecord](https://github.com/astrofrog/psrecord), which
+makes it simple to record and plot the CPU and memory activity of a given
+process.
 
 :point_right: Run [compute_and_io.py](compute_and_io.py) through `psrecord`.
 ```
@@ -267,27 +340,53 @@ Starting up command 'python compute_and_io.py' and attaching to process
 Process finished (7.09 seconds)
 ```
 
-In the recorded [compute_and_io.png](compute_and_io.png) one can nicely see the typical behaviour of Python processes:
-- One thread runs on one core at 100% CPU utilisation while you're doing computations. The Python interpreter is basically a `while True: execute next byte code` loop.
-- And when disk or network I/O happens, Python makes calls into the operating sytem, and the CPU utilisation is lower. It can be between 0% and 100%, depending on the I/O task and your computer.
+In the recorded [compute_and_io.png](compute_and_io.png) one can nicely see the
+typical behaviour of Python processes:
+- One thread runs on one core at 100% CPU utilisation while you're doing
+  computations. The Python interpreter is basically a `while True: execute next
+  byte code` loop.
+- And when disk or network I/O happens, Python makes calls into the operating
+  sytem, and the CPU utilisation is lower. It can be between 0% and 100%,
+  depending on the I/O task and your computer.
 
-Note that Numpy, Scipy, Pandas or other libraries you use might use multiple CPU cores in some functions (see [here](https://scipy.github.io/old-wiki/pages/ParallelProgramming)
-). E.g. to compute the dot product of two arrays, [numpy.dot](https://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html) calls into a linear algebra library  and often uses multiple CPU cores if they are available and if that would speed up the computation. Sometimes more cores don't help because the bottleneck is the data access from memory. The performance of a given script might be very different not just depending on your CPU, but also your software (e.g. Numpy and BLAS), see e.g. [here](http://markus-beuckelmann.de/blog/boosting-numpy-blas.html). Anaconda by default gives you a high performance [Intel MKL](https://en.wikipedia.org/wiki/Math_Kernel_Library).
+Note that Numpy, Scipy, Pandas or other libraries you use might use multiple CPU
+cores in some functions (see
+[here](https://scipy.github.io/old-wiki/pages/ParallelProgramming)). E.g. to
+compute the dot product of two arrays,
+[numpy.dot](https://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html)
+calls into a linear algebra library  and often uses multiple CPU cores if they
+are available and if that would speed up the computation. Sometimes more cores
+don't help because the bottleneck is the data access from memory. The
+performance of a given script might be very different not just depending on your
+CPU, but also your software (e.g. Numpy and BLAS), see e.g.
+[here](http://markus-beuckelmann.de/blog/boosting-numpy-blas.html). Anaconda by
+default gives you a high performance [Intel
+MKL](https://en.wikipedia.org/wiki/Math_Kernel_Library).
 
-:point_right: Use `numpy.show_config` to see which linear algebra library (called BLAS and LAPACK) you are using.
+:point_right: Use `numpy.show_config` to see which linear algebra library
+(called BLAS and LAPACK) you are using.
 
 :point_right: Run `psrecord` on [multi_core.py](multi_core.py).
 
 ```
 psrecord --interval 0.1 --plot multi_core.png 'python multi_core.py'
 ```
-On my machine, [numpy.random.random_sample](https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.random_sample.html) uses one core, and [numpy.dot](https://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html) uses all four available cores: [multi_core.png](multi_core.png).
+On my machine,
+[numpy.random.random_sample](https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.random_sample.html)
+uses one core, and
+[numpy.dot](https://docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html)
+uses all four available cores: [multi_core.png](multi_core.png).
 
-If you want to write functions yourself that use multiple cores, this is possible with Numba, Cython or from any C extension, but not from normal Python code. If you're interested in this, see e.g. [here](https://python-notes.curiousefficiency.org/en/latest/python3/multicore_python.html) or [here](https://devblogs.nvidia.com/seven-things-numba/).
+If you want to write functions yourself that use multiple cores, this is
+possible with Numba, Cython or from any C extension, but not from normal Python
+code. If you're interested in this, see e.g.
+[here](https://python-notes.curiousefficiency.org/en/latest/python3/multicore_python.html)
+or [here](https://devblogs.nvidia.com/seven-things-numba/).
 
 ---
 
-`psutil` can also help you with disk or network I/O and monitoring or controlling subprocesses. We won't go into this here, just one quick example:
+`psutil` can also help you with disk or network I/O and monitoring or
+controlling subprocesses. We won't go into this here, just one quick example:
 
 :point_right: Get a list of open files for your process.
 ```python
@@ -302,9 +401,11 @@ print(p.open_files())
 
 ## 5. Time code execution
 
-Total runtime of your analysis is often the most important performance number you care about.
+Total runtime of your analysis is often the most important performance number
+you care about.
 
-To time the execution of a Python script, you can use the [Unix time command](https://en.wikipedia.org/wiki/Time_(Unix)).
+To time the execution of a Python script, you can use the [Unix time
+command](https://en.wikipedia.org/wiki/Time_(Unix)).
 
 :point_right: Time the `python` interpreter startup. Time  `import numpy`.
 
@@ -322,12 +423,17 @@ sys	0m0.032s
 ```
 Detailed information about the three times is given
 [here](https://stackoverflow.com/questions/556405/) and
-[here](https://www.quora.com/Unix-What-is-the-difference-between-real-user-and-sys-when-I-call-time). Basically:
+[here](https://www.quora.com/Unix-What-is-the-difference-between-real-user-and-sys-when-I-call-time).
+Basically:
 
-- The `real` time is the wall clock time. It's what you usually care about and want to be small.
-- The `user` and `sys` are the time spent in "user mode" and "in the kernel". You usually don't care about this breakdown.
+- The `real` time is the wall clock time. It's what you usually care about and
+  want to be small.
+- The `user` and `sys` are the time spent in "user mode" and "in the kernel".
+  You usually don't care about this breakdown.
 
-Note that `real` time, i.e. wall clock time, doesn't depend on the number of CPU cores that was used. But `user` and `sys` does, for processes that use multiple cores, they can be larger than the `real` time. Here's an example:
+Note that `real` time, i.e. wall clock time, doesn't depend on the number of CPU
+cores that was used. But `user` and `sys` does, for processes that use multiple
+cores, they can be larger than the `real` time. Here's an example:
 ```
 $ time python multi_core.py
 a
@@ -339,7 +445,9 @@ user	0m51.727s
 sys	0m0.895s
 ```
 
-If you want to time only part of your Python script, you can use the Python standard library [time](https://pymotw.com/3/time/index.html) module, specifically the `time.time` function, like this:
+If you want to time only part of your Python script, you can use the Python
+standard library [time](https://pymotw.com/3/time/index.html) module,
+specifically the `time.time` function, like this:
 ```python
 import time
 t_start = time.time()
@@ -349,16 +457,29 @@ time.sleep(2)
 t_run = time.time() - t_start
 print('t_run:', t_run)
 ```
-We already saw this above in the example using [compute_and_io.py](compute_and_io.py).
+We already saw this above in the example using
+[compute_and_io.py](compute_and_io.py).
 
-If you want to do more precise timing of small bits of Python code (say less that 1 second) use [timeit](https://pymotw.com/3/timeit/).
+If you want to do more precise timing of small bits of Python code (say less
+that 1 second) use [timeit](https://pymotw.com/3/timeit/).
 
-Both [%time](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-time) and [%timeit](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit) are available from ipython and Jupyter.
+Both
+[%time](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-time)
+and
+[%timeit](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit)
+are available from ipython and Jupyter.
 
-:point_right: Let's work through the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. Instructions how to start it are in the [Setup](#setup) section.
+:point_right: Let's work through the "Timing Code Snippets" section in the
+[Profiling and Timing
+Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html)
+Jupyter notebook from the excellent [Python Data Science
+Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake
+VanderPlas. Instructions how to start it are in the [Setup](#setup) section.
 
-Using [%timeit](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit) can be confusing.
-Let's look at a simple example:
+Using
+[%timeit](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit)
+for the first time is confusing. It's not obvious what is happening and what all
+the numbers mean:
 ```
 In [1]: %%timeit a = 42 
    ...: a * a 
@@ -366,19 +487,67 @@ In [1]: %%timeit a = 42
    ...:                                                                                                         
 40.8 ns ± 1.5 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
 ```
-* The statement on the first line is setup, **not** included in the measured time. You can also do this in a previous input prompt instead of putting it after the `%%timeit`.
-* There were 7 runs and 10 million loops for each run. That means the statement `a * a` was timed 70 million times.
-* For each run, only the **minimum** time is used - that's the best estimate of execution time under optimal conditions.
-* `%timeit` reports the mean and std. dev. of the runs. So the main number of interest is the first one on the line, in this case: multiplying two Python ints takes 40.8 ns. The std. dev. (1.5 ns in this case) isn't really of interest, except to judge the reliability of the measurement a little bit: it should be much smaller than the mean.
-* As you will see on the `%timeit?` help page, you can use `-r` to set the number of runs (default is 7) and `-n` to set the number of loops per run. The default for `-n` is to use an adaptive method, so that if it will run very often if your code executes very quickly, and only one or a few times if your code takes a long time (e.g. 1 second) to execute.
+* The reported time is wall clock time (no distinction of user and sys made,
+  number of cores used not considered)
+* The statement on the first line is setup, **not** included in the measured
+  time. You can also do this in a previous input prompt instead of putting it
+  after the `%%timeit`.
+* There were 7 runs and 10 million loops for each run. That means the statement
+  `a * a` was timed 70 million times.
+* For each run, only the **minimum** time is used - that's the best estimate of
+  execution time under optimal conditions.
+* `%timeit` reports the mean and std. dev. of the runs. So the main number of
+  interest is the first one on the line, in this case: multiplying two Python
+  ints takes 40.8 ns. The std. dev. (1.5 ns in this case) isn't really of
+  interest, except to judge the reliability of the measurement a little bit: it
+  should be much smaller than the mean.
+* As you will see on the `%timeit?` help page, you can use `-r` to set the
+  number of runs (default is 7) and `-n` to set the number of loops per run. The
+  default for `-n` is to use an adaptive method, so that if it will run very
+  often if your code executes very quickly, and only one or a few times if your
+  code takes a long time (e.g. 1 second) to execute.
+
+Using
+[%time](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-time)
+for the first time is confusing. Four times are given for each measurement:
+```
+In [5]: %time a = np.ones(int(1e6))                                                                             
+CPU times: user 2.27 ms, sys: 3.76 ms, total: 6.03 ms
+Wall time: 4.85 ms
+
+In [8]: %time 3 * 3                                                                                             
+CPU times: user 3 µs, sys: 0 ns, total: 3 µs
+Wall time: 8.11 µs
+```
+* The number you care about is the wall time, ignore the others.
+* I'm not sure what "total" is, and why it's sometimes shorter, sometimes longer
+  than the wall time. Maybe the number of CPU cores are taken into account?
+* The Python `timeit` and the ipython `%timeit` usually report a shorter time
+  than the Python `time` and ipython `%time`. Basically `timeit` will give the
+  best possible execution time, by running multiple times and reporting the
+  best, but also by avoiding interruptions from operating system calls, and the
+  Python garbage collector. `time` just runs once and doesn't do those things.
+  You have to decide which you want.
 
 ## 6. Function-level profiling
 
-The examples above using `psutil` and `psrecord` use "sampling" at regular time intervals "from the outside" to measure the CPU and memory usage. This can be useful to see the overall performance of your process, but the connection to your Python code is lost, to understand and optimise you need something different.
+The examples above using `psutil` and `psrecord` use "sampling" at regular time
+intervals "from the outside" to measure the CPU and memory usage. This can be
+useful to see the overall performance of your process, but the connection to
+your Python code is lost, to understand and optimise you need something
+different.
 
-The Python standard library contains a deterministic function-level profiler. It traces the execution of your Python code, and records every function call and return (a more detailed explanation is [here](https://docs.python.org/3.6/library/profile.html#what-is-deterministic-profiling)). Then at the end, you can examine the stats to find which functions were run how often and how much time is spent in each function.
+The Python standard library contains a deterministic function-level profiler. It
+traces the execution of your Python code, and records every function call and
+return (a more detailed explanation is
+[here](https://docs.python.org/3.6/library/profile.html#what-is-deterministic-profiling)).
+Then at the end, you can examine the stats to find which functions were run how
+often and how much time is spent in each function.
 
-Note: :astonished: The Python standard library has a `profile` and `cProfile` that do the same thing. :confused: Only `profile` is implemented in Python and slower and `cProfile` in C and faster. So you should always use `cProfile`. :relieved:
+Note: :astonished: The Python standard library has a `profile` and `cProfile`
+that do the same thing. :confused: Only `profile` is implemented in Python and
+slower and `cProfile` in C and faster. So you should always use `cProfile`.
+:relieved:
 
 :point_right: Run the [compute.py](compute.py) script through the Python profiler.
 ```
@@ -408,9 +577,11 @@ $ python -m cProfile compute.py
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
 ```
 
-TODO: add explanation of columns here.
+The meaning of the columns is described
+[here](https://docs.python.org/3.6/library/profile.html).
 
-:point_right: Profile `compute.py` and store the resulting stats in `compute.prof`. Use `pstats` to read and view the stats in different ways.
+:point_right: Profile `compute.py` and store the resulting stats in
+`compute.prof`. Use `pstats` to read and view the stats in different ways.
 ```
 $ python -m cProfile -o compute.prof compute.py
 $ python -m pstats
@@ -463,11 +634,18 @@ compute.prof% quit
 Goodbye.
 ```
 
-`cProfile` and `stats` are described in detail in the tutorials [here](https://pymotw.com/3/profile/index.html) or [here](https://docs.python.org/3.6/library/profile.html). They are very powerful, but can be a bit cumbersome to use. Let's look at two user-friendly options that use `cProfile` under the hood.
+`cProfile` and `stats` are described in detail in the tutorials
+[here](https://pymotw.com/3/profile/index.html) or
+[here](https://docs.python.org/3.6/library/profile.html). They are very
+powerful, but can be a bit cumbersome to use. Let's look at two user-friendly
+options that use `cProfile` under the hood.
 
 ---
 
-From `ipython` or `jupyter` you can use the `%prun` or `%%prun` magic commands (see [docs](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-prun) or bring up the help via `%prun?`).
+From `ipython` or `jupyter` you can use the `%prun` or `%%prun` magic commands
+(see
+[docs](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-prun)
+or bring up the help via `%prun?`).
 
 :point_right: Import `compute` and `%prun` the `compute.main()` function.
 ```
@@ -494,42 +672,60 @@ In [3]: %prun compute.main()
 ```
 ---
 
-The functionality from `pstats` is OK to understand the profile results. But often being able to quickly visualise and browse the results is nicer. For this, you can use [snakeviz](https://jiffyclub.github.io/snakeviz/).
+The functionality from `pstats` is OK to understand the profile results. But
+often being able to quickly visualise and browse the results is nicer. For this,
+you can use [snakeviz](https://jiffyclub.github.io/snakeviz/).
 
 :point_right: Open `compute.prof` with `snakeviz`.
 ```
 $ snakeviz compute.prof 
 snakeviz web server started on 127.0.0.1:8080; enter Ctrl-C to exit
 ```
-Make sure you explore the output a bit, especially try both "Sunburst" and "Icicle" for the style.
+Make sure you explore the output a bit, especially try both "Sunburst" and
+"Icicle" for the style.
 
-:point_right: Do you prefer the stats table, or the sunburst, or the icicle?
+:point_right: Run [snakeviz](https://jiffyclub.github.io/snakeviz/) from
+`ipython` or `jupyter` using `%load_ext snakeviz` and then `%snakeviz` or
+`%%snakeviz`.
 
 ## 7. Line-level profiling
 
-With function-level profiling you can find the functions that are relevant to the performance of your application.
- But what if you want to know which lines of code in the function are slow? The [line_profiler](https://github.com/rkern/line_profiler) package let's you measure execution time line by line, from Python, ipython or Jupyter.
+With function-level profiling you can find the functions that are relevant to
+the performance of your application. But what if you want to know which lines of
+code in the function are slow? The
+[line_profiler](https://github.com/rkern/line_profiler) package let's you
+measure execution time line by line, from Python, ipython or Jupyter.
 
-:point_right: Let's work through the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. Instructions how to start it are in the [Setup](#setup) section.
+:point_right: Let's continue with the [Profiling and Timing
+Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html)
+notebook to see an example of line profiling from Python.
 
 
 ## 8. Memory profiling
 
-You want your program to fit in main memory. If it doesn't, then the operating system will either start swapping to disk, which is slow, or kill your process.
+You want your program to fit in main memory. If it doesn't, then the operating
+system will either start swapping to disk, which is slow, or kill your process.
 
-In this section we look a bit how you can figure out how much memory your Python program uses, and how to figure out where that memory is allocated.
+In this section we look a bit how you can figure out how much memory your Python
+program uses, and how to figure out where that memory is allocated.
 
 ---
 
-:point_right: Write some Python code that runs out of memory, i.e. causes a `MemoryError`.
+:point_right: Write some Python code that runs out of memory, i.e. causes a
+`MemoryError`.
 
 :bulb: See [memory_error.md](memory_error.md)
 
-This is surprisingly difficult, because depending on your operating system and configuration, it might start swapping to disk. So allocating more memory than you have RAM might work just fine. [psutil.swap_memory](http://psutil.readthedocs.io/en/latest/#psutil.swap_memory) can give some info on this.
+This is surprisingly difficult, because depending on your operating system and
+configuration, it might start swapping to disk. So allocating more memory than
+you have RAM might work just fine.
+[psutil.swap_memory](http://psutil.readthedocs.io/en/latest/#psutil.swap_memory)
+can give some info on this.
 
 ---
 
-:point_right: To find the peak memory use of a program, you can run it through `psrecord` and then take the max of the third column "Real (MB)"
+:point_right: To find the peak memory use of a program, you can run it through
+`psrecord` and then take the max of the third column "Real (MB)"
 
 ```python
 import pandas as pd
@@ -546,9 +742,14 @@ print(f'Max memory: {mem_max} MB')
 
 Now what if you're using too much memory, and would like to know why?
 
-First of all, it helps to know a bit about how Python stores data. As explained [here](https://jakevdp.github.io/PythonDataScienceHandbook/02.01-understanding-data-types.html), a python `int` of `float` is more than just an `int` or `float` in C. Similarly, e.g. a `list` uses more memory than an array in C.
+First of all, it helps to know a bit about how Python stores data. As explained
+[here](https://jakevdp.github.io/PythonDataScienceHandbook/02.01-understanding-data-types.html),
+a python `int` of `float` is more than just an `int` or `float` in C. Similarly,
+e.g. a `list` uses more memory than an array in C.
 
-:point_right: Use [sys.getsizeof](https://docs.python.org/3/library/sys.html#sys.getsizeof) to measure the size (in bytes) of a few objects:
+:point_right: Use
+[sys.getsizeof](https://docs.python.org/3/library/sys.html#sys.getsizeof) to
+measure the size (in bytes) of a few objects:
 ```python
 >>> import sys
 >>> sys.getsizeof(42) # int
@@ -567,7 +768,9 @@ First of all, it helps to know a bit about how Python stores data. As explained 
 8096
 ```
 
-Some Python objects have convenience methods to get their memory use. Especially there is [numpy.ndarray.nbytes](https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.nbytes.html):
+Some Python objects have convenience methods to get their memory use. Especially
+there is
+[numpy.ndarray.nbytes](https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.nbytes.html):
 ```python
 >>> import numpy as np
 >>> array = np.ones(1000)
@@ -578,7 +781,8 @@ Some Python objects have convenience methods to get their memory use. Especially
 >>> array.itemsize
 8
 ```
-Pandas shows the memory used by a data frame via [data_frame.info](data_frame.info)
+Pandas shows the memory used by a data frame via
+[data_frame.info](data_frame.info)
 ```python
 >>> import pandas as pd
 >>> df = pd.DataFrame({'a': [1, 2], 'b': [3.3, 4.4]})
@@ -594,67 +798,200 @@ memory usage: 112.0 bytes
 
 ---
 
-There is also the [memory_profiler](https://github.com/pythonprofilers/memory_profiler) which you can use to monitor memory usage or even look at line by line increment / decrement of memory usage.
+There is also the
+[memory_profiler](https://github.com/pythonprofilers/memory_profiler) which you
+can use to monitor memory usage or even look at line by line increment /
+decrement of memory usage.
 
-:point_right: Let's use the [01.07-Timing-and-Profiling.ipynb](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html#Profiling-Memory-Use:-%memit-and-%mprun) to try this out. (See last section how to get it.)
+:point_right: Let's use the
+[01.07-Timing-and-Profiling.ipynb](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html#Profiling-Memory-Use:-%memit-and-%mprun)
+to try this out. (See last section how to get it.)
+
+## Exercise
+
+Let's try to apply what we have learned to a longer and more complex example.
+
+How to make cash with Python, fast!
+
+:point_right: Read and run [cash.py](cash.py).
+
+:point_right: Measure the execution time and peak memory use.
+
+```
+time python cash.py
+psrecord --interval 0.02 --plot cash.png 'python cash.py'
+```
+
+:point_right: Profile the execution, and browse the profile stats to see where the time is spent.
+
+```
+python -m cProfile -o cash.prof cash.py
+snakeviz cash.prof
+```
+
+:point_right: Create a line-by-line profile for the `cash` function.
+
+Open IPython and use these commands:
+```
+%load_ext line_profiler
+import cash
+%lprun -f cash.cash cash.benchmark()
+%lprun -f cash.benchmark -f cash.model -f cash.cash cash.benchmark()
+```
+
+:point_right: For `x = np.ones(int(1e6))`, use `%timeit` to check how long `x +
+x`, `x * x`, `x ** 2` and `np.log(x)` take. How does the execution time change
+with array size (e.g. try 1 or 1000 elements)?
+
+Do it in IPython or Jupyter
+```
+import numpy as np
+x = np.ones(int(1e6), dtype=np.float64)
+%timeit np.log(x)
+```
+
+:point_right: Try different data types (32 and 64 bit floats and integers) for
+the simple statements and `cash.py`. Which data type is fastest?
+
+:point_right: Try to optimise the implementation of the `cash` function for this
+test case. Is there a better way to implement it using Numpy? Maybe try
+[numba](http://numba.pydata.org), [numexpr](https://numexpr.readthedocs.io),
+[Cython](https://cython.org), [Tensorflow](https://www.tensorflow.org) or
+[pytorch](https://pytorch.org)? Can you find a way to use multiple CPU cores or
+even a GPU? How big is the speedup compared to the reference implementation that
+you can achieve?
+
+Note: I'm very interested in ideas or solutions here, if you get something,
+please share! In Gammapy analyses we spend a significant fraction of time to
+evalutate models and the cash fit statistic.
+
+Note: the task is to profile and optimise the function implemenation, don't
+change the function inputs (e.g. use different or adaptive binning) or outputs
+(assert on result value should still pass).
 
 ## Things to remember
 
 ### General
 
-- Profiling is hard. Performance depends on your code, data and parameters, but also on your CPU, C compiler, Python, libraries, ...
+- Profiling is hard. Performance depends on your code, data and parameters, but
+  also on your CPU, C compiler, Python, libraries, ...
 - Only profile and optimise if needed. Most of the time you don't.
-- Always measure and profile a real use case before starting to optimise. Often the measure of interest is runtime, sometimes memory use or disk I/O or other things.
-- Usually data structures and algorithms are more important than micro optmisations.
+- Always measure and profile a real use case before starting to optimise. Often
+  the measure of interest is runtime, sometimes memory use or disk I/O or other
+  things.
+- Usually data structures and algorithms are more important than micro
+  optmisations.
 
 ### Tools
 
 - Python provides great tools for timing and profiling code.
-- Use `psutil` and `psrecord` to measure and record CPU and memory use. You can use this on any process, not just Python.
-- Use the Unix `time`, Python standard library `time` or `timeit`, and ipython / Jupyter `%time`, `%timeit` line and `%%time`, `%%timeit` cell magic commands to measure CPU time.
-- To profile CPU usage, the Python standard library provides  `cProfile` and `pstats`. The `%prun` and `snakeviz` make this nice to use. This is a "deterministic function-level profiler", i.e. works by tracing function calls.
-- Use `line_profiler` and included `kernprof`, `%lprun`, `%%lprun` to line-by-line profiling for a given function. Again, this is a deterministic profiler tracing line execution.
-- There are also "sampling profilers" that sample a process at given time intervals. This is what `psrecord` does, and also what system monitor tools do. We didn't cover them here, but some links to other profilers are given in the next section.
-- Use `memory_profiler` to monitor the memory usage of Python code. `%memit` for a single statement, and `%mprun` for line-by-line profiling of a given function.
-- Use `sys.getsize` or Numpy `array.nbytes` or Pandas `data_frame.info()` to see the memory usage for a given object.
+- Use `psutil` and `psrecord` to measure and record CPU and memory use. You can
+  use this on any process, not just Python.
+- Use the Unix `time`, Python standard library `time` or `timeit`, and ipython /
+  Jupyter `%time`, `%timeit` line and `%%time`, `%%timeit` cell magic commands
+  to measure CPU time.
+- To profile CPU usage, the Python standard library provides  `cProfile` and
+  `pstats`. The `%prun` and `snakeviz` make this nice to use. This is a
+  "deterministic function-level profiler", i.e. works by tracing function calls.
+- Use `line_profiler` and included `kernprof`, `%lprun`, `%%lprun` to
+  line-by-line profiling for a given function. Again, this is a deterministic
+  profiler tracing line execution.
+- There are also "sampling profilers" that sample a process at given time
+  intervals. This is what `psrecord` does, and also what system monitor tools
+  do. We didn't cover them here, but some links to other profilers are given in
+  the next section.
+- Use `memory_profiler` to monitor the memory usage of Python code. `%memit` for
+  a single statement, and `%mprun` for line-by-line profiling of a given
+  function.
+- Use `sys.getsize` or Numpy `array.nbytes` or Pandas `data_frame.info()` to see
+  the memory usage for a given object.
 
 ## Going further
 
 If you'd like to learn more, here's how you can go further:
 
-- If you only read through this tutorial, go back to the start and type and execute the exercises to make it stick. They are marked with :point_right:.
-- We did not do a real-word complex example here. Take some of your application code or data analysis and time and profile it to practice. Is it I/O or CPU limited? How much peak memory does it use? Which functions or lines are the bottleneck?
-- The [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) notebook from the [Python data science handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas covers similar material, executing everything from the Jupyter notebook.
-- The [How to optimize for speed](http://scikit-learn.org/dev/developers/performance.html) page in [scikit-learn](http://scikit-learn.org/) docs, which contains a bit of infos on profiling C extensions as well.
-- The [profile and pstats — Performance Analysis](https://pymotw.com/3/profile/) tutorial from the [Python module of the week](https://pymotw.com/) by Doug Hellman is a very detailed overview of `cProfile` and `pstats`.
-- The [README](https://github.com/giampaolo/psutil/blob/master/README.rst) and [docs](http://psutil.readthedocs.io/) of `psutil` give a good overview of all the things you can monitor and measure about your sytem and process.
-- The [snakeviz](http://jiffyclub.github.io/snakeviz/) docs contain descriptions and examples of how to visually explore the profile stats.
-- The [line_profiler](https://github.com/rkern/line_profiler/blob/master/README.rst) docs.
-- the [memory_profiler](https://github.com/pythonprofilers/memory_profiler/blob/master/README.rst) docs.
+- If you only read through this tutorial, go back to the start and type and
+  execute the exercises to make it stick. They are marked with :point_right:.
+- We did not do a real-word complex example here. Take some of your application
+  code or data analysis and time and profile it to practice. Is it I/O or CPU
+  limited? How much peak memory does it use? Which functions or lines are the
+  bottleneck?
+- The [Profiling and Timing
+  Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html)
+  notebook from the [Python data science
+  handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake
+  VanderPlas covers similar material, executing everything from the Jupyter
+  notebook.
+- The [How to optimize for
+  speed](http://scikit-learn.org/dev/developers/performance.html) page in
+  [scikit-learn](http://scikit-learn.org/) docs, which contains a bit of infos
+  on profiling C extensions as well.
+- The [profile and pstats — Performance Analysis](https://pymotw.com/3/profile/)
+  tutorial from the [Python module of the week](https://pymotw.com/) by Doug
+  Hellman is a very detailed overview of `cProfile` and `pstats`.
+- The [README](https://github.com/giampaolo/psutil/blob/master/README.rst) and
+  [docs](http://psutil.readthedocs.io/) of `psutil` give a good overview of all
+  the things you can monitor and measure about your sytem and process.
+- The [snakeviz](http://jiffyclub.github.io/snakeviz/) docs contain descriptions
+  and examples of how to visually explore the profile stats.
+- [line_profiler](https://github.com/rkern/line_profiler/blob/master/README.rst)
+  documentation
+- [memory_profiler](https://github.com/pythonprofilers/memory_profiler/blob/master/README.rst)
+  documentation
 
 There are other Python profiling and visualisation tools. I didn't try them yet, but
 
-- [PyCharm](https://www.jetbrains.com/pycharm/) has a [profiler](https://www.jetbrains.com/help/pycharm/profiler.html), but only in the non-free professional edition.
-- [vmprof-python](https://github.com/vmprof/vmprof-python) - a statistical program profiler
+- [PyCharm](https://www.jetbrains.com/pycharm/) has a
+  [profiler](https://www.jetbrains.com/help/pycharm/profiler.html), but only in
+  the non-free professional edition.
+- [vmprof-python](https://github.com/vmprof/vmprof-python) - a statistical
+  program profiler
 - [yappi](https://bitbucket.org/sumerc/yappi/) - Yet Another Python Profiler
 - [vprof](https://github.com/nvdv/vprof) - Visual profiler for Python
 - [plop](https://github.com/bdarnell/plop) - Python Low-Overhead Profiler
-- [pyinstrument](https://github.com/joerick/pyinstrument) - Call stack profiler for Python. Shows you why your code is slow!
-- [gprof2dot](https://github.com/jrfonseca/gprof2dot) - Converts profiling output to a dot graph
-- [pyprof2calltree](https://github.com/pwaller/pyprof2calltree/) - Profile python programs and view them with kcachegrind
+- [pyinstrument](https://github.com/joerick/pyinstrument) - Call stack profiler
+  for Python. Shows you why your code is slow!
+- [gprof2dot](https://github.com/jrfonseca/gprof2dot) - Converts profiling
+  output to a dot graph
+- [pyprof2calltree](https://github.com/pwaller/pyprof2calltree/) - Profile
+  python programs and view them with kcachegrind
 - [PyFlame](https://eng.uber.com/pyflame/) - A Ptracing Profiler For Python
-- Intel [VTune](https://en.wikipedia.org/wiki/VTune) - Supports many languages, including Python
+- Intel [VTune](https://en.wikipedia.org/wiki/VTune) - Supports many languages,
+  including Python
 
 We did not have time to cover **optimisation**.
 
 If you'd like to make your code faster, here's some things you could look at:
 
-- Get to know the data structures and the performance characteristics of Python types (numbers, lists, dicts, objects) as well as `numpy` and `pandas`. The slides from David Beazley [here](http://www.dabeaz.com/datadeepdive/) give a good overview.
+- Get to know the data structures and the performance characteristics of Python
+  types (numbers, lists, dicts, objects) as well as `numpy` and `pandas`. The
+  slides from David Beazley [here](http://www.dabeaz.com/datadeepdive/) give a
+  good overview.
 - Vectorise your code using `numpy`.
-- If your algorithm isn't easy to express in vectorised form with `numpy`, or if `numpy` is too slow or uses too much memory, try [Numba](http://numba.pydata.org/) or [Cython](http://cython.org/). There are a lot of tutorials and comparisons available online. A recent one that contains a good summary and link collection at the top is [The case for Numba](http://matthewrocklin.com/blog/work/2018/01/30/the-case-for-numba) by Matthew Rocklin.
-- To take advantage of multiple cores, try [multiprocessing](https://pymotw.com/3/multiprocessing) from the Python standard library. Also look at [Dask](https://dask.pydata.org/).
-- If you're willing to consider other languages to write a Python C extension, you have options which language to use:
+- If your algorithm isn't easy to express in vectorised form with `numpy`, or if
+  `numpy` is too slow or uses too much memory, try
+  [Numba](http://numba.pydata.org/) or [Cython](http://cython.org/). There are a
+  lot of tutorials and comparisons available online. A recent one that contains
+  a good summary and link collection at the top is [The case for
+  Numba](http://matthewrocklin.com/blog/work/2018/01/30/the-case-for-numba) by
+  Matthew Rocklin.
+- To take advantage of multiple cores, try
+  [multiprocessing](https://pymotw.com/3/multiprocessing) from the Python
+  standard library. Also look at [Dask](https://dask.pydata.org/).
+- If you're willing to consider other languages to write a Python C extension,
+  you have options which language to use:
   - You can write in Cython and it will generate C.
-  - If you use C, popular options to interface include `CFFI` and `Cython` (as well as others, see e.g. [here](http://docs.python-guide.org/en/latest/scenarios/clibs/))
-  - For C++, traditionally SWIG and Cython and Boost.Python have been frequently, but recently I think [pybind11](https://github.com/pybind/pybind11) has become the tool of choice.
-  - [Julia](https://julialang.org/) has very good interfacing to [PyCall](https://github.com/JuliaPy/PyCall.jl). From what I've seen, it's not commonly used though to ship with Python libraries, probably because it's new and harder to support installation for the many different machines and distributions users have. For other modern languages like [rust](https://www.rust-lang.org/) or [go](https://golang.org/) it's similar as far as I know.
+  - If you use C, popular options to interface include `CFFI` and `Cython` (as
+    well as others, see e.g.
+    [here](http://docs.python-guide.org/en/latest/scenarios/clibs/))
+  - For C++, traditionally SWIG and Cython and Boost.Python have been
+    frequently, but recently I think
+    [pybind11](https://github.com/pybind/pybind11) has become the tool of
+    choice.
+  - [Julia](https://julialang.org/) has very good interfacing to
+    [PyCall](https://github.com/JuliaPy/PyCall.jl). From what I've seen, it's
+    not commonly used though to ship with Python libraries, probably because
+    it's new and harder to support installation for the many different machines
+    and distributions users have. For other modern languages like
+    [rust](https://www.rust-lang.org/) or [go](https://golang.org/) it's similar
+    as far as I know.
