@@ -37,9 +37,9 @@ Please help me adjust the tutorial content and speed a bit:
 - How often do you debug Python code? (never, last year, all the time)?
 - Do you know how Python executes code?
 - Do you know what exceptions and stack frames are and how to read a traceback?
-- Have you used `pdb` to debug from Python?
+- Have you used `pdb` to debug from Python? From pytest?
 - Have you used `%debug` or `%run -d` from ipython or Jupyter?
-- Have you used the `PyCharm` debugger?
+- Have you used the `PyCharm` visual debugger? Or debugged from any other IDE (e.g. VS Code or emacs)?
 - Have you used any other Python debugging tool?
 
 ## Setup
@@ -155,7 +155,6 @@ Segmentation fault: 11
 $
 ```
 
-
 ## 2. How Python executes code
 
 To debug Python code, you need to know how Python executes code. Have a look at
@@ -241,7 +240,7 @@ Sometimes you will see a "chained exception" (also called "double inception"),
 where a second exception is raised inside an exception handler, i.e. an `except`
 block.
 
-Example: [chained_exception.py](chained_exception.py)
+Example: [exception_chain.py](exception_chain.py)
 ```
 $ python exception_chain.py
 Traceback (most recent call last):
