@@ -1,6 +1,8 @@
 """Chained exception example"""
 a, b = 1, 0
 try:
-    a / b
+    result = a / b
 except ZeroDivisionError:
-    print("Bad data:", a, c)
+    result = c
+
+print(f"Result: {result}")
