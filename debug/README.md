@@ -242,17 +242,17 @@ block.
 
 Example: [exception_chain.py](exception_chain.py)
 ```
-$ python exception_chain.py
+$ python exception_chain.py 
 Traceback (most recent call last):
   File "exception_chain.py", line 4, in <module>
-    a / b
+    result = a / b
 ZeroDivisionError: division by zero
 
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
   File "exception_chain.py", line 6, in <module>
-    print('Bad data:', a, c)
+    result = c
 NameError: name 'c' is not defined
 ```
 
@@ -274,23 +274,72 @@ There's more info on Python exceptions
 built-in exceptions
 [here](https://docs.python.org/3/library/exceptions.html#exception-hierarchy).
 
+See also the Zen of Python (try: `import this`) and "Errors should never pass
+silently."
+
 ## 4. Debugging with pdb
 
-Let's use the Python scripts from above ([exception.py](exception.py) and
-[silent_error.py](silent_error.py)) to debug with `pdb`, the Python debugger.
+:point_right: Learn to debug using `pdb`. Follow along!
 
-- with print statements
-- `import pdb; pdb.set_trace()`
-- `python -m pdb myscript.py`
+We will use [exception.py](exception.py) and [silent_error.py](silent_error.py) as examples.
+
+Tasks:
+
+- Run `python exception.py` and read the traceback
+- Add print statements in the method that fails (`point.py` line 18)
+- Add `import pdb; pdb.set_trace()` in the method that fails and learn the
+  debugger commands: `p(rint)`, `w(here)`, `l(ist)`, `ll` or `longlist`,
+  `h(elp)`, `q(uit)`, `n(ext)`, `u(p)`, `d(own)`
+- Run `python -m pdb exception.py` and type `c(ontinue)` to enter the debugger
+  and jump to the point of exception ("post mortem debugging").
+- To debug tests, use the `--pdb` option of `pytest`. Run `pytest --pdb
+  exception.py` to see an example (not really a test, but it's the same for a
+  failing test).
+- Debug `silent_error.py` by setting a breakpoint in `compute_result`.
+
+```
+$ python -m pdb silent_error.py 
+> /Users/deil/learn/School2019/debug/silent_error.py(2)<module>()
+-> """
+(Pdb) b compute_result
+Breakpoint 1 at /Users/deil/learn/School2019/debug/silent_error.py:12
+(Pdb) c
+> /Users/deil/learn/School2019/debug/silent_error.py(15)compute_result()
+-> val = 2 * data["a"]
+(Pdb) p data
+{'a': 2, 'b': '3'}
+(Pdb) p type(data['b'])
+<class 'str'>
+(Pdb) q
+```
+
+:point_right: Who is using pytest?
+
+It's great, you should. The time you spend to write automated tests pays off
+pretty quickly (fewer errors, less testing and debugging). Use [pytest](https://docs.pytest.org)
+and learn about it using the tutorial [here](https://github.com/jiffyclub/pytest-features).
+
+If you want to learn more about `pdb`, go through a detailed tutorial at your
+own pace:
+- The [Python Debugging With Pdb](https://realpython.com/python-debugging-pdb/)
+  tutorial by Nathan Jennings.
+- The Python standard library documentation for `pdb`
+  ([link](https://docs.python.org/3.6/library/pdb.html))
+- The Python module of the week tutorial for `pdb` by Doug Hellman
+  ([link](https://pymotw.com/3/pdb/index.html))
 
 ## 5. Debugging with ipython
 
 Similarly how `ipython` and `jupyter` often give a nicer interactive Python
 environment than `python`, they also make it often easier to debug.
 
-- `ipython -i`
-- `import IPython; IPython.embed()`
-- `ipdb`
+Try this:
+
+- `ipython -i` to execute a script and jump into IPython
+- `ipython --pdb` to execute a script and jump into ipydb
+- Add `import IPython; IPython.embed()` to drop into IPython on a given line
+
+More examples in the next session, from Jupyter, but it's similar from ipython.
 
 ## 6. Debugging with Jupyter
 
@@ -336,10 +385,16 @@ charm .
 
 ## Things to remember
 
-- Python is a very dynamic language
-  - Very powerful
-  - Easy to make mistakes
-  - Easy to inspect and debug
+- Python is a very dynamic language. It's very powerful, easy to make mistakes,
+  and easy to inspect and debug.
+- Debugging is not something you do all the time, you should aim to do it as
+  little as possible. Learn how Python executes code and how to read tracebacks.
+  Write clean, well-structured code (functions and classes) and automated tests.
+- Learn how to debug from various execution environments: Python, pytest,
+  ipython, Jupyter, PyCharm. If you only know how to debug one way, you'll have
+  to change execution environment and waste time: e.g. if you get an error in a
+  test, you don't want to have to start Jupyter and reproduce the issue there
+  before you can debug it.
 - Use `pdb` from Python and `ipdb` from ipython and Jupyter for debugging, or a
   visual debugger like e.g. the one from Pycharm.
 - See the debugger commands with `help` or
