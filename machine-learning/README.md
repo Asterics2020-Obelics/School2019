@@ -8,10 +8,10 @@ Authors
 
 Schedule
 --------
-- Tuesday 9th - _4:30 to 6:30 pm_ - Introduction to Machine Learning [lecture]() and tutorials: [EDA](notebooks/EDA_SDSS.ipynb), [Classification](notebooks/Classification.ipynb)
-- Wedneday 10th - _2:00 to 4:00 pm_ - Neural networks [lecture](https://aboucaud.github.io/slides/2019/neural-networks-asterics) and [tutorial](notebooks/simple_nn_library.ipynb)
-- Thursday 11th - _2:00 to 4:00 pm_ - Deep learning [lecture](https://aboucaud.github.io/slides/2019/deep-learning-asterics) and tutorial (to come)
-- Friday 12th - _9:00 to 10:30 am_
+- Tuesday 9th - _4:30 to 6:30 pm_ - Introduction to Machine Learning [lecture](https://docs.google.com/presentation/d/1QAVukdMrY9PPdaRk9E8qLts3mQMRLU3ddePHx4VmYy0/edit?usp=sharing) and tutorials: [EDA](notebooks/EDA_SDSS.ipynb), [Classification](notebooks/Classification.ipynb) and [Regression](notebooks/Regression.ipynb)  
+- Wedneday 10th - _2:00 to 4:00 pm_ - Neural networks [lecture](https://aboucaud.github.io/slides/2019/neural-networks-asterics) and [tutorial](notebooks/simple_nn_library.ipynb)  
+- Thursday 11th - _2:00 to 4:00 pm_ - Deep learning [lecture](https://aboucaud.github.io/slides/2019/deep-learning-asterics) and tutorial (to come)  
+- Friday 12th - _9:00 to 10:30 am_  
 
 References
 ----------
