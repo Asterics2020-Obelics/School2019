@@ -25,6 +25,7 @@ This is the first time I'm giving a tutorial on this topic. Please let me know i
 - [6. Function-level profiling](#6-function-level-profiling)
 - [7. Line-level profiling](#7-line-level-profiling)
 - [8. Memory profiling](#8-memory-profiling)
+- [Exercise](#exercise)
 - [Things to remember](#things-to-remember)
 - [Going further](#going-further)
 
@@ -355,10 +356,10 @@ If you want to do more precise timing of small bits of Python code (say less tha
 
 Both [%time](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-time) and [%timeit](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit) are available from ipython and Jupyter.
 
-:point_right: Let's work through the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. Instructions how to start it are in the [Setup](#setup) section.
+:point_right: Let's work through the "Timing Code Snippets" section in the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. Instructions how to start it are in the [Setup](#setup) section.
 
-Using [%timeit](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit) can be confusing.
-Let's look at a simple example:
+Using [%timeit](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-timeit) for the first time is confusing.
+It's not obvious what is happening and what all the numbers mean:
 ```
 In [1]: %%timeit a = 42 
    ...: a * a 
@@ -366,11 +367,33 @@ In [1]: %%timeit a = 42
    ...:                                                                                                         
 40.8 ns ± 1.5 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
 ```
+* The reported time is wall clock time (no distinction of user and sys made, number of cores used not considered)
 * The statement on the first line is setup, **not** included in the measured time. You can also do this in a previous input prompt instead of putting it after the `%%timeit`.
 * There were 7 runs and 10 million loops for each run. That means the statement `a * a` was timed 70 million times.
 * For each run, only the **minimum** time is used - that's the best estimate of execution time under optimal conditions.
 * `%timeit` reports the mean and std. dev. of the runs. So the main number of interest is the first one on the line, in this case: multiplying two Python ints takes 40.8 ns. The std. dev. (1.5 ns in this case) isn't really of interest, except to judge the reliability of the measurement a little bit: it should be much smaller than the mean.
 * As you will see on the `%timeit?` help page, you can use `-r` to set the number of runs (default is 7) and `-n` to set the number of loops per run. The default for `-n` is to use an adaptive method, so that if it will run very often if your code executes very quickly, and only one or a few times if your code takes a long time (e.g. 1 second) to execute.
+
+Using [%time](http://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-time) for the first time is confusing.
+Four times are given for each measurement:
+```
+In [5]: %time a = np.ones(int(1e6))                                                                             
+CPU times: user 2.27 ms, sys: 3.76 ms, total: 6.03 ms
+Wall time: 4.85 ms
+
+In [8]: %time 3 * 3                                                                                             
+CPU times: user 3 µs, sys: 0 ns, total: 3 µs
+Wall time: 8.11 µs
+```
+* The number you care about is the wall time, ignore the others.
+* I'm not sure what "total" is, and why it's sometimes shorter, sometimes longer
+  than the wall time. Maybe the number of CPU cores are taken into account?
+* The Python `timeit` and the ipython `%timeit` usually report a shorter time
+  than the Python `time` and ipython `%time`. Basically `timeit` will give the
+  best possible execution time, by running multiple times and reporting the
+  best, but also by avoiding interruptions from operating system calls, and the
+  Python garbage collector. `time` just runs once and doesn't do those things.
+  You have to decide which you want.
 
 ## 6. Function-level profiling
 
@@ -503,14 +526,14 @@ snakeviz web server started on 127.0.0.1:8080; enter Ctrl-C to exit
 ```
 Make sure you explore the output a bit, especially try both "Sunburst" and "Icicle" for the style.
 
-:point_right: Do you prefer the stats table, or the sunburst, or the icicle?
+:point_right: Run [snakeviz](https://jiffyclub.github.io/snakeviz/) from `ipython` or `jupyter` using `%load_ext snakeviz` and then `%snakeviz` or `%%snakeviz`.
 
 ## 7. Line-level profiling
 
 With function-level profiling you can find the functions that are relevant to the performance of your application.
  But what if you want to know which lines of code in the function are slow? The [line_profiler](https://github.com/rkern/line_profiler) package let's you measure execution time line by line, from Python, ipython or Jupyter.
 
-:point_right: Let's work through the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) Jupyter notebook from the excellent [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) by Jake VanderPlas. Instructions how to start it are in the [Setup](#setup) section.
+:point_right: Let's continue with the [Profiling and Timing Code](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html) notebook to see an example of line profiling from Python.
 
 
 ## 8. Memory profiling
@@ -617,6 +640,28 @@ There is also the [memory_profiler](https://github.com/pythonprofilers/memory_pr
 - There are also "sampling profilers" that sample a process at given time intervals. This is what `psrecord` does, and also what system monitor tools do. We didn't cover them here, but some links to other profilers are given in the next section.
 - Use `memory_profiler` to monitor the memory usage of Python code. `%memit` for a single statement, and `%mprun` for line-by-line profiling of a given function.
 - Use `sys.getsize` or Numpy `array.nbytes` or Pandas `data_frame.info()` to see the memory usage for a given object.
+
+## Exercise
+
+Let's try to apply what we have learned to a longer and more complex example.
+
+How to make cash with Python, fast!
+
+:point_right: Read and run [cash.py](cash.py).
+
+:point_right: Measure the execution time and peak memory use.
+
+:point_right: Profile the execution, and browse the profile stats to see where the time is spent.
+
+:point_right: Create a line-by-line profile for the `cash` function.
+
+:point_right: For `x = np.ones(int(1e6))`, use `%timeit` to check how long `x + x`, `x * x`, `x ** 2` and `np.log(x)` take. How does the execution time change with array size (e.g. try 1 or 1000 elements)?
+
+:point_right: Try different data types (32 and 64 bit floats and integers) for the simple statements and `cash.py`. Which data type is fastest?
+
+:point_right: Try to optimise the implementation of the `cash` function for this test case. Is there a better way to implement it using Numpy? Maybe try [numba](http://numba.pydata.org), [numexpr](https://numexpr.readthedocs.io), [Cython](https://cython.org), [Tensorflow](https://www.tensorflow.org) or [pytorch](https://pytorch.org)? Can you find a way to use multiple CPU cores or even a GPU? How big is the speedup compared to the reference implementation that you can achieve?
+
+Note: the task is to profile and optimise the function implemenation, don't change the function inputs (e.g. use different or adaptive binning) or outputs (assert on result value should still pass).
 
 ## Going further
 
