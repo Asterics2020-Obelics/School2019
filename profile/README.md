@@ -807,6 +807,67 @@ decrement of memory usage.
 [01.07-Timing-and-Profiling.ipynb](https://jakevdp.github.io/PythonDataScienceHandbook/01.07-timing-and-profiling.html#Profiling-Memory-Use:-%memit-and-%mprun)
 to try this out. (See last section how to get it.)
 
+## Exercise
+
+Let's try to apply what we have learned to a longer and more complex example.
+
+How to make cash with Python, fast!
+
+:point_right: Read and run [cash.py](cash.py).
+
+:point_right: Measure the execution time and peak memory use.
+
+```
+time python cash.py
+psrecord --interval 0.02 --plot cash.png 'python cash.py'
+```
+
+:point_right: Profile the execution, and browse the profile stats to see where the time is spent.
+
+```
+python -m cProfile -o cash.prof cash.py
+snakeviz cash.prof
+```
+
+:point_right: Create a line-by-line profile for the `cash` function.
+
+Open IPython and use these commands:
+```
+%load_ext line_profiler
+import cash
+%lprun -f cash.cash cash.benchmark()
+```
+
+:point_right: For `x = np.ones(int(1e6))`, use `%timeit` to check how long `x +
+x`, `x * x`, `x ** 2` and `np.log(x)` take. How does the execution time change
+with array size (e.g. try 1 or 1000 elements)?
+
+Do it in IPython or Jupyter
+```
+import numpy as np
+x = np.ones(int(1e6), dtype=np.float64)
+%timeit np.log(x)
+```
+
+:point_right: Try different data types (32 and 64 bit floats and integers) for
+the simple statements and `cash.py`. Which data type is fastest?
+
+:point_right: Try to optimise the implementation of the `cash` function for this
+test case. Is there a better way to implement it using Numpy? Maybe try
+[numba](http://numba.pydata.org), [numexpr](https://numexpr.readthedocs.io),
+[Cython](https://cython.org), [Tensorflow](https://www.tensorflow.org) or
+[pytorch](https://pytorch.org)? Can you find a way to use multiple CPU cores or
+even a GPU? How big is the speedup compared to the reference implementation that
+you can achieve?
+
+Note: I'm very interested in ideas or solutions here, if you get something,
+please share! In Gammapy analyses we spend a significant fraction of time to
+evalutate models and the cash fit statistic.
+
+Note: the task is to profile and optimise the function implemenation, don't
+change the function inputs (e.g. use different or adaptive binning) or outputs
+(assert on result value should still pass).
+
 ## Things to remember
 
 ### General
@@ -843,66 +904,6 @@ to try this out. (See last section how to get it.)
   function.
 - Use `sys.getsize` or Numpy `array.nbytes` or Pandas `data_frame.info()` to see
   the memory usage for a given object.
-
-## Exercise
-
-Let's try to apply what we have learned to a longer and more complex example.
-
-How to make cash with Python, fast!
-
-:point_right: Read and run [cash.py](cash.py).
-
-:point_right: Measure the execution time and peak memory use.
-
-```
-time python cash.py
-psrecord --interval 0.02 --plot cash.png 'python cash.py'
-```
-
-:point_right: Profile the execution, and browse the profile stats to see where the time is spent.
-
-```
-python -m cProfile -o cash.prof cash.py
-snakeviz cash.prof
-```
-
-:point_right: Create a line-by-line profile for the `cash` function.
-
-Open IPython and use these commands:
-```
-import cash
-%lprun -f cash.cash cash.benchmark()
-```
-
-:point_right: For `x = np.ones(int(1e6))`, use `%timeit` to check how long `x +
-x`, `x * x`, `x ** 2` and `np.log(x)` take. How does the execution time change
-with array size (e.g. try 1 or 1000 elements)?
-
-Do it in IPython or Jupyter
-```
-import numpy as np
-x = np.ones(int(1e6), dtype=np.float64)
-%timeit np.log(x)
-```
-
-:point_right: Try different data types (32 and 64 bit floats and integers) for
-the simple statements and `cash.py`. Which data type is fastest?
-
-:point_right: Try to optimise the implementation of the `cash` function for this
-test case. Is there a better way to implement it using Numpy? Maybe try
-[numba](http://numba.pydata.org), [numexpr](https://numexpr.readthedocs.io),
-[Cython](https://cython.org), [Tensorflow](https://www.tensorflow.org) or
-[pytorch](https://pytorch.org)? Can you find a way to use multiple CPU cores or
-even a GPU? How big is the speedup compared to the reference implementation that
-you can achieve?
-
-Note: I'm very interested in ideas or solutions here, if you get something,
-please share! In Gammapy analyses we spend a significant fraction of time to
-evalutate models and the cash fit statistic.
-
-Note: the task is to profile and optimise the function implemenation, don't
-change the function inputs (e.g. use different or adaptive binning) or outputs
-(assert on result value should still pass).
 
 ## Going further
 

@@ -33,12 +33,15 @@ def cash(n, mu):
 
 
 def benchmark():
-    # Set up a test case
-    bins = int(1e6)
+    # Set parameters
+    number_of_bins = int(1e6)
+    number_of_evaluations = 100
     amplitude = 10
     mean = 0
     stddev = 10
-    x = np.linspace(start=-10, stop=+10, num=bins)
+
+    # Set up a test case
+    x = np.linspace(start=-10, stop=+10, num=number_of_bins)
     dx = x[1] - x[0]
     np.random.seed(0)
     n = np.random.poisson(model(x, amplitude, mean, stddev))
@@ -46,7 +49,7 @@ def benchmark():
     # Evaluate likelihood ten times.
     # Usually you would do it many times, using for example
     # scipy.optimize.minimize to find the best-fit parameters.
-    for iteration in range(10):
+    for _ in range(number_of_evaluations):
         y = model(x, amplitude, mean, stddev)
         mu = dx * y
         stat = cash(n, mu)
