@@ -577,7 +577,8 @@ $ python -m cProfile compute.py
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
 ```
 
-TODO: add explanation of columns here.
+The meaning of the columns is described
+[here](https://docs.python.org/3.6/library/profile.html).
 
 :point_right: Profile `compute.py` and store the resulting stats in
 `compute.prof`. Use `pstats` to read and view the stats in different ways.
