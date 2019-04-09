@@ -6,6 +6,10 @@ Deil.
 We will start by looking at how Python executes code, exceptions and stack
 frames first, and only in the second half move on to using a debugger.
 
+This tutorial assumes that you have used a terminal, Python, ipython and Jupyter
+before. No experience with Python debugging is assumed, this tutorial will get
+you started and focus on the basics.
+
 Throughout the tutorial you will find short exercises marked with :point_right:.
 Usually the solution is given directly below. Please execute the examples and
 try things for yourself. Interrupt with questions at any time!
@@ -15,7 +19,7 @@ if you have any suggestions to improve!
 
 ## Outline
 
-- [Prerequisites](#prerequisites)
+- [Setup](#setup)
 - [1. When to debug?](#1-when-to-debug)
 - [2. How Python executes code](#2-how-python-executes-code)
 - [3. Exceptions and tracebacks](#3-exceptions-and-tracebacks)
@@ -37,11 +41,7 @@ Please help me adjust the tutorial content and speed a bit:
 - Have you used the `PyCharm` debugger?
 - Have you used any other Python debugging tool?
 
-## Prerequisites
-
-This tutorial assumes that you have used a terminal, Python, ipython and Jupyter
-before. No experience with Python debugging is assumed, this tutorial will get
-you started and focus on the basics.
+## Setup
 
 :point_right: Check that you have Python (3.5 or later), `ipython` and `jupyter`
 installed.
