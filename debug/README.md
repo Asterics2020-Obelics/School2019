@@ -111,6 +111,15 @@ Follow these steps:
   notebook from Chapter 1.
 * Leave it open, but go back to this tutorial for now.
 
+---
+
+:point_right: Optional: If you have a Google account and want to try out "Google Colab", click the button [here](https://jakevdp.github.io/PythonDataScienceHandbook/01.06-errors-and-debugging.html).
+
+From the [Google Colaboratory FAQ](https://research.google.com/colaboratory/faq.html):
+> Colaboratory is a research tool for machine learning education and research.
+> It’s a Jupyter notebook environment that requires no setup to use.
+
+To open your space: https://colab.research.google.com/
 
 ## 1. When to debug?
 

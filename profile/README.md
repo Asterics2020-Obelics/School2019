@@ -836,6 +836,7 @@ Open IPython and use these commands:
 %load_ext line_profiler
 import cash
 %lprun -f cash.cash cash.benchmark()
+%lprun -f cash.benchmark -f cash.model -f cash.cash cash.benchmark()
 ```
 
 :point_right: For `x = np.ones(int(1e6))`, use `%timeit` to check how long `x +
