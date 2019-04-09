@@ -279,13 +279,9 @@ silently."
 
 ## 4. Debugging with pdb
 
-:point_right: Debug using `pdb` using various example. Follow along!
+:point_right: Learn to debug using `pdb`. Follow along!
 
-Code examples:
-- [exception.py](exception.py)
-- [exception_chain.py](exception_chain.py)
-- [silent_error.py](silent_error.py)
-- [analysis.py](analysis.py)
+We will use [exception.py](exception.py) and [silent_error.py](silent_error.py) as examples.
 
 Tasks:
 
@@ -299,9 +295,32 @@ Tasks:
 - To debug tests, use the `--pdb` option of `pytest`. Run `pytest --pdb
   exception.py` to see an example (not really a test, but it's the same for a
   failing test).
+- Debug `silent_error.py` by setting a breakpoint in `compute_result`.
 
-`pdb` has a many more features, e.g. breakpoints. If you want to learn more, or
-go through a detailed tutorial at your own pace:
+```
+$ python -m pdb silent_error.py 
+> /Users/deil/learn/School2019/debug/silent_error.py(2)<module>()
+-> """
+(Pdb) b compute_result
+Breakpoint 1 at /Users/deil/learn/School2019/debug/silent_error.py:12
+(Pdb) c
+> /Users/deil/learn/School2019/debug/silent_error.py(15)compute_result()
+-> val = 2 * data["a"]
+(Pdb) p data
+{'a': 2, 'b': '3'}
+(Pdb) p type(data['b'])
+<class 'str'>
+(Pdb) q
+```
+
+:point_right: Who is using pytest?
+
+It's great, you should. The time you spend to write automated tests pays off
+pretty quickly (fewer errors, less testing and debugging). Use [pytest](https://docs.pytest.org)
+and learn about it using the tutorial [here](https://github.com/jiffyclub/pytest-features).
+
+If you want to learn more about `pdb`, go through a detailed tutorial at your
+own pace:
 - The [Python Debugging With Pdb](https://realpython.com/python-debugging-pdb/)
   tutorial by Nathan Jennings.
 - The Python standard library documentation for `pdb`
@@ -314,9 +333,13 @@ go through a detailed tutorial at your own pace:
 Similarly how `ipython` and `jupyter` often give a nicer interactive Python
 environment than `python`, they also make it often easier to debug.
 
-- `ipython -i`
-- `import IPython; IPython.embed()`
-- `ipdb`
+Try this:
+
+- `ipython -i` to execute a script and jump into IPython
+- `ipython --pdb` to execute a script and jump into ipydb
+- Add `import IPython; IPython.embed()` to drop into IPython on a given line
+
+More examples in the next session, from Jupyter, but it's similar from ipython.
 
 ## 6. Debugging with Jupyter
 
