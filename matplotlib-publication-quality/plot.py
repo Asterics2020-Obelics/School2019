@@ -39,7 +39,7 @@ plt.xlabel(r'$\log_{10}\bigl(E \mathbin{/} \si{\giga\electronvolt}\bigr)$')
 plt.ylabel(
     r'$\Phi_0'
     r'\mathbin{/}'
-    r'\si{\per\GeV\per\second\per\steradian\per\meter\squared}$'
+    r'\bigl(\si{\per\GeV\per\second\per\steradian\per\meter\squared}\bigr)$'
 )
 
 plt.text(0.1, 0.1, formula, transform=plt.gca().transAxes)

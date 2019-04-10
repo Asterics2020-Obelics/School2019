@@ -7,7 +7,7 @@ formula = (
     r'N = \int_{E_\mathrm{min}}^{E_\mathrm{max}} '
     r'\int_0^A'
     r'\int_{t_\mathrm{min}}^{t_\mathrm{max}} '
-    r'\Phi_0 \left(\frac{E}{1\,\mathrm{GeV}}\right)^{\!\!-γ}'
+    r'\Phi_0 \left(\frac{E}{1\,\mathrm{GeV}}\right)^{\!\!-\gamma}'
     r' \, \mathrm{d}A \, \mathrm{d}t \, \mathrm{d}E'
     r'$'
 )
@@ -39,11 +39,11 @@ plt.xlabel(r'$\log_{10}(E \,\,/ \,\, \mathrm{GeV})$')
 plt.ylabel(
     r'$\Phi_0'
     r'\,\,/\,\,'
-    r'\mathrm{GeV}^{-1} \, \mathrm{s}^{-1} \, \mathrm{sr}^{-1} \mathrm{m}^{-2}$'
+    r'(\mathrm{GeV}^{-1} \, \mathrm{s}^{-1} \, \mathrm{sr}^{-1} \mathrm{m}^{-2})$'
 )
 
 plt.text(0.1, 0.1, formula, transform=plt.gca().transAxes)
 plt.yscale('log')
 
 plt.tight_layout(pad=0)
-plt.savefig('build/plot.pdf')
+plt.savefig('build/before.pdf')
