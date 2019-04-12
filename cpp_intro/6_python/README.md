@@ -7,6 +7,16 @@ Note: We are not calling cmake from the setup.py file,
 this means, this package is not simply pip installable.
 This will be left as an exercise to the reader ;-)
 
+So for now, in the end it should be:
+```
+mkdir build
+cd build
+cmake ..
+make
+cd ..
+pip install -e .
+```
+
 ## References
 
 * https://cython.org/
