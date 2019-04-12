@@ -22,8 +22,8 @@ int main() {
 	
 	std::vector<unsigned long> numbers = fibonacci(10);
 
-	for (size_t i = 0; i < numbers.size(); i++) {
-		std::cout << i << ": " << numbers.at(i) << std::endl;
+	for (unsigned long fib: numbers) {
+		std::cout << fib << std::endl;
 	}
      
     return 0;
