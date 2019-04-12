@@ -1,19 +1,8 @@
-# let's sample the signal in the middle of each period
-clock = np.arange(sample_length // 2, len(alien_signal), sample_length)
-
-plt.figure()
-plt.plot(alien_signal)
-plt.plot(clock, alien_signal[clock], 'ro')
-
-
-# Now cross correlate the signal with the pulse shape.
-# We know the pulse shape and its length.
-
 corr = signal.correlate(
     alien_signal,
     signal.boxcar(sample_length),
     mode='same'
-) /sample_length
+) / sample_length # divide by sample length to normalize output
 
 
 # plot stuff
