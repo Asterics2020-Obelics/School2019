@@ -8,6 +8,7 @@ ext_modules = [
         sources=['fib_wrapper.pyx'],
         libraries=['fibonacci'],
         runtime_library_dirs=[os.path.abspath('build')],
+        extra_link_args=['-Wl,-rpath', os.path.abspath('build')],
         include_dirs=['include'],
         library_dirs=['build'],
     )
